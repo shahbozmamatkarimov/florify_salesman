@@ -1,3 +1,9 @@
 {
+  "compilerOptions": {
+    "strict": true,
+    "outDir": "./build" // Output directory for compiled files
+  },
+  "include": ["**/*.js"],
+  "exclude": ["node_modules", "build"],
   "extends": "../.nuxt/tsconfig.server.json"
 }

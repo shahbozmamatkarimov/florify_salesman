@@ -32,6 +32,30 @@
           <div class="flex items-center h-32">
             <img class="w-24 h-7" src="../assets/svg/logo.svg" alt="logo" />
           </div>
+          <div class="flex gap-2 mb-16 cursor-pointer">
+            <img class="w-11 h-11 rounded-full" src="../assets/images/stripes.jpg" alt="img" />
+            <div>
+              <h1 class="font-medium">Fillo Team</h1>
+              <a class="text-sm text-[#999999]" href="#">hello@fillo.com</a>
+            </div>
+            <p class="ml-5 my-auto">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M18 9L12 15L6 9"
+                  stroke="#454545"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </p>
+          </div>
           <ul class="space-y-3 font-medium">
             <li v-for="i in sidebar" :key="i.id">
               <router-link

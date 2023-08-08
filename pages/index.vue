@@ -1,6 +1,7 @@
 <template>
   <main>
-    <section>
+    <Navbar>Dashboard</Navbar>
+    <!-- <section class="p-10">
         <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg">
           <div class="grid grid-cols-3 gap-4 mb-4">
             <div
@@ -282,10 +283,24 @@
             </div>
           </div>
         </div>
-    </section>
+    </section> -->
+    <div class="px-10 pb-20 overflow-hidden overflow-y-auto max-h-[82vh]">
+      <section>
+        <Chart />
+      </section>
+      <section class="h-[450px] -mt-[12rem] bg-white p-5 rounded-xl">
+        <h1>Buyurtmalar</h1>
+      </section>
+    </div>
   </main>
 </template>
 
-<script setup></script>
+<script setup>
+const { data } = await useFetch(
+  "https://florify-market.onrender.com/api/product"
+);
+
+console.log(data);
+</script>
 
 <style lang="scss" scoped></style>

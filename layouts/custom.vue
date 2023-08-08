@@ -3,7 +3,7 @@
     <Sidebar />
 
     <div class="sm:ml-64">
-        <slot />
+      <slot />
     </div>
   </header>
 </template>
