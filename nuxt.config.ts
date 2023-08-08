@@ -16,8 +16,8 @@ export default {
       ],
     },
   },
-  modules: ["@ant-design-vue/nuxt", '@element-plus/nuxt',],  
-  css: ["~/assets/main.css", 'element-plus/dist/index.css'],
+  modules: ["@ant-design-vue/nuxt"],  
+  css: ["~/assets/main.css"],
   postcss: {
     plugins: {
       tailwindcss: {},
