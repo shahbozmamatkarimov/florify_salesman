@@ -60,11 +60,11 @@
         aria-hidden="true"
         class="flex justify-center items-center bg-[#8c8cee0d] backdrop-blur-[1px] fixed top-0 left-0 right-0 z-50 w-full md:inset-0 h-[calc(100%-1rem)]"
       >
-        <div class="relative w-full ml-64 max-h-full">
+        <div class="relative ml-[260px] w-full max-h-full">
           <!-- Modal content -->
           <form
             @submit.prevent="handleSubmit"
-            class="relative bg-[#F4F4F6] shadow dark:bg-gray-700"
+            class="relative w-full bg-[#F4F4F6] shadow dark:bg-gray-700"
           >
             <!-- Modal header -->
             <div
@@ -91,7 +91,7 @@
             </div>
             <!-- Modal body -->
             <div
-              class="grid grid-cols-2 gap-10 overflow-x-hidden overflow-y-auto max-h-[79vh]"
+              class="gap-10 grid grid-cols-2 w-full overflow-x-hidden overflow-y-auto max-h-[79vh]"
             >
               <div class="flex col-span-1 flex-col p-6">
                 <div class="border-b-2 pb-5 mb-5 space-y-5">
@@ -165,7 +165,7 @@
                   <a-space>
                     <a-input-number
                       id="deal"
-                      v-model:value="create.quintity"
+                      v-model:value="create.quantity"
                       class="w-full placeholder-[#555555]"
                       size="large"
                       placeholder="Zahira miqdorinii kiriting"
@@ -203,39 +203,31 @@
         </div>
       </div>
     </section>
+
+    <!-- notification -->
+    <section>
+      <a-button type="primary" @click="openMessage"
+        >Open the message box (update by key)</a-button
+      >
+    </section>
   </main>
 </template>
 
 <script setup>
-import axios from "../server/axios"
 const open = ref(false);
 const price = ref();
 const description = ref();
+const options = ref([]);
 
 const create = reactive({
   name: "",
   description: "",
   price: "",
   color: "red",
-  category_id: "97fcd808-b2be-4d7a-ab9d-eaf176b61222",
-  salesman_id: "14cd91d4-dcb1-4e2d-b499-da98f6736436",
-  // quintity: "",
+  category_id: "Kategoriyani tanlang",
+  salesman_id: "edebf571-6852-4e53-ad41-7c70067328bf",
+  quantity: "",
 });
-
-const options = ref([
-  {
-    value: "jack",
-    label: "Jack",
-  },
-  {
-    value: "lucy",
-    label: "Lucy",
-  },
-  {
-    value: "tom",
-    label: "Tom",
-  },
-]);
 
 const handleChange = (value) => {
   console.log(`selected ${value}`);
@@ -250,19 +242,67 @@ const filterOption = (input, option) => {
   return option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0;
 };
 
-const handleSubmit = () => {
-  console.log(create);
-  axios
-    .post("product", create)
+function getCategory() {
+  fetch("https://florify-market.onrender.com/api/category", {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  })
+    .then((res) => res.json())
     .then((res) => {
-      console.log(create);
-      console.log(res, 'res');
+      if (
+        res.message == "Token vaqti tugagan!" ||
+        res.message == "Token topilmadi!"
+      ) {
+        router.push("/login");
+      }
+      console.log(res, "category");
+      for (let i of res) {
+        options.value.push({
+          value: i.name,
+          label: i.name,
+        });
+      }
     })
-    .catch((error) => {
-      console.log(create, "error");
-      console.log(error);
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
+const handleSubmit = () => {
+  const token = localStorage.getItem("token");
+  console.log(token);
+  console.log(create);
+
+  fetch("https://florify-market.onrender.com/api/product", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(create),
+  })
+    .then((res) => res.json())
+    .then((res) => {
+      if (
+        res.message == "Token vaqti tugagan!" ||
+        res.message == "Token topilmadi!"
+      ) {
+        router.push("/login");
+      }
+      console.log(res);
+    })
+    .catch((err) => {
+      console.log(err);
     });
 };
+
+onBeforeMount(() => {
+  getCategory();
+});
 </script>
 
 <style lang="scss" scoped>

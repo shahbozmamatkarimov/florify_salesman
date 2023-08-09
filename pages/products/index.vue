@@ -115,12 +115,25 @@
       <section
         class="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 grid-cols-2 gap-5"
       >
-        <div v-for="i in 8" :key="i" class="max-w-sm bg-white rounded-lg">
+        <div
+          v-for="i in store.products"
+          :key="i.id"
+          class="max-w-sm bg-white rounded-lg"
+        >
+
           <img
+            v-if="!i.img?.length"
+            @click="open = true"
+            class="rounded-t-lg cursor-pointer border w-full h-[166px] object-cover"
+            src="https://redthread.uoregon.edu/files/original/affd16fd5264cab9197da4cd1a996f820e601ee4.png"
+            alt="img"
+          />
+          <img
+            v-if="i.img?.length"
             @click="open = true"
             class="rounded-t-lg cursor-pointer w-full h-[166px] object-cover"
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5cIDWfMyU-Sl4TFYFABztCniCx0EpkKBkUWO3MhRKqS8vTmWNidp8y3-FNM30Ltg8nws&usqp=CAU"
-            alt=""
+            :src="i.img[0]"
+            alt="img"
           />
           <div class="p-5">
             <div class="flex justify-between items-center">
@@ -143,8 +156,12 @@
                 <li>Sotilgan</li>
                 <li>Qaytarilgan</li>
                 <li>Nuqson</li>
-                <li class="text-lg font-semibold text-[#242424]">Фрида Кало</li>
-                <li class="text-[#000000]">700 000 so‘m dan</li>
+                <li class="text-lg font-semibold text-[#242424]">
+                  {{ i.name }}
+                </li>
+                <li class="text-[#000000]">
+                  <span>{{ i.price }}</span> so‘m dan
+                </li>
               </ul>
               <ul class="mb-3 text-end text-[#000000] dark:text-gray-400">
                 <li>#55213</li>
@@ -261,6 +278,12 @@
 </template>
 
 <script setup>
+const router = useRouter();
+
+const store = reactive({
+  products: "",
+});
+
 const category = [
   "Hammasi",
   "Sotilganlar",
@@ -269,8 +292,36 @@ const category = [
   "Bloklanganlar",
 ];
 
+async function getProducts(token) {
+  fetch("https://florify-market.onrender.com/api/product", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((res) => res.json())
+    .then((res) => {
+      if (
+        res.message == "Token vaqti tugagan!" ||
+        res.message == "Token topilmadi!"
+      ) {
+        router.push("/login");
+      }
+      console.log(res);
+      store.products = res;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
 const open = ref(false);
 const step = ref(0);
+onMounted(async () => {
+  const token = localStorage.getItem("token");
+  getProducts(token);
+});
 </script>
 
 <style lang="scss" scoped></style>
