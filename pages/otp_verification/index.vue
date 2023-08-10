@@ -5,102 +5,125 @@
         class="flex bg-[#80808099] text-white flex-col items-center justify-center sm:w-[30rem] py-5 px-4 rounded-xl shadow-lg border"
       >
         <h1 class="h-10 text-2xl">Kodni kiriting</h1>
-        <p>Biz <span>{{ otpStore?.state?.phone.slice(0,4) }}</span> <span>{{otpStore?.state.phone.slice(4,6)}}</span>***<span>{{ otpStore?.state.phone.slice(9,19) }}</span> telefon raqamingizga kod yubordik</p>
+        <p>
+          Biz <span>{{ phoneOtp?.slice(0, 9) }}</span> * * *
+          <span>{{ phoneOtp?.slice(13, 19) }}</span> telefon raqamingizga kod
+          yubordik
+        </p>
         <div class="otp-field py-5">
-          <input type="text" maxlength="1" />
+          <input type="text" maxlength="1" autofocus />
           <input type="text" maxlength="1" />
           <input class="space" type="text" maxlength="1" />
           <input type="text" maxlength="1" />
           <input type="text" maxlength="1" />
           <input type="text" maxlength="1" />
         </div>
-        <p @click="$router.push('/check_phone')" class="cursor-pointer text-blue-600 hover:underline">Telefon raqamini qaytadan kiritish</p>
+        <p
+          @click="$router.push('/checking_phone')"
+          class="cursor-pointer text-blue-600 hover:underline"
+        >
+          Telefon raqamini qaytadan kiritish
+        </p>
       </div>
     </section>
   </main>
 </template>
 
 <script setup>
-// import { onBeforeMount, onMounted } from "vue";
-// import { useNotificationStore } from "../../stores/notification";
-// import { useOtpStore } from "../../stores/otp";
-// import { useRouter } from "vue-router";
+import { useRouter } from "vue-router";
+const router = useRouter();
 
-// const notification = useNotificationStore();
-// const otpStore = useOtpStore();
-// const router = useRouter();
+const phoneOtp = ref();
 
-// onMounted(() => {
-//   const inputs = document.querySelectorAll(".otp-field input");
+definePageMeta({
+  layout: "false",
+});
 
-//   inputs.forEach((input, index) => {
-//     input.dataset.index = index;
-//     input.addEventListener("keyup", handleOtp);
-//     input.addEventListener("paste", handleOnPasteOtp);
-//   });
+onMounted(() => {
+  const inputs = document.querySelectorAll(".otp-field input");
 
-//   function handleOtp(e) {
-//     /**
-//      * <input type="text" 👉 maxlength="1" />
-//      * 👉 NOTE: On mobile devices `maxlength` property isn't supported,
-//      * So we to write our own logic to make it work. 🙂
-//      */
-//     const input = e.target;
-//     let value = input.value;
-//     let isValidInput = value.match(/[0-9a-z]/gi);
-//     input.value = "";
-//     input.value = isValidInput ? value[0] : "";
+  inputs.forEach((input, index) => {
+    input.dataset.index = index;
+    input.addEventListener("keyup", handleOtp);
+    input.addEventListener("paste", handleOnPasteOtp);
+  });
 
-//     let fieldIndex = input.dataset.index;
-//     if (fieldIndex < inputs.length - 1 && isValidInput) {
-//       input.nextElementSibling.focus();
-//     }
+  function handleOtp(e) {
+    const input = e.target;
+    let value = input.value;
+    let isValidInput = value.match(/[0-9a-z]/gi);
+    input.value = "";
+    input.value = isValidInput ? value[0] : "";
 
-//     if (e.key === "Backspace" && fieldIndex > 0) {
-//       input.previousElementSibling.focus();
-//     }
+    let fieldIndex = input.dataset.index;
+    if (fieldIndex < inputs.length - 1 && isValidInput) {
+      input.nextElementSibling.focus();
+    }
 
-//     if (fieldIndex == inputs.length - 1 && isValidInput) {
-//       submit();
-//     }
-//   }
+    if (e.key === "Backspace" && fieldIndex > 0) {
+      input.previousElementSibling.focus();
+    }
 
-//   function handleOnPasteOtp(e) {
-//     const data = e.clipboardData.getData("text");
-//     const value = data.split("");
-//     if (value.length === inputs.length) {
-//       inputs.forEach((input, index) => (input.value = value[index]));
-//       submit();
-//     }
-//   }
+    if (fieldIndex == inputs.length - 1 && isValidInput) {
+      submit();
+    }
+  }
 
-//   function submit() {
-//     // 👇 Entered OTP
-//     let otp = "";
-//     inputs.forEach((input) => {
-//       otp += input.value;
-//       input.disabled = true;
-//       input.classList.add("disabled");
-//     });
-//     if (otp == otpStore.state.otp) {
-//       otpStore.state.is_true = true;
-//       router.push("/register");
-//     } else {
-//       notification.warning("Kod mos kelmadi, iltimos qayta urinib ko'ring");
-//       inputs.forEach((input) => {
-//         input.value = "";
-//         input.disabled = false;
-//         input.classList.remove("disabled");
-//       });
-//     }
-//   }
-// });
+  function handleOnPasteOtp(e) {
+    const data = e.clipboardData.getData("text");
+    const value = data.split("");
+    if (value.length === inputs.length) {
+      inputs.forEach((input, index) => (input.value = value[index]));
+      submit();
+    }
+  }
 
-// onBeforeMount(() => {
-//   if (otpStore.state.phone == "") {
-//     router.push("/check_phone");
-//   }
-// });
+  function submit() {
+    // 👇 Entered OTP
+    let otp = "";
+    inputs.forEach((input) => {
+      otp += input.value;
+      input.disabled = true;
+      input.classList.add("disabled");
+    });
+    console.log(phoneOtp.value);
+    fetch("https://florify-market.onrender.com/api/salesman/verifyOtp", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ phone: phoneOtp.value, code: otp }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res, "res");
+        if (res.message === "Telefon raqamda xatolik!") {
+          localStorage.setItem("phone", "");
+          router.push("/checking_phone");
+        } else if (res.message === "Parol tasdiqlandi") {
+          router.push("/new_password");
+        } else {
+          notification.warning("Kod mos kelmadi, iltimos qayta urinib ko'ring");
+          inputs.forEach((input) => {
+            input.value = "";
+            input.disabled = false;
+            input.classList.remove("disabled");
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+});
+
+onBeforeMount(() => {
+  phoneOtp.value = localStorage.getItem("phone");
+  if (!phoneOtp.value) {
+    router.push("/checking_phone");
+  }
+});
 </script>
 
 <style lang="scss" scoped>

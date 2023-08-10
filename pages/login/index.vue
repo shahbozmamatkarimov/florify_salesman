@@ -29,7 +29,7 @@
         <a-space direction="vertical">
           <a-input
             bordered="false"
-            class="font-medium input w-full focus:border-0 border-0 focus:outline-0 outline-0 focus:ring-0 ring-0  placeholder-[#555555] -ml-3"
+            class="font-medium input w-full focus:border-0 border-0 focus:outline-0 outline-0 focus:ring-0 ring-0 placeholder-[#555555] -ml-3"
             v-model:value="form.password"
             minlength="13"
             maxlength="13"
@@ -45,7 +45,11 @@
         >
           Davom etish
         </button>
-        <button type="button" @click="$router.push('/checking_phone')" class="text-[#6188FF] text-center">
+        <button
+          type="button"
+          @click="$router.push('/checking_phone')"
+          class="text-[#6188FF] text-center"
+        >
           Parolni unutdingizmi?
         </button>
       </form>
@@ -54,6 +58,8 @@
 </template>
 
 <script setup>
+import { useNotification } from "../../composables/notification";
+const { showLoading, showSuccess, showError } = useNotification();
 const router = useRouter();
 definePageMeta({
   layout: "none",
@@ -65,7 +71,7 @@ const form = reactive({
 });
 
 const handleSubmit = () => {
-  console.log(form.username);
+  showLoading("So'rov tekshirilmoqda...");
   const data = {
     username: form.username,
     password: form.password,
@@ -82,7 +88,13 @@ const handleSubmit = () => {
     .then((res) => {
       console.log(res);
       localStorage.setItem("token", res.access_token);
+      if (res.message === "Parol mos kelmadi!") {
+        showError("Telefon raqami topilmadi!");
+        return;
+      }
+
       router.push("/");
+      showSuccess("Tizimga muvaffaqiyatli kirildi!");
     })
     .catch((err) => {
       console.log(err);
@@ -90,5 +102,4 @@ const handleSubmit = () => {
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

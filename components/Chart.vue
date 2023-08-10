@@ -34,7 +34,7 @@
             />
           </div>
         </div>
-        <div class="flex py-6 gap-5">
+        <div class="flex items-end py-6 gap-5">
           <ul class="space-y-6 px-2 sticky -left-5 bg-white z-30">
             <li>200</li>
             <li>150</li>
@@ -43,7 +43,7 @@
             <li>0</li>
           </ul>
           <div>
-            <ul class="flex gap-6">
+            <ul class="flex items-end gap-6">
               <li
                 v-for="(i, index) in data[0].May"
                 :key="index"
@@ -55,7 +55,7 @@
                   >
                     <div class="popover__content flex flex-col items-center">
                       <p class="text-[#45D469] text-xs whitespace-nowrap">
-                        {{ i.order }}+ buyurtma
+                        {{ i.order }} + buyurtma
                       </p>
                       <p
                         class="font-bold text-sm text-[#242424] whitespace-nowrap"
@@ -128,7 +128,7 @@ const options = [
   },
 ];
 
-const data = [
+const data = ref([
   {
     May: [
       { order: 100, sum: "34.568.150" },
@@ -163,7 +163,7 @@ const data = [
       { order: 20, sum: "4.568.150" },
     ],
   },
-];
+]);
 </script>
 
 <style lang="scss" scoped>

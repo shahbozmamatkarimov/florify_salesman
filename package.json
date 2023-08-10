@@ -28,6 +28,7 @@
     "jsonwebtoken": "^9.0.1",
     "perfect-scrollbar": "^1.5.5",
     "primevue": "^3.31.0",
-    "sass": "^1.64.2"
+    "sass": "^1.64.2",
+    "vuex": "^4.1.0"
   }
 }

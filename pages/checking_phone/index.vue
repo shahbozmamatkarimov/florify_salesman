@@ -1,39 +1,44 @@
 <template>
-  <main>
-    <section>
+  <main class="min-h-screen bg-white grid grid-cols-2">
+    <section class="overflow-hidden p-10 h-screen">
+      <img
+        class="w-full h-full object-cover rounded-l-2xl"
+        src="../../assets/svg/login.svg"
+        alt="img"
+      />
+    </section>
+    <section
+      class="flex flex-col w-full items-center min-h-screen justify-center px-6 py-8 mx-auto"
+    >
       <div
-        class="flex flex-col items-center min-h-screen justify-center px-6 py-8 mx-auto"
+        class="w-full shadow-md shadow-white backdrop-blur-sm rounded-lg md:mt-0 max-w-sm xl:p-0"
       >
-        <div
-          class="w-full bg-[#80808099] border shadow-md shadow-white backdrop-blur-sm rounded-lg md:mt-0 max-w-sm xl:p-0"
-        >
-          <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <form @submit.prevent="sendPhone" class="space-y-4 md:space-y-6">
-              <div>
-                <label
-                  for="tel"
-                  class="block mb-2 text-sm font-medium text-white"
-                  >Telefon raqam</label
-                >
-                <input
-                  v-model="phone"
-                  autofocus
-                  id="tel"
-                  type="text"
-                  class="bg-gray-50 border border-gray-300 text-black sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
-                  autocomplete="tel"
-                  placeholder="+998 (__) ___-__-__"
-                  required
-                />
-              </div>
-              <button
-                type="submit"
-                class="w-full text-white bg-blue-600 hover:bg-blue-700 focus:outline-none font-medium rounded-lg text-sm px-5 py-3 text-center"
-              >
-                Kodni jo'natish
-              </button>
-            </form>
-          </div>
+        <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+          <form @submit.prevent="sendPhone" class="space-y-6 md:space-y-10">
+            <label for="tel" class="block mb-2 text-lg font-medium"
+              >Telefon raqam</label
+            >
+            <div>
+              <input
+                v-model="phone"
+                autofocus
+                id="tel"
+                type="text"
+                bordered="false"
+                class="font-medium input w-full focus:border-0 border-0 -pl-3 focus:outline-0 outline-0 focus:ring-0 ring-0 placeholder-[#555555]"
+                autocomplete="tel"
+                placeholder="+998 (__) ___-__-__"
+                required
+              />
+              <hr />
+            </div>
+            <button
+              type="submit"
+              class="text-white w-full bg-[#5C0099] border border-[#5C0099] active:bg-white active:text-[#5C0099] h-12 rounded-xl"
+            >
+              Kodni jo'natish
+            </button>
+          </form>
         </div>
       </div>
     </section>
@@ -41,10 +46,6 @@
 </template>
 
 <script setup>
-import { useOtpStore } from "../../composables/otp";
-
-const otp = useOtpStore;
-
 definePageMeta({
   layout: "false",
 });
@@ -57,28 +58,23 @@ const sendPhone = () => {
   const phone_number = document.querySelector("#tel").value;
   console.log(phone_number.length);
   if (phone_number.length == 19) {
-    console.log('object');
-    console.log(otp.state);
-    console.log(phone.value);
-    otp.state.phone = phone.value;
-    console.log(otp.state.phone);
-    // fetch("https://florify-market.onrender.com/api/salesman/sendOtp", {
-    //   method: "POST",
-    //   headers: {
-    //     Accept: "application/json",
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({ phone: phone.value }),
-    // })
-    //   .then((res) => {
-    //     console.log(res);
-    //     otp.state.phone = phone.value;
-    //     router.push("/otp_verification");
-    //   })
-    //   .catch((error) => {
-    //     notification.warning(error);
-    //     console.log(error);
-    //   });
+    fetch("https://florify-market.onrender.com/api/salesman/sendOtp", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ phone: phone.value }),
+    })
+      .then((res) => {
+        console.log(res);
+        localStorage.setItem("phone", phone.value);
+        router.push("/otp_verification");
+      })
+      .catch((error) => {
+        notification.warning(error);
+        console.log(error);
+      });
   } else {
     notification.warning("Iltimos, telefon raqamini to'liq kiriting!");
   }
@@ -102,7 +98,7 @@ onMounted(() => {
       i = newValue.indexOf("_");
       if (i != -1) {
         i < 5 && (i = 3);
-        newValue = newValue.slice(0, i);
+        newValue = newValue?.slice(0, i);
       }
       let reg = matrix
         .substr(0, this.value.length)

@@ -276,13 +276,6 @@
         </div>
       </div>
     </section>
-
-    <!-- notification -->
-    <section>
-      <a-button type="primary" @click="openMessage"
-        >Open the message box (update by key)</a-button
-      >
-    </section>
   </main>
 </template>
 
