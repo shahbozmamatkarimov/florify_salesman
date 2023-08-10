@@ -176,7 +176,80 @@
                 </div>
               </div>
               <div class="pt-6 w-full">
-                <Upload />
+                <h1 class="text-lg">
+                  Mahsulot galeriyasi <i class="text-[#FF6161]">*</i>
+                </h1>
+                <label
+                  for="imageMain"
+                  class="flex flex-col mt-6 gap-3 text-center justify-center items-center w-[400px] h-[360px] bg-white border rounded-xl border-dashed border-[#F9F9F9]"
+                >
+                  <img
+                    class="scale-150"
+                    src="../assets/svg/upload.svg"
+                    alt="img"
+                  />
+                  <p class="w-[210px]">Rasmni shu yerga qo‘ying yoki yuklang</p>
+                  <p class="text-sm font-medium">(Jpeg, png ruxsat berilgan)</p>
+                </label>
+                <input
+                  class="w-0 h-0 overflow-hidden"
+                  type="file"
+                  id="imageMain"
+                  required
+                />
+                <label
+                  for="image1"
+                  class="flex px-2 items-center justify-around h-[80px] w-[400px] bg-white rounded-xl"
+                >
+                  <img
+                    class="scale-150"
+                    src="../assets/svg/upload.svg"
+                    alt="img"
+                  />
+                  <div class="text-[15px]">
+                    R<span class="lowercase"
+                      >asmni shu yerga qo‘ying yoki ko‘rib chiqing</span
+                    >
+                    <p>
+                      (J<span class="lowercase">peg, png ruxsat berilgan)</span>
+                    </p>
+                  </div>
+                </label>
+                <input
+                  class="w-0 h-0 overflow-hidden"
+                  type="file"
+                  id="image1"
+                  required
+                />
+
+                <label
+                  for="image1"
+                  class="flex px-2 items-center justify-around h-[80px] w-[400px] bg-white rounded-xl"
+                >
+                  <img
+                    class="scale-150"
+                    src="../assets/svg/upload.svg"
+                    alt="img"
+                  />
+                  <div class="text-[15px]">
+                    R<span class="lowercase"
+                      >asmni shu yerga qo‘ying yoki ko‘rib chiqing</span
+                    >
+                    <p>
+                      (J<span class="lowercase">peg, png ruxsat berilgan)</span>
+                    </p>
+                  </div>
+                </label>
+                <input
+                  class="w-0 h-0 overflow-hidden"
+                  type="file"
+                  id="image1"
+                  required
+                />
+
+                <button type="button" class="mt-6 h-[50px] w-[400px] bg-white rounded-xl">
+                  Rasm qo‘shish
+                </button>
               </div>
             </div>
             <!-- Modal footer -->
@@ -229,15 +302,6 @@ const create = reactive({
   quantity: "",
 });
 
-const handleChange = (value) => {
-  console.log(`selected ${value}`);
-};
-const handleBlur = () => {
-  console.log("blur");
-};
-const handleFocus = () => {
-  console.log("focus");
-};
 const filterOption = (input, option) => {
   return option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0;
 };
@@ -310,5 +374,18 @@ label {
   cursor: pointer;
   text-transform: uppercase;
   font-size: 18px;
+}
+
+// upload image
+
+/* you can make up upload button and sample style by using stylesheets */
+.ant-upload-select-picture-card i {
+  font-size: 32px;
+  color: #999;
+}
+
+.ant-upload-select-picture-card .ant-upload-text {
+  margin-top: 8px;
+  color: #666;
 }
 </style>

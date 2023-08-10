@@ -16,20 +16,20 @@
         <a-space direction="vertical">
           <a-input
             type="text"
-            :bordered="false"
+            bordered="false"
             autofocus
-            class="font-medium placeholder-[#555555] -ml-3"
+            class="font-medium input w-full focus:border-0 border-0 focus:outline-0 outline-0 focus:ring-0 ring-0 placeholder-[#555555] -ml-3"
             v-model:value="form.username"
             autocomplete="username"
-            placeholder="Parolni kiriting"
+            placeholder="Loginni kiriting"
             required
           />
           <hr />
         </a-space>
         <a-space direction="vertical">
           <a-input
-            :bordered="false"
-            class="font-medium placeholder-[#555555] -ml-3"
+            bordered="false"
+            class="font-medium input w-full focus:border-0 border-0 focus:outline-0 outline-0 focus:ring-0 ring-0  placeholder-[#555555] -ml-3"
             v-model:value="form.password"
             minlength="13"
             maxlength="13"
@@ -45,7 +45,7 @@
         >
           Davom etish
         </button>
-        <button class="text-[#6188FF] text-center">
+        <button type="button" @click="$router.push('/checking_phone')" class="text-[#6188FF] text-center">
           Parolni unutdingizmi?
         </button>
       </form>
@@ -54,7 +54,6 @@
 </template>
 
 <script setup>
-import axios from "../../server/axios.js";
 const router = useRouter();
 definePageMeta({
   layout: "none",
@@ -82,8 +81,8 @@ const handleSubmit = () => {
     .then((res) => res.json())
     .then((res) => {
       console.log(res);
-      localStorage.setItem('token', res.access_token);
-      router.push('/')
+      localStorage.setItem("token", res.access_token);
+      router.push("/");
     })
     .catch((err) => {
       console.log(err);
@@ -91,4 +90,5 @@ const handleSubmit = () => {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+</style>
