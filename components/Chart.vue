@@ -35,7 +35,7 @@
           </div>
         </div>
         <div class="flex items-end py-6 gap-5">
-          <ul class="space-y-6 px-2 sticky -left-5 bg-white z-30">
+          <ul class="space-y-5 -mb-1  px-3 sticky -left-5 bg-white z-30">
             <li>200</li>
             <li>150</li>
             <li>100</li>
@@ -45,13 +45,13 @@
           <div>
             <ul class="flex items-end gap-6">
               <li
-                v-for="(i, index) in data[0].May"
+                v-for="(i, index) in data?.May"
                 :key="index"
                 class="flex relative flex-col -top-3 items-center gap-5 justify-end"
               >
                 <div>
                   <div
-                    class="popover__wrapper flex flex-col items-center mx-[0.8px]"
+                    class="popover__wrapper flex flex-col items-center justify-end mx-[0.8px]"
                   >
                     <div class="popover__content flex flex-col items-center">
                       <p class="text-[#45D469] text-xs whitespace-nowrap">
@@ -63,11 +63,13 @@
                         {{ i.sum }} so‘m
                       </p>
                     </div>
-                    <textarea
-                      class="bg-[#5C0099] mx-auto rounded-lg w-4 -mt-10 pointer-events-none block border-none resize-none"
-                      :rows="i.order > 25 ? `${i.order / 25}px` : '1px'"
-                      disabled
-                    ></textarea>
+                    <div class="flex items-end h-full" id="chartId">
+                      <textarea
+                        class="bg-[#5C0099] mx-auto rounded-lg w-4 -mt-10 pointer-events-none block border-none resize-none"
+                        :class="`h-[${i.order}px]`"
+                        disabled
+                      ></textarea>
+                    </div>
                     <p class="pt-5 whitespace-nowrap">
                       <span v-if="index < 9">0</span>{{ index + 1 }} May
                     </p>
@@ -128,8 +130,10 @@ const options = [
   },
 ];
 
-const data = ref([
-  {
+const data = ref([]);
+
+onMounted(() => {
+  data.value = {
     May: [
       { order: 100, sum: "34.568.150" },
       { order: 150, sum: "25.508.120" },
@@ -162,8 +166,18 @@ const data = ref([
       { order: 127, sum: "24.020.150" },
       { order: 20, sum: "4.568.150" },
     ],
-  },
-]);
+  };
+
+  // const chartId = document.querySelector("#chartId");
+  // for (let i of data.value.May) {
+  //   const textarea = document.createElement("textarea");
+  //   textarea.className =
+  //     "bg-[#5C0099] mx-auto rounded-lg w-4 -mt-10 pointer-events-none block border-none resize-none";
+  //   textarea.rows = `${i.order > 25 ? `${i.order / 25}px` : "1px"}`;
+  //   textarea.disabled = true;
+  //   chartId.append(textarea);
+  // }
+});
 </script>
 
 <style lang="scss" scoped>
