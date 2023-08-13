@@ -1,10 +1,10 @@
-import { defineNuxtRouteMiddleware } from "#app";
-import { useAuthStore } from "~~/stores/AuthStore";
+// import { defineNuxtRouteMiddleware } from "#app";
+// import { useAuthStore } from "~~/stores/AuthStore";
 
-export default defineNuxtRouteMiddleware(async (to) => {
-    const authStore = useAuthStore();
-
-    if (authStore.checkIsAuthenticated()) {
-        return '/'
-    }
-})
+export default defineNuxtRouteMiddleware(async () => {
+  //   const authStore = useAuthStore();
+  //   if (authStore.checkIsAuthenticated()) {
+  // eslint-disable-next-line prettier/prettier
+    //     return "/";
+  //   }
+});
