@@ -1,3 +1,4 @@
+
 <template>
   <main>
     <Navbar>Dashboard</Navbar>
@@ -285,10 +286,10 @@
         </div>
     </section> -->
     <div class="px-10 pb-20 overflow-hidden overflow-y-auto max-h-[82vh]">
-      <section>
+      <section class="-mt-8 -mb-40">
         <Chart />
       </section>
-      <section class="-mt-[12rem] bg-white p-5 rounded-xl">
+      <section class="bg-white p-5 rounded-xl">
         <h1 class="text-2xl font-medium">Buyurtmalar</h1>
 
         <div class="relative overflow-x-auto sm:rounded-lg">
@@ -314,8 +315,8 @@
                 </svg>
               </div>
               <input
-                type="text"
                 id="table-search-users"
+                type="text"
                 class="block p-2 pl-10 text-sm border-0 focus:ring-0 border-gray-300 rounded-lg w-80 bg-[#F4F4F6]"
                 placeholder="Qidirish..."
               />
@@ -334,7 +335,9 @@
           </div>
           <hr class="py-3" />
           <table class="w-full text-sm text-left">
-            <thead class="bg-[#F4F4F6] rounded-xl overflow-hidden font-semibold">
+            <thead
+              class="bg-[#F4F4F6] rounded-xl overflow-hidden font-semibold"
+            >
               <tr>
                 <th scope="col" class="p-4">
                   <div class="flex items-center">
@@ -379,14 +382,14 @@
                 </td>
                 <td class="px-6 py-4 font-medium">
                   <button
-                    class="bg-[#0881780D] px-3 py-1.5 rounded-md text-[#088178]"
                     v-if="i.status === 'To\'langan'"
+                    class="bg-[#0881780D] px-3 py-1.5 rounded-md text-[#088178]"
                   >
                     {{ i.status }}
                   </button>
                   <button
-                    class="bg-[#FCF1DF] px-3 py-1.5 rounded-md text-[#F2B855]"
                     v-else
+                    class="bg-[#FCF1DF] px-3 py-1.5 rounded-md text-[#F2B855]"
                   >
                     {{ i.status }}
                   </button>
@@ -517,9 +520,9 @@
                         >First Name</label
                       >
                       <input
+                        id="first-name"
                         type="text"
                         name="first-name"
-                        id="first-name"
                         class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Bonnie"
                         required=""
@@ -532,9 +535,9 @@
                         >Last Name</label
                       >
                       <input
+                        id="last-name"
                         type="text"
                         name="last-name"
-                        id="last-name"
                         class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Green"
                         required=""
@@ -547,9 +550,9 @@
                         >Email</label
                       >
                       <input
+                        id="email"
                         type="email"
                         name="email"
-                        id="email"
                         class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="example@company.com"
                         required=""
@@ -562,9 +565,9 @@
                         >Phone Number</label
                       >
                       <input
+                        id="phone-number"
                         type="number"
                         name="phone-number"
-                        id="phone-number"
                         class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="e.g. +(12)3456 789"
                         required=""
@@ -577,9 +580,9 @@
                         >Department</label
                       >
                       <input
+                        id="department"
                         type="text"
                         name="department"
-                        id="department"
                         class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Development"
                         required=""
@@ -592,9 +595,9 @@
                         >Company</label
                       >
                       <input
+                        id="company"
                         type="number"
                         name="company"
-                        id="company"
                         class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="123456"
                         required=""
@@ -607,9 +610,9 @@
                         >Current Password</label
                       >
                       <input
+                        id="current-password"
                         type="password"
                         name="current-password"
-                        id="current-password"
                         class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="••••••••"
                         required=""
@@ -622,9 +625,9 @@
                         >New Password</label
                       >
                       <input
+                        id="new-password"
                         type="password"
                         name="new-password"
-                        id="new-password"
                         class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="••••••••"
                         required=""

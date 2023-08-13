@@ -1,3 +1,4 @@
+
 <template>
   <main>
     <Navbar>Mahsulotlar</Navbar>
@@ -5,11 +6,11 @@
       <section>
         <ul class="flex gap-10 border-b-2 py-5 text-[#555555] -mt-2">
           <li
+          v-for="(i, index) in category"
+          :key="i"
+          :class="{ 'text-[#5C0099]': step == index }"
+          class="leading-3 cursor-pointer duration-1000 pt-2 border-b-2 border-transparent font-bold"
             @click="step = index"
-            :class="{ 'text-[#5C0099]': step == index }"
-            class="leading-3 cursor-pointer duration-1000 pt-2 border-b-2 border-transparent font-bold"
-            v-for="(i, index) in category"
-            :key="i"
           >
             {{ i }}
             <span
@@ -123,17 +124,17 @@
 
           <img
             v-if="!i.img?.length"
-            @click="open = true"
+            alt="img"
             class="rounded-t-lg cursor-pointer border w-full h-[166px] object-cover"
             src="https://redthread.uoregon.edu/files/original/affd16fd5264cab9197da4cd1a996f820e601ee4.png"
-            alt="img"
+            @click="open = true"
           />
           <img
             v-if="i.img?.length"
-            @click="open = true"
             class="rounded-t-lg cursor-pointer w-full h-[166px] object-cover"
             :src="i.img[0]"
             alt="img"
+            @click="open = true"
           />
           <div class="p-5">
             <div class="flex justify-between items-center">
@@ -210,10 +211,10 @@
                   </ul>
                 </div>
                 <button
-                  @click="open = false"
-                  type="button"
-                  class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                  data-modal-hide="defaultModal"
+                type="button"
+                class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                data-modal-hide="defaultModal"
+                @click="open = false"
                 >
                   <i class="bx bx-x text-2xl font-bold"></i>
                 </button>
@@ -292,7 +293,7 @@ const category = [
   "Bloklanganlar",
 ];
 
-async function getProducts(token) {
+function getProducts(token) {
   fetch("https://florify-market.onrender.com/api/product", {
     method: "GET",
     headers: {
@@ -303,8 +304,8 @@ async function getProducts(token) {
     .then((res) => res.json())
     .then((res) => {
       if (
-        res.message == "Token vaqti tugagan!" ||
-        res.message == "Token topilmadi!"
+        res.message === "Token vaqti tugagan!" ||
+        res.message === "Token topilmadi!"
       ) {
         router.push("/login");
       }
@@ -318,7 +319,7 @@ async function getProducts(token) {
 
 const open = ref(false);
 const step = ref(0);
-onMounted(async () => {
+onMounted(() => {
   const token = localStorage.getItem("token");
   getProducts(token);
 });

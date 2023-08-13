@@ -15,11 +15,11 @@
         <h1 class="font-bold text-3xl">Hisobga kirish</h1>
         <a-space direction="vertical">
           <a-input
+          v-model:value="form.username"
             type="text"
             bordered="false"
             autofocus
             class="font-medium input w-full focus:border-0 border-0 focus:outline-0 outline-0 focus:ring-0 ring-0 placeholder-[#555555] -ml-3"
-            v-model:value="form.username"
             autocomplete="username"
             placeholder="Loginni kiriting"
             required
@@ -28,9 +28,9 @@
         </a-space>
         <a-space direction="vertical">
           <a-input
+          v-model:value="form.password"
             bordered="false"
             class="font-medium input w-full focus:border-0 border-0 focus:outline-0 outline-0 focus:ring-0 ring-0 placeholder-[#555555] -ml-3"
-            v-model:value="form.password"
             minlength="13"
             maxlength="13"
             autocomplete="tel"
@@ -47,8 +47,8 @@
         </button>
         <button
           type="button"
-          @click="$router.push('/checking_phone')"
           class="text-[#6188FF] text-center"
+          @click="$router.push('/checking_phone')"
         >
           Parolni unutdingizmi?
         </button>
@@ -56,7 +56,6 @@
     </section>
   </main>
 </template>
-
 <script setup>
 import { useNotification } from "../../composables/notification";
 const { showLoading, showSuccess, showError } = useNotification();
@@ -101,5 +100,4 @@ const handleSubmit = () => {
     });
 };
 </script>
-
 <style lang="scss" scoped></style>

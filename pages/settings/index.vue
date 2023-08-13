@@ -1,3 +1,4 @@
+
 <template>
   <main>
     <NavbarTop>Sozlamalar</NavbarTop>
@@ -5,7 +6,7 @@
       <ul
         class="col-span-1 mb-20 text-gray-600 overflow-hidden rounded-xl overflow-y-auto max-h-[82vh] min-h-[82vh] shadow-md bg-white"
       >
-        <li @click="step = 1" class="px-10 py-3 flex gap-3 cursor-pointer">
+        <li class="px-10 py-3 flex gap-3 cursor-pointer" @click="step = 1">
           <div class="w-7 flex justify-center">
             <img
               v-if="step === 1"
@@ -17,7 +18,7 @@
           <p :class="{ 'text-[#5C0099]': step == 1 }">Chek</p>
         </li>
         <hr />
-        <li @click="step = 2" class="px-10 py-3 flex gap-3 cursor-pointer">
+        <li class="px-10 py-3 flex gap-3 cursor-pointer" @click="step = 2">
           <div class="w-7 flex justify-center">
             <img
               v-if="step === 2"
@@ -29,7 +30,7 @@
           <p :class="{ 'text-[#5C0099]': step == 2 }">Session</p>
         </li>
         <hr />
-        <li @click="step = 3" class="px-10 py-3 flex gap-3 cursor-pointer">
+        <li class="px-10 py-3 flex gap-3 cursor-pointer" @click="step = 3">
           <div class="w-7 flex justify-center">
             <img
               v-if="step === 3"
@@ -41,7 +42,7 @@
           <p :class="{ 'text-[#5C0099]': step == 3 }">Dastur tili</p>
         </li>
         <hr />
-        <li @click="step = 4" class="px-10 py-3 flex gap-3 cursor-pointer">
+        <li class="px-10 py-3 flex gap-3 cursor-pointer" @click="step = 4">
           <div class="w-7 flex justify-center">
             <img
               v-if="step === 4"
@@ -122,8 +123,8 @@
         <hr class="-mx-10" />
         <div class="flex items-center">
           <input
-            checked="true"
             id="default-radio-2"
+            checked="true"
             type="radio"
             value=""
             name="default-radio"

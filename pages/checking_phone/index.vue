@@ -14,15 +14,15 @@
         class="w-full shadow-md shadow-white backdrop-blur-sm rounded-lg md:mt-0 max-w-sm xl:p-0"
       >
         <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-          <form @submit.prevent="sendPhone" class="space-y-6 md:space-y-10">
+          <form class="space-y-6 md:space-y-10" @submit.prevent="sendPhone">
             <label for="tel" class="block mb-2 text-lg font-medium"
               >Telefon raqam</label
             >
             <div>
               <input
+                id="tel"
                 v-model="phone"
                 autofocus
-                id="tel"
                 type="text"
                 bordered="false"
                 class="font-medium input w-full focus:border-0 border-0 -pl-3 focus:outline-0 outline-0 focus:ring-0 ring-0 placeholder-[#555555]"
@@ -44,7 +44,6 @@
     </section>
   </main>
 </template>
-
 <script setup>
 definePageMeta({
   layout: "false",
@@ -55,9 +54,9 @@ const router = useRouter();
 
 // send otp --------------------
 const sendPhone = () => {
-  const phone_number = document.querySelector("#tel").value;
-  console.log(phone_number.length);
-  if (phone_number.length == 19) {
+  const phoneNumber = document.querySelector("#tel").value;
+  console.log(phoneNumber.length);
+  if (phoneNumber.length === 19) {
     fetch("https://florify-market.onrender.com/api/salesman/sendOtp", {
       method: "POST",
       headers: {
@@ -86,17 +85,17 @@ onMounted(() => {
     let keyCode;
     function mask(event) {
       event.keyCode && (keyCode = event.keyCode);
-      let pos = this.selectionStart;
+      const pos = this.selectionStart;
       if (pos < 3) event.preventDefault();
-      let matrix = "+998 (__) ___-__-__",
-        i = 0,
-        def = matrix.replace(/\D/g, ""),
-        val = this.value.replace(/\D/g, ""),
-        newValue = matrix.replace(/[_\d]/g, function (a) {
-          return i < val.length ? val.charAt(i++) || def.charAt(i) : a;
-        });
+      const matrix = "+998 (__) ___-__-__";
+      let i = 0;
+      const def = matrix.replace(/\D/g, "");
+      const val = this.value.replace(/\D/g, "");
+      newValue = matrix.replace(/[_\d]/g, function (a) {
+        return i < val.length ? val.charAt(i++) || def.charAt(i) : a;
+      });
       i = newValue.indexOf("_");
-      if (i != -1) {
+      if (i !== -1) {
         i < 5 && (i = 3);
         newValue = newValue?.slice(0, i);
       }
@@ -113,7 +112,7 @@ onMounted(() => {
         (keyCode > 47 && keyCode < 58)
       )
         this.value = newValue;
-      if (event.type == "blur" && this.value.length < 5) this.value = "";
+      if (event.type === "blur" && this.value.length < 5) this.value = "";
     }
 
     input.addEventListener("input", mask, false);
@@ -131,7 +130,6 @@ onMounted(() => {
   });
 });
 </script>
-
 <style lang="scss" scoped>
 // phone
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap");

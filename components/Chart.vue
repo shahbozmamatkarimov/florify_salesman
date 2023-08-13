@@ -1,11 +1,12 @@
+
 <template>
   <main class="min-h-screen pt-20">
     <section class="flex gap-10 items-center justify-between">
       <div
-        class="rounded-xl overflow-hidden overflow-x-auto w-full h-[25rem] px-5 pb-10 bg-[#FFFFFF]"
         id="main"
+        class="rounded-xl overflow-hidden overflow-x-auto w-full h-[25rem] px-5 pb-10 bg-[#FFFFFF]"
       >
-        <div class="flex justify-between sticky left-0 items-center gap-2 py-5">
+        <div class="flex justify-between sticky left-0 items-center gap-2 pt-5">
           <div class="flex gap-2 items-center">
             <img class="pt-1" src="../assets/svg/money.svg" alt="money" />
             <h1 class="font-medium text-3xl">122 552 250,80 so‘m</h1>
@@ -34,55 +35,22 @@
             />
           </div>
         </div>
-        <div class="flex items-end py-6 gap-5">
-          <ul class="space-y-5 -mb-1  px-3 sticky -left-5 bg-white z-30">
-            <li>200</li>
-            <li>150</li>
-            <li>100</li>
-            <li>50</li>
-            <li>0</li>
-          </ul>
-          <div>
-            <ul class="flex items-end gap-6">
-              <li
-                v-for="(i, index) in data?.May"
-                :key="index"
-                class="flex relative flex-col -top-3 items-center gap-5 justify-end"
-              >
-                <div>
-                  <div
-                    class="popover__wrapper flex flex-col items-center justify-end mx-[0.8px]"
-                  >
-                    <div class="popover__content flex flex-col items-center">
-                      <p class="text-[#45D469] text-xs whitespace-nowrap">
-                        {{ i.order }} + buyurtma
-                      </p>
-                      <p
-                        class="font-bold text-sm text-[#242424] whitespace-nowrap"
-                      >
-                        {{ i.sum }} so‘m
-                      </p>
-                    </div>
-                    <div class="flex items-end h-full" id="chartId">
-                      <textarea
-                        class="bg-[#5C0099] mx-auto rounded-lg w-4 -mt-10 pointer-events-none block border-none resize-none"
-                        :class="`h-[${i.order}px]`"
-                        disabled
-                      ></textarea>
-                    </div>
-                    <p class="pt-5 whitespace-nowrap">
-                      <span v-if="index < 9">0</span>{{ index + 1 }} May
-                    </p>
-                  </div>
+        <!-- chart -->
+        <div class="mt-4 row">
+          <div class="mt-4 col-md-6 mt-md-0">
+            <div class="card z-index-2">
+              <div class="card-body">
+                <div class="chart -ml-4">
+                  <GradientLineChart />
                 </div>
-              </li>
-            </ul>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
       <!-- chart 2 -->
-      <div class="w-[400px] px-10 h-96 bg-[#FFFFFF] py-5 rounded-xl" id="main">
+      <div id="main" class="w-[400px] px-10 bg-[#FFFFFF] py-8 rounded-xl">
         <h1 class="text-sm">Tashriflar soni</h1>
         <p class="font-medium text-3xl py-2">1.345.987</p>
         <div class="text-white font-medium py-5">
@@ -104,31 +72,14 @@
   </main>
 </template>
 
+
 <script setup>
-const value = ref("");
-const options = [
-  {
-    value: "Option1",
-    label: "Option1",
-  },
-  {
-    value: "Option2",
-    label: "Option2",
-    disabled: true,
-  },
-  {
-    value: "Option3",
-    label: "Option3",
-  },
-  {
-    value: "Option4",
-    label: "Option4",
-  },
-  {
-    value: "Option5",
-    label: "Option5",
-  },
-];
+// import GradientLineChart from "./GradientLineChart.vue";
+// import BarChart from "./BarChart.vue";
+definePageMeta({
+  layout: "default",
+  middleware: ["auth"],
+});
 
 const data = ref([]);
 
@@ -167,56 +118,15 @@ onMounted(() => {
       { order: 20, sum: "4.568.150" },
     ],
   };
-
-  // const chartId = document.querySelector("#chartId");
-  // for (let i of data.value.May) {
-  //   const textarea = document.createElement("textarea");
-  //   textarea.className =
-  //     "bg-[#5C0099] mx-auto rounded-lg w-4 -mt-10 pointer-events-none block border-none resize-none";
-  //   textarea.rows = `${i.order > 25 ? `${i.order / 25}px` : "1px"}`;
-  //   textarea.disabled = true;
-  //   chartId.append(textarea);
-  // }
 });
 </script>
 
-<style lang="scss" scoped>
-/* Popover styling */
-.popover__wrapper {
-  position: relative;
-  top: 60px;
-}
-.popover__content {
-  opacity: 0;
-  position: absolute;
-  top: -50px;
-  background-color: #e6e6e6;
-  box-shadow: 0 0px 1px 0 rgba(0, 0, 0, 0.26);
-  border-radius: 10px;
-  height: 60px;
-  width: 160px;
-  z-index: 99;
-}
-.popover__content:before {
-  position: absolute;
-  z-index: 99;
-  content: "";
-  right: calc(50% - 10px);
-  bottom: -10px;
-  border-style: solid;
-  border-width: 1px 10px 10px 10px;
-  border-color: transparent transparent #e6e6e6 transparent;
-  transition-duration: 0.3s;
-  transition-property: transform;
-  transform: rotate(180deg);
-}
-.popover__wrapper:hover .popover__content {
-  z-index: 99;
-  opacity: 1;
-  visibility: visible;
-  transform: translate(0, -60px);
-  transition: all 0.5s cubic-bezier(0.75, -0.02, 0.2, 0.97);
-}
 
-/* Popover styling */
+<style lang="scss" scoped>
+.scale-x-125 {
+  --tw-scale-x: 1.4;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y))
+    rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y))
+    scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
 </style>

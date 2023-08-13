@@ -1,7 +1,9 @@
 <template>
   <main>
     <NavbarTop>Sharhlar</NavbarTop>
-    <div class="flex gap-10 px-10 overflow-hidden overflow-y-auto mb-2 max-h-[90vh]">
+    <div
+      class="flex gap-10 px-10 overflow-hidden overflow-y-auto mb-2 max-h-[90vh]"
+    >
       <section class="w-full bg-white rounded-xl mb-2">
         <div class="mb-4">
           <ul
@@ -39,7 +41,9 @@
         </div>
         <div>
           <div class="bg-gray-50">
-            <div class="relative overflow-x-auto overflow-hidden overflow-y-auto max-h-[71vh] shadow-md rounded-b-xl">
+            <div
+              class="relative overflow-x-auto overflow-hidden overflow-y-auto max-h-[71vh] shadow-md rounded-b-xl"
+            >
               <table class="w-full text-sm text-left text-gray-500">
                 <thead>
                   <tr>
@@ -64,8 +68,8 @@
                     </th>
                     <td class="flex px-6 py-4">
                       <img
-                        v-for="i in 5"
-                        :key="i"
+                        v-for="img in 5"
+                        :key="img"
                         src="../../assets/svg/yellowstar.svg"
                         alt="star"
                       />
@@ -89,8 +93,8 @@
             </div>
           </div>
           <div
-            class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800"
             id="dashboard"
+            class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800"
             role="tabpanel"
             aria-labelledby="dashboard-tab"
           >
@@ -104,8 +108,8 @@
             </p>
           </div>
           <div
-            class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800"
             id="settings"
+            class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800"
             role="tabpanel"
             aria-labelledby="settings-tab"
           >
@@ -119,8 +123,8 @@
             </p>
           </div>
           <div
-            class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800"
             id="contacts"
+            class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800"
             role="tabpanel"
             aria-labelledby="contacts-tab"
           >
@@ -193,11 +197,11 @@
             <h1 class="text-[#6188FF] hidden">Sizning javobingiz</h1>
             <form>
               <a-textarea
-                class="placeholder-[#454545]"
                 v-model:value="comment"
+                class="placeholder-[#454545]"
                 :autoSize="{ minRows: 3, maxRows: 6 }"
-                placeholder="Javob yozish..."
                 showCount
+                placeholder="Javob yozish..."
                 :maxlength="250"
                 required
                 oninvalid="setCustomValidity('Iltimos, javobingizni kiriting!')"
@@ -217,7 +221,6 @@
     </div>
   </main>
 </template>
-
 <script setup>
 // layout
 // const  layout = "custom"
@@ -229,5 +232,4 @@ definePageMeta({
 
 const comment = ref("");
 </script>
-
 <style lang="scss" scoped></style>

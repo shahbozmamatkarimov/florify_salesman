@@ -1,3 +1,4 @@
+
 <template>
   <main>
     <NavbarTop>Profil</NavbarTop>
@@ -133,8 +134,6 @@
 definePageMeta({
   layout: "custom",
 });
-import { reactive, toRefs } from "vue";
-
 export default {
   setup() {
     const state = reactive({

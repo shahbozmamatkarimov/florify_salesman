@@ -19,8 +19,8 @@
           <input type="text" maxlength="1" />
         </div>
         <p
+        class="cursor-pointer text-blue-600 hover:underline"
           @click="$router.push('/checking_phone')"
-          class="cursor-pointer text-blue-600 hover:underline"
         >
           Telefon raqamini qaytadan kiritish
         </p>
@@ -28,7 +28,6 @@
     </section>
   </main>
 </template>
-
 <script setup>
 import { useRouter } from "vue-router";
 const router = useRouter();
@@ -50,12 +49,12 @@ onMounted(() => {
 
   function handleOtp(e) {
     const input = e.target;
-    let value = input.value;
-    let isValidInput = value.match(/[0-9a-z]/gi);
+    const value = input.value;
+    const isValidInput = value.match(/[0-9a-z]/gi);
     input.value = "";
     input.value = isValidInput ? value[0] : "";
 
-    let fieldIndex = input.dataset.index;
+    const fieldIndex = input.dataset.index;
     if (fieldIndex < inputs.length - 1 && isValidInput) {
       input.nextElementSibling.focus();
     }
@@ -64,7 +63,7 @@ onMounted(() => {
       input.previousElementSibling.focus();
     }
 
-    if (fieldIndex == inputs.length - 1 && isValidInput) {
+    if (fieldIndex === inputs.length - 1 && isValidInput) {
       submit();
     }
   }
@@ -125,7 +124,6 @@ onBeforeMount(() => {
   }
 });
 </script>
-
 <style lang="scss" scoped>
 body {
   margin: 0;
