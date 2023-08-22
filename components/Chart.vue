@@ -1,6 +1,6 @@
 
 <template>
-  <main class="min-h-screen pt-20">
+  <main class="pt-20">
     <section class="flex gap-10 items-center justify-between">
       <div
         id="main"

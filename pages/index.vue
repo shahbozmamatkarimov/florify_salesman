@@ -286,7 +286,7 @@
         </div>
     </section> -->
     <div class="px-10 pb-20 overflow-hidden overflow-y-auto max-h-[82vh]">
-      <section class="-mt-8 -mb-40">
+      <section class="-mt-8 mb-10">
         <Chart />
       </section>
       <section class="bg-white p-5 rounded-xl">
@@ -706,12 +706,6 @@ const orders = ref([
     status: "To'langan",
   },
 ]);
-
-const { data } = await useFetch(
-  "https://florify-market.onrender.com/api/product"
-);
-
-console.log(data);
 </script>
 
 <style lang="scss" scoped></style>

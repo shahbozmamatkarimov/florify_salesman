@@ -15,33 +15,33 @@
         <h1 class="font-bold text-3xl">Hisobga kirish</h1>
         <a-space direction="vertical">
           <a-input
-          v-model:value="form.username"
-            type="text"
-            bordered="false"
-            autofocus
-            class="font-medium input w-full focus:border-0 border-0 focus:outline-0 outline-0 focus:ring-0 ring-0 placeholder-[#555555] -ml-3"
-            autocomplete="username"
-            placeholder="Loginni kiriting"
-            required
-          />
-          <hr />
-        </a-space>
-        <a-space direction="vertical">
-          <a-input
-          v-model:value="form.password"
+            v-model:value="form.phone"
             bordered="false"
             class="font-medium input w-full focus:border-0 border-0 focus:outline-0 outline-0 focus:ring-0 ring-0 placeholder-[#555555] -ml-3"
             minlength="13"
             maxlength="13"
             autocomplete="tel"
-            placeholder="Telefon raqamni kiriting"
+            placeholder="Telefon raqamingizni kiriting"
+            required
+          /> 
+          <hr />
+        </a-space>
+        <a-space direction="vertical">
+          <a-input
+            v-model:value="form.password"
+            type="password"
+            bordered="false"
+            autofocus
+            class="font-medium input w-full focus:border-0 border-0 focus:outline-0 outline-0 focus:ring-0 ring-0 placeholder-[#555555] -ml-3"
+            autocomplete="password"
+            placeholder="Parolingizni kiriting"
             required
           />
           <hr />
         </a-space>
         <button
           type="submit"
-          class="text-white bg-[#5C0099] border border-[#5C0099] active:bg-white active:text-[#5C0099] h-12 rounded-xl"
+          class="text-white space-y-1 bg-[#5C0099] border border-[#5C0099] active:bg-white active:text-[#5C0099] h-12 rounded-xl"
         >
           Davom etish
         </button>
@@ -65,14 +65,14 @@ definePageMeta({
 });
 
 const form = reactive({
-  username: "",
+  phone: "",
   password: "",
 });
 
 const handleSubmit = () => {
   showLoading("So'rov tekshirilmoqda...");
   const data = {
-    username: form.username,
+    phone: form.phone,
     password: form.password,
   };
   fetch("https://florify-market.onrender.com/api/salesman/login", {

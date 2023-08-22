@@ -108,7 +108,7 @@
                     @focus="handleFocus"
                     @blur="handleBlur"
                     @change="handleChange"
-                    required
+                    required="hello"
                   ></a-select>
                   <button
                     class="py-3 px-4 max-w-fit bg-[#fff] rounded-lg text-[#242424]"
@@ -179,26 +179,160 @@
                 <h1 class="text-lg">
                   Mahsulot galeriyasi <i class="text-[#FF6161]">*</i>
                 </h1>
+
+                <!---------------------------- Main Image -------------------------------------->
+
+                <div
+                  class="mt-6 border border-gray-200 rounded-xl w-[400px] h-[360px] relative"
+                  v-if="store.file1"
+                >
+                  <img
+                    class="w-full h-full opacity-50 absolute object-cover rounded-xl"
+                    :src="store.file1"
+                    alt="img"
+                  />
+                  <label
+                    for="imageMain"
+                    class="flex flex-col hover:bg-[#0000002a] cursor-pointer top-0 z-10 h-full rounded-xl relative justify-center items-center"
+                  >
+                    <img
+                      class="scale-150 mx-auto py-2"
+                      src="../assets/svg/whiteplaceholder.svg"
+                      alt="img"
+                    />
+                    <p class="text-[#FFFFFF]">
+                      R<span class="lowercase">asmni o‘zgartirish</span>
+                    </p>
+                  </label>
+                </div>
                 <label
+                  v-else
                   for="imageMain"
                   class="flex flex-col mt-6 gap-3 text-center justify-center items-center w-[400px] h-[360px] bg-white border rounded-xl border-dashed border-[#F9F9F9]"
                 >
-                  <img
-                    class="scale-150"
-                    src="../assets/svg/upload.svg"
-                    alt="img"
-                  />
-                  <p class="w-[210px]">Rasmni shu yerga qo‘ying yoki yuklang</p>
-                  <p class="text-sm font-medium">(Jpeg, png ruxsat berilgan)</p>
+                  <div>
+                    <img
+                      class="scale-150 mx-auto py-2"
+                      src="../assets/svg/upload.svg"
+                      alt="img"
+                    />
+                    <p class="w-[210px]">
+                      R<span class="lowercase"
+                        >asmni shu yerga qo‘ying yoki yuklang</span
+                      >
+                    </p>
+                    <p class="text-sm font-medium">
+                      (J<span class="lowercase">peg, png ruxsat berilgan)</span>
+                    </p>
+                  </div>
                 </label>
                 <input
+                  @change="(e) => uploadFile(e, 1)"
                   class="w-0 h-0 overflow-hidden"
                   type="file"
                   id="imageMain"
                   required
                 />
+
+                <!---------------------------- image1 -------------------------------------->
+
+                <div
+                  class="flex items-center justify-between gap-2 h-[80px] w-[400px] bg-white rounded-xl"
+                  v-if="store.file2"
+                >
+                  <div class="flex px-2 items-center gap-2">
+                    <img
+                      class="w-[60px] h-[60px] border border-gray-200 object-cover rounded-xl"
+                      :src="store.file2"
+                      alt="img"
+                    />
+                    <div class="space-y-1">
+                      <h1 class="text-[#232321] line-clamp-1 font-semibold">
+                        {{ store.name2 }}
+                      </h1>
+                      <p class="text-[#454545] text-sm">{{ store.size2 }} KB</p>
+                    </div>
+                  </div>
+                  <div class="flex gap-5 pr-2 pt-7">
+                    <label for="image1">
+                      <img
+                        class="cursor-pointer pt-1"
+                        src="../assets/svg/edit.svg"
+                        alt="edit"
+                      />
+                    </label>
+                    <img
+                      @click="() => deleteFile(2)"
+                      class="cursor-pointer"
+                      src="../assets/svg/delete.svg"
+                      alt="delete"
+                    />
+                  </div>
+                </div>
                 <label
+                  v-else
                   for="image1"
+                  class="flex px-2 items-center justify-around h-[80px] w-[400px] bg-white rounded-xl"
+                >
+                  <img
+                    class="scale-150"
+                    src="../assets/svg/upload.svg"
+                    alt="img"
+                  />
+                  <div class="text-[15px]">
+                    R<span class="lowercase"
+                      >asmni shu yerga qo‘ying yoki ko‘rib chiqing</span
+                    >
+                    <p>
+                      (J<span class="lowercase">peg, png ruxsat berilgan)</span>
+                    </p>
+                  </div>
+                </label>
+                <input
+                  @change="(e) => uploadFile(e, 2)"
+                  class="w-0 h-0 overflow-hidden"
+                  type="file"
+                  id="image1"
+                />
+
+                <!---------------------------- image2 -------------------------------------->
+
+                <div
+                  class="flex items-center justify-between gap-2 h-[80px] w-[400px] bg-white rounded-xl"
+                  v-if="store.file3"
+                >
+                  <div class="flex px-2 items-center gap-2">
+                    <img
+                      class="w-[60px] h-[60px] border border-gray-200 object-cover rounded-xl"
+                      :src="store.file3"
+                      alt="img"
+                    />
+                    <div class="space-y-1">
+                      <h1 class="text-[#232321] line-clamp-1 font-semibold">
+                        {{ store.name3 }}
+                      </h1>
+                      <p class="text-[#454545] text-sm">{{ store.size3 }} KB</p>
+                    </div>
+                  </div>
+                  <div class="flex gap-5 pr-2 pt-7">
+                    <label for="image2">
+                      <img
+                        class="cursor-pointer pt-1"
+                        src="../assets/svg/edit.svg"
+                        alt="edit"
+                      />
+                    </label>
+                    <img
+                      @click="() => deleteFile(3)"
+                      class="cursor-pointer"
+                      src="../assets/svg/delete.svg"
+                      alt="delete"
+                    />
+                  </div>
+                </div>
+                <label
+                  v-else
+                  for="image2"
                   class="flex px-2 items-center justify-around h-[80px] w-[400px] bg-white rounded-xl"
                 >
                   <img
@@ -218,36 +352,150 @@
                 <input
                   class="w-0 h-0 overflow-hidden"
                   type="file"
-                  id="image1"
-                  required
+                  @change="(e) => uploadFile(e, 3)"
+                  id="image2"
                 />
 
-                <label
-                  for="image1"
-                  class="flex px-2 items-center justify-around h-[80px] w-[400px] bg-white rounded-xl"
-                >
-                  <img
-                    class="scale-150"
-                    src="../assets/svg/upload.svg"
-                    alt="img"
-                  />
-                  <div class="text-[15px]">
-                    R<span class="lowercase"
-                      >asmni shu yerga qo‘ying yoki ko‘rib chiqing</span
-                    >
-                    <p>
-                      (J<span class="lowercase">peg, png ruxsat berilgan)</span>
-                    </p>
+                <!---------------------------- image3 -------------------------------------->
+
+                <div v-show="store.step > 2">
+                  <div
+                    class="flex items-center justify-between gap-2 h-[80px] w-[400px] bg-white rounded-xl"
+                    v-if="store.file4"
+                  >
+                    <div class="flex px-2 items-center gap-2">
+                      <img
+                        class="w-[60px] h-[60px] border border-gray-200 object-cover rounded-xl"
+                        :src="store.file4"
+                        alt="img"
+                      />
+                      <div class="space-y-1">
+                        <h1 class="text-[#232321] line-clamp-1 font-semibold">
+                          {{ store.name4 }}
+                        </h1>
+                        <p class="text-[#454545] text-sm">
+                          {{ store.size4 }} KB
+                        </p>
+                      </div>
+                    </div>
+                    <div class="flex gap-5 pr-2 pt-7">
+                      <label for="image4">
+                        <img
+                          class="cursor-pointer pt-1"
+                          src="../assets/svg/edit.svg"
+                          alt="edit"
+                        />
+                      </label>
+                      <img
+                        @click="() => deleteFile(4)"
+                        class="cursor-pointer"
+                        src="../assets/svg/delete.svg"
+                        alt="delete"
+                      />
+                    </div>
                   </div>
-                </label>
-                <input
-                  class="w-0 h-0 overflow-hidden"
-                  type="file"
-                  id="image1"
-                  required
-                />
+                  <label
+                    v-else
+                    for="image4"
+                    class="flex px-2 items-center justify-around h-[80px] w-[400px] bg-white rounded-xl"
+                  >
+                    <img
+                      class="scale-150"
+                      src="../assets/svg/upload.svg"
+                      alt="img"
+                    />
+                    <div class="text-[15px]">
+                      R<span class="lowercase"
+                        >asmni shu yerga qo‘ying yoki ko‘rib chiqing</span
+                      >
+                      <p>
+                        (J<span class="lowercase"
+                          >peg, png ruxsat berilgan)</span
+                        >
+                      </p>
+                    </div>
+                  </label>
+                  <input
+                    @change="(e) => uploadFile(e, 4)"
+                    class="w-0 h-0 overflow-hidden"
+                    type="file"
+                    id="image4"
+                  />
+                </div>
 
-                <button type="button" class="mt-6 h-[50px] w-[400px] bg-white rounded-xl">
+                <!---------------------------- image4 -------------------------------------->
+
+                <div v-show="store.step > 3">
+                  <div
+                    class="flex items-center justify-between gap-2 h-[80px] w-[400px] bg-white rounded-xl"
+                    v-if="store.file5"
+                  >
+                    <div class="flex px-2 items-center gap-2">
+                      <img
+                        class="w-[60px] h-[60px] border border-gray-200 object-cover rounded-xl"
+                        :src="store.file5"
+                        alt="img"
+                      />
+                      <div class="space-y-1">
+                        <h1 class="text-[#232321] line-clamp-1 font-semibold">
+                          {{ store.name5 }}
+                        </h1>
+                        <p class="text-[#454545] text-sm">
+                          {{ store.size5 }} KB
+                        </p>
+                      </div>
+                    </div>
+                    <div class="flex gap-5 pr-2 pt-7">
+                      <label for="image5">
+                        <img
+                          class="cursor-pointer pt-1"
+                          src="../assets/svg/edit.svg"
+                          alt="edit"
+                        />
+                      </label>
+                      <img
+                        @click="() => deleteFile(5)"
+                        class="cursor-pointer"
+                        src="../assets/svg/delete.svg"
+                        alt="delete"
+                      />
+                    </div>
+                  </div>
+                  <label
+                    v-else
+                    for="image5"
+                    class="flex px-2 items-center justify-around h-[80px] w-[400px] bg-white rounded-xl"
+                  >
+                    <img
+                      class="scale-150"
+                      src="../assets/svg/upload.svg"
+                      alt="img"
+                    />
+                    <div class="text-[15px]">
+                      R<span class="lowercase"
+                        >asmni shu yerga qo‘ying yoki ko‘rib chiqing</span
+                      >
+                      <p>
+                        (J<span class="lowercase"
+                          >peg, png ruxsat berilgan)</span
+                        >
+                      </p>
+                    </div>
+                  </label>
+                  <input
+                    class="w-0 h-0 overflow-hidden"
+                    type="file"
+                    @change="(e) => uploadFile(e, 5)"
+                    id="image5"
+                  />
+                </div>
+
+                <button
+                  v-show="store.step < 4"
+                  @click="() => (store.step += 1)"
+                  type="button"
+                  class="mt-6 h-[50px] w-[400px] bg-white rounded-xl"
+                >
                   Rasm qo‘shish
                 </button>
               </div>
@@ -280,10 +528,38 @@
 </template>
 
 <script setup>
+import { useNotification } from "../composables/notification";
+const { showLoading, showSuccess, showError } = useNotification();
+
 const open = ref(false);
 const price = ref();
 const description = ref();
 const options = ref([]);
+const optionsId = ref([]);
+
+const store = reactive({
+  upload1: "",
+  file1: "",
+  name1: "",
+  size1: "",
+  upload2: "",
+  file2: "",
+  name2: "",
+  size2: "",
+  upload3: "",
+  file3: "",
+  name3: "",
+  size3: "",
+  upload4: "",
+  file4: "",
+  name4: "",
+  size4: "",
+  upload5: "",
+  file5: "",
+  name5: "",
+  size5: "",
+  step: 2,
+});
 
 const create = reactive({
   name: "",
@@ -291,13 +567,60 @@ const create = reactive({
   price: "",
   color: "red",
   category_id: "Kategoriyani tanlang",
-  salesman_id: "edebf571-6852-4e53-ad41-7c70067328bf",
+  salesman_id: "189fb0aa-046b-47f3-95fa-022c1cea2c27",
   quantity: "",
 });
 
 const filterOption = (input, option) => {
   return option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0;
 };
+
+function deleteFile(id) {
+  if (id === 2) {
+    store.file2 = "";
+  } else if (id === 3) {
+    store.file3 = "";
+  } else if (id === 4) {
+    store.file4 = "";
+  } else {
+    store.file5 = "";
+  }
+}
+
+function uploadFile(e, number) {
+  console.log(number);
+  if (number == 1) {
+    const file = e.target.files[0];
+    store.upload1 = file;
+    store.name1 = file.name;
+    store.size1 = Math.floor(file.size / 1000);
+    store.file1 = URL.createObjectURL(file);
+  } else if (number == 2) {
+    const file = e.target.files[0];
+    store.upload2 = file;
+    store.name2 = file.name;
+    store.size2 = Math.floor(file.size / 1000);
+    store.file2 = URL.createObjectURL(file);
+  } else if (number == 3) {
+    const file = e.target.files[0];
+    store.upload3 = file;
+    store.name3 = file.name;
+    store.size3 = Math.floor(file.size / 1000);
+    store.file3 = URL.createObjectURL(file);
+  } else if (number == 4) {
+    const file = e.target.files[0];
+    store.upload4 = file;
+    store.name4 = file.name;
+    store.size4 = Math.floor(file.size / 1000);
+    store.file4 = URL.createObjectURL(file);
+  } else {
+    const file = e.target.files[0];
+    store.upload5 = file;
+    store.name5 = file.name;
+    store.size5 = Math.floor(file.size / 1000);
+    store.file5 = URL.createObjectURL(file);
+  }
+}
 
 function getCategory() {
   fetch("https://florify-market.onrender.com/api/category", {
@@ -318,9 +641,10 @@ function getCategory() {
       console.log(res, "category");
       for (let i of res) {
         options.value.push({
-          value: i.name,
+          value: i.id,
           label: i.name,
         });
+        optionsId.value.push(i.id);
       }
     })
     .catch((err) => {
@@ -330,7 +654,6 @@ function getCategory() {
 
 const handleSubmit = () => {
   const token = localStorage.getItem("token");
-  console.log(token);
   console.log(create);
 
   fetch("https://florify-market.onrender.com/api/product", {
@@ -350,7 +673,30 @@ const handleSubmit = () => {
       ) {
         router.push("/login");
       }
-      console.log(res);
+      const formData = new FormData();
+      if (res.message === "Mahsulot qo'shildi") {
+        if (store.file1) {
+          formData.append("name", store.upload1);
+        } else if (store.file2) {
+          formData.append("image", store.upload2);
+        } else if (store.file3) {
+          formData.append("image", store.upload3);
+        } else if (store.file4) {
+          formData.append("image", store.upload4);
+        } else {
+          formData.append("image", store.upload5);
+        }
+
+        fetch("https://florify-market.onrender.com/api/image", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(store.upload1),
+        });
+      }
     })
     .catch((err) => {
       console.log(err);
