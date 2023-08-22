@@ -50,8 +50,6 @@
     "primevue": "^3.31.0",
     "sass": "^1.64.2",
     "vuex": "^4.1.0",
-    "@babel/core": "^7.20.2",
-    "@babel/eslint-parser": "7.19.1",
     "@fullcalendar/core": "5.11.3",
     "@fullcalendar/daygrid": "5.11.3",
     "@fullcalendar/interaction": "5.11.3",
