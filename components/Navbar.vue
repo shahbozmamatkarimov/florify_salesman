@@ -528,7 +528,15 @@
 </template>
 
 <script setup>
+// const $uploadImageToCloudStorage = async (imageFile, path) => {
+//   return `https://example.com/${path}`;
+// };
+
+// import { useUploadStore } from "../composables/upload";
 import { useNotification } from "../composables/notification";
+
+// const { uploadImage } = useUploadStore($uploadImageToCloudStorage);
+
 const { showLoading, showSuccess, showError } = useNotification();
 
 const open = ref(false);
@@ -588,38 +596,38 @@ function deleteFile(id) {
 }
 
 function uploadFile(e, number) {
-  console.log(number);
-  if (number == 1) {
-    const file = e.target.files[0];
-    store.upload1 = file;
-    store.name1 = file.name;
-    store.size1 = Math.floor(file.size / 1000);
-    store.file1 = URL.createObjectURL(file);
-  } else if (number == 2) {
-    const file = e.target.files[0];
-    store.upload2 = file;
-    store.name2 = file.name;
-    store.size2 = Math.floor(file.size / 1000);
-    store.file2 = URL.createObjectURL(file);
-  } else if (number == 3) {
-    const file = e.target.files[0];
-    store.upload3 = file;
-    store.name3 = file.name;
-    store.size3 = Math.floor(file.size / 1000);
-    store.file3 = URL.createObjectURL(file);
-  } else if (number == 4) {
-    const file = e.target.files[0];
-    store.upload4 = file;
-    store.name4 = file.name;
-    store.size4 = Math.floor(file.size / 1000);
-    store.file4 = URL.createObjectURL(file);
-  } else {
-    const file = e.target.files[0];
-    store.upload5 = file;
-    store.name5 = file.name;
-    store.size5 = Math.floor(file.size / 1000);
-    store.file5 = URL.createObjectURL(file);
-  }
+  // console.log(number);
+  // if (number == 1) {
+  //   const file = e.target.files[0];
+  //   store.upload1 = file;
+  //   store.name1 = file.name;
+  //   store.size1 = Math.floor(file.size / 1000);
+  //   store.file1 = URL.createObjectURL(file);
+  // } else if (number == 2) {
+  //   const file = e.target.files[0];
+  //   store.upload2 = file;
+  //   store.name2 = file.name;
+  //   store.size2 = Math.floor(file.size / 1000);
+  //   store.file2 = URL.createObjectURL(file);
+  // } else if (number == 3) {
+  //   const file = e.target.files[0];
+  //   store.upload3 = file;
+  //   store.name3 = file.name;
+  //   store.size3 = Math.floor(file.size / 1000);
+  //   store.file3 = URL.createObjectURL(file);
+  // } else if (number == 4) {
+  //   const file = e.target.files[0];
+  //   store.upload4 = file;
+  //   store.name4 = file.name;
+  //   store.size4 = Math.floor(file.size / 1000);
+  //   store.file4 = URL.createObjectURL(file);
+  // } else {
+  //   const file = e.target.files[0];
+  //   store.upload5 = file;
+  //   store.name5 = file.name;
+  //   store.size5 = Math.floor(file.size / 1000);
+  //   store.file5 = URL.createObjectURL(file);
+  // }
 }
 
 function getCategory() {
@@ -687,15 +695,20 @@ const handleSubmit = () => {
           formData.append("image", store.upload5);
         }
 
-        fetch("https://florify-market.onrender.com/api/image", {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(store.upload1),
-        });
+        uploadImage(store.upload1)
+
+//         const imageFile = new File([''], 'my-image.jpg', { type: 'image/jpeg' });
+// uploadImage(imageFile);
+
+        // fetch("https://florify-market.onrender.com/api/image", {
+        //   method: "POST",
+        //   headers: {
+        //     Accept: "application/json",
+        //     "Content-Type": "application/json",
+        //     Authorization: `Bearer ${token}`,
+        //   },
+        //   body: JSON.stringify(store.upload1),
+        // });
       }
     })
     .catch((err) => {
