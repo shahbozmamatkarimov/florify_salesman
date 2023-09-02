@@ -81,7 +81,7 @@
                 />
               </div>
               <button
-                @click="() => (open = false)"
+                @click="() => closeModal()"
                 type="button"
                 class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
                 data-modal-hide="defaultModal"
@@ -108,13 +108,14 @@
                     @focus="handleFocus"
                     @blur="handleBlur"
                     @change="handleChange"
-                    required="hello"
+                    required=""
                   ></a-select>
-                  <button
+                  <!-- <button
+                    type="button"
                     class="py-3 px-4 max-w-fit bg-[#fff] rounded-lg text-[#242424]"
                   >
                     Tasdiqlash
-                  </button>
+                  </button> -->
                 </div>
                 <div class="space-y-5 pb-5">
                   <label class="flex gap-3" for="name"
@@ -230,8 +231,8 @@
                   @change="(e) => uploadFile(e, 1)"
                   class="w-0 h-0 overflow-hidden"
                   type="file"
+                  accept="image/*"
                   id="imageMain"
-                  required
                 />
 
                 <!---------------------------- image1 -------------------------------------->
@@ -505,7 +506,7 @@
               class="flex items-center justify-between p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600"
             >
               <button
-                @click="() => (open = false)"
+                @click="() => closeModal()"
                 data-modal-hide="defaultModal"
                 type="button"
                 class="text-gray-500 bg-white hover:bg-red-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
@@ -528,16 +529,11 @@
 </template>
 
 <script setup>
-// const $uploadImageToCloudStorage = async (imageFile, path) => {
-//   return `https://example.com/${path}`;
-// };
-
-// import { useUploadStore } from "../composables/upload";
+import { useGetProductStore } from "../composables/getAllProducts";
 import { useNotification } from "../composables/notification";
 
-// const { uploadImage } = useUploadStore($uploadImageToCloudStorage);
-
-const { showLoading, showSuccess, showError } = useNotification();
+const { showLoading, showSuccess, showWarning, showError } = useNotification();
+const getProduct = useGetProductStore();
 
 const open = ref(false);
 const price = ref();
@@ -575,9 +571,41 @@ const create = reactive({
   price: "",
   color: "red",
   category_id: "Kategoriyani tanlang",
-  salesman_id: "189fb0aa-046b-47f3-95fa-022c1cea2c27",
+  salesman_id: "d03d1775-08e7-40fb-8465-951647a926e9",
   quantity: "",
 });
+
+function closeModal() {
+  store.upload1 = "";
+  store.file1 = "";
+  store.name1 = "";
+  store.size1 = "";
+  store.upload2 = "";
+  store.file2 = "";
+  store.name2 = "";
+  store.size2 = "";
+  store.upload3 = "";
+  store.file3 = "";
+  store.name3 = "";
+  store.size3 = "";
+  store.upload4 = "";
+  store.file4 = "";
+  store.name4 = "";
+  store.size4 = "";
+  store.upload5 = "";
+  store.file5 = "";
+  store.name5 = "";
+  store.size5 = "";
+  store.step = "";
+  create.name = "";
+  create.description = "";
+  create.price = "";
+  create.color = "red";
+  create.category_id = "Kategoriyani tanlang";
+  create.salesman_id = "d03d1775-08e7-40fb-8465-951647a926e9";
+  create.quantity = "";
+  open.value = false;
+}
 
 const filterOption = (input, option) => {
   return option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0;
@@ -596,38 +624,41 @@ function deleteFile(id) {
 }
 
 function uploadFile(e, number) {
-  // console.log(number);
-  // if (number == 1) {
-  //   const file = e.target.files[0];
-  //   store.upload1 = file;
-  //   store.name1 = file.name;
-  //   store.size1 = Math.floor(file.size / 1000);
-  //   store.file1 = URL.createObjectURL(file);
-  // } else if (number == 2) {
-  //   const file = e.target.files[0];
-  //   store.upload2 = file;
-  //   store.name2 = file.name;
-  //   store.size2 = Math.floor(file.size / 1000);
-  //   store.file2 = URL.createObjectURL(file);
-  // } else if (number == 3) {
-  //   const file = e.target.files[0];
-  //   store.upload3 = file;
-  //   store.name3 = file.name;
-  //   store.size3 = Math.floor(file.size / 1000);
-  //   store.file3 = URL.createObjectURL(file);
-  // } else if (number == 4) {
-  //   const file = e.target.files[0];
-  //   store.upload4 = file;
-  //   store.name4 = file.name;
-  //   store.size4 = Math.floor(file.size / 1000);
-  //   store.file4 = URL.createObjectURL(file);
-  // } else {
-  //   const file = e.target.files[0];
-  //   store.upload5 = file;
-  //   store.name5 = file.name;
-  //   store.size5 = Math.floor(file.size / 1000);
-  //   store.file5 = URL.createObjectURL(file);
-  // }
+  if (!e.target.files[0].type.includes("image")) {
+    showWarning("Iltimos, rasm kiriting!");
+    return;
+  }
+  if (number == 1) {
+    const file = e.target.files[0];
+    store.upload1 = file;
+    store.name1 = file.name;
+    store.size1 = Math.floor(file.size / 1000);
+    store.file1 = URL.createObjectURL(file);
+  } else if (number == 2) {
+    const file = e.target.files[0];
+    store.upload2 = file;
+    store.name2 = file.name;
+    store.size2 = Math.floor(file.size / 1000);
+    store.file2 = URL.createObjectURL(file);
+  } else if (number == 3) {
+    const file = e.target.files[0];
+    store.upload3 = file;
+    store.name3 = file.name;
+    store.size3 = Math.floor(file.size / 1000);
+    store.file3 = URL.createObjectURL(file);
+  } else if (number == 4) {
+    const file = e.target.files[0];
+    store.upload4 = file;
+    store.name4 = file.name;
+    store.size4 = Math.floor(file.size / 1000);
+    store.file4 = URL.createObjectURL(file);
+  } else {
+    const file = e.target.files[0];
+    store.upload5 = file;
+    store.name5 = file.name;
+    store.size5 = Math.floor(file.size / 1000);
+    store.file5 = URL.createObjectURL(file);
+  }
 }
 
 function getCategory() {
@@ -661,8 +692,18 @@ function getCategory() {
 }
 
 const handleSubmit = () => {
+  if (create.category_id === "Kategoriyani tanlang") {
+    showWarning("Iltimos, Mahsulot kategoriyasini tanlang!");
+    return;
+  }
+  if (!store.file1) {
+    showWarning("Asosiy rasm yuklanmagan");
+    return;
+  }
+
   const token = localStorage.getItem("token");
-  console.log(create);
+
+  showLoading("Ma'lumotlar yuborilmoqda...");
 
   fetch("https://florify-market.onrender.com/api/product", {
     method: "POST",
@@ -675,44 +716,71 @@ const handleSubmit = () => {
   })
     .then((res) => res.json())
     .then((res) => {
+      console.log(res);
       if (
         res.message == "Token vaqti tugagan!" ||
         res.message == "Token topilmadi!"
       ) {
         router.push("/login");
       }
-      const formData = new FormData();
       if (res.message === "Mahsulot qo'shildi") {
-        if (store.file1) {
-          formData.append("name", store.upload1);
-        } else if (store.file2) {
-          formData.append("image", store.upload2);
-        } else if (store.file3) {
-          formData.append("image", store.upload3);
-        } else if (store.file4) {
-          formData.append("image", store.upload4);
-        } else {
-          formData.append("image", store.upload5);
+        showLoading("Rasmlar yuklanmoqda...");
+
+        const files = [
+          store.file1,
+          store.file2,
+          store.file3,
+          store.file4,
+          store.file5,
+        ];
+
+        const uploadFiles = [
+          store.upload1,
+          store.upload2,
+          store.upload3,
+          store.upload4,
+          store.upload5,
+        ];
+
+        for (let i = 0; i < 5; i++) {
+          if (files[i]) {
+            const formData = new FormData();
+            formData.append("image", uploadFiles[i]);
+            uploadImage(formData);
+          }
         }
 
-        uploadImage(store.upload1)
+        function uploadImage(formData) {
+          fetch(
+            `https://florify-market.onrender.com/api/image/create/${res.product?.id}`,
+            {
+              method: "POST",
+              body: formData,
+            }
+          )
+            .then((res) => {
+              console.log(res);
+              if (res.status === 201) {
+                getProduct.getProducts(token);
+                closeModal();
+                showSuccess("Mahsulot qo'shildi");
+              } else {
+                showError("Iltimos, Rasmlarni to'g'ri formatda kiriting!");
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+              showError("Iltimos, Rasmlarni to'g'ri formatda kiriting!");
+            });
 
-//         const imageFile = new File([''], 'my-image.jpg', { type: 'image/jpeg' });
-// uploadImage(imageFile);
-
-        // fetch("https://florify-market.onrender.com/api/image", {
-        //   method: "POST",
-        //   headers: {
-        //     Accept: "application/json",
-        //     "Content-Type": "application/json",
-        //     Authorization: `Bearer ${token}`,
-        //   },
-        //   body: JSON.stringify(store.upload1),
-        // });
+        }
+      } else {
+        showError("Iltimos, ma'lumotlarni to'g'ri tartibda kiriting!");
       }
     })
     .catch((err) => {
       console.log(err);
+      showError("Iltimos, ma'lumotlarni to'g'ri tartibda kiriting!");
     });
 };
 

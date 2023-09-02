@@ -1,4 +1,3 @@
-
 <template>
   <main>
     <Navbar>Mahsulotlar</Navbar>
@@ -6,10 +5,10 @@
       <section>
         <ul class="flex gap-10 border-b-2 py-5 text-[#555555] -mt-2">
           <li
-          v-for="(i, index) in category"
-          :key="i"
-          :class="{ 'text-[#5C0099]': step == index }"
-          class="leading-3 cursor-pointer duration-1000 pt-2 border-b-2 border-transparent font-bold"
+            v-for="(i, index) in category"
+            :key="i"
+            :class="{ 'text-[#5C0099]': step == index }"
+            class="leading-3 cursor-pointer duration-1000 pt-2 border-b-2 border-transparent font-bold"
             @click="step = index"
           >
             {{ i }}
@@ -113,26 +112,66 @@
           Filtrlash
         </nav>
       </section>
+      <section v-if="getProduct.store.isLoading"
+        class="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 grid-cols-2 gap-5"
+      >
+        <div v-for="i in 8" :key="i.id" class="max-w-sm bg-white rounded-lg">
+          <img
+            alt="img"
+            class="rounded-t-lg animate-pulse cursor-pointer border w-full h-[166px] object-cover"
+            src="https://redthread.uoregon.edu/files/original/affd16fd5264cab9197da4cd1a996f820e601ee4.png"
+            @click="open = true"
+          />
+          <div class="p-5">
+            <div class="flex justify-between items-center">
+              <button
+                class="h-9 w-20 border pb-1 animate-pulse border-gray-200 bg-gray-200 font-medium rounded-lg"
+              ></button>
+              <img
+                class="cursor-pointer"
+                src="../../assets/svg/dot.svg"
+                alt="actions"
+              />
+            </div>
+            <div class="flex font-medium justify-between leading-10">
+              <ul class="mb-3 text-[#666666] dark:text-gray-400 space-y-5 mt-3 w-full">
+                <li v-for="i in 6" :key="i" class="h-5 rounded-lg bg-gray-200 animate-pulse"></li>
+                <li class="h-5 rounded-lg bg-gray-200 w-1/2 text-lg font-semibold animate-pulse text-[#242424]"></li>
+                <li class="h-5 rounded-lg bg-gray-200 w-1/2 text-lg font-semibold animate-pulse text-[#242424]"></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section v-else-if="!getProduct.store.allData?.length || false">
+        <p
+          class="flex flex-col items-center justify-center bg-white rounded-xl shadow h-80 gap-5"
+        >
+          <img src="../../assets/svg/cartLoading.svg" alt="not_found" />
+          Mahsulotlar topilmadi
+          Figmaga qarab o'zgartiriladi...
+        </p>
+      </section>
       <section
+        v-else
         class="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 grid-cols-2 gap-5"
       >
         <div
-          v-for="i in store.products"
+          v-for="i in getProduct.store.allData"
           :key="i.id"
           class="max-w-sm bg-white rounded-lg"
         >
-
           <img
-            v-if="!i.img?.length"
+            v-if="!i.image?.length"
             alt="img"
             class="rounded-t-lg cursor-pointer border w-full h-[166px] object-cover"
             src="https://redthread.uoregon.edu/files/original/affd16fd5264cab9197da4cd1a996f820e601ee4.png"
             @click="open = true"
           />
           <img
-            v-if="i.img?.length"
+            v-if="i.image?.length"
             class="rounded-t-lg cursor-pointer w-full h-[166px] object-cover"
-            :src="i.img[0]"
+            :src="baseUrl + i.image[0]?.image"
             alt="img"
             @click="open = true"
           />
@@ -211,10 +250,10 @@
                   </ul>
                 </div>
                 <button
-                type="button"
-                class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                data-modal-hide="defaultModal"
-                @click="open = false"
+                  type="button"
+                  class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                  data-modal-hide="defaultModal"
+                  @click="open = false"
                 >
                   <i class="bx bx-x text-2xl font-bold"></i>
                 </button>
@@ -279,11 +318,12 @@
 </template>
 
 <script setup>
-const router = useRouter();
+import { useGetProductStore } from "../../composables/getAllProducts";
 
-const store = reactive({
-  products: "",
-});
+const runtimeconfig = useRuntimeConfig();
+const baseUrl = ref(runtimeconfig.public.apiBaseUrl?.slice(0, -4));
+const router = useRouter();
+const getProduct = useGetProductStore();
 
 const category = [
   "Hammasi",
@@ -293,35 +333,11 @@ const category = [
   "Bloklanganlar",
 ];
 
-function getProducts(token) {
-  fetch("https://florify-market.onrender.com/api/product", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  })
-    .then((res) => res.json())
-    .then((res) => {
-      if (
-        res.message === "Token vaqti tugagan!" ||
-        res.message === "Token topilmadi!"
-      ) {
-        router.push("/login");
-      }
-      console.log(res);
-      store.products = res;
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-}
-
 const open = ref(false);
 const step = ref(0);
 onMounted(() => {
   const token = localStorage.getItem("token");
-  getProducts(token);
+  getProduct.getProducts(token);
 });
 </script>
 

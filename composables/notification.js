@@ -26,6 +26,7 @@ export const useNotification = () => {
     return {
         showLoading,
         showSuccess,
+        showWarning,
         showError,
     };
 }
