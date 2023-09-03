@@ -1,10 +1,8 @@
 <template>
   <main>
-    <section>
-      <nav class="flex items-center w-full z-50 -mt-1 mb-1">
-        <div
-          class="w-full flex flex-wrap items-center h-32 border-b-2 justify-between mx-10"
-        >
+    <section class="border-b-2 mx-10 mb-1">
+      <nav class="flex items-center w-full z-50 -mt-1">
+        <div class="w-full flex flex-wrap items-center h-32 justify-between">
           <div
             class="flex items-center gap-1 self-center text-2xl font-semibold whitespace-nowrap dark:text-white"
           >
@@ -15,9 +13,9 @@
               alt="star"
             />
           </div>
-          <div class="flex gap-6">
-            <form>
-              <div class="relative min-w-[350px]">
+          <div class="flex xl:w-auto w-full justify-between gap-6">
+            <form class="lg:block hidden">
+              <div class="relative xl:min-w-[350px]">
                 <div
                   class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
                 >
@@ -26,12 +24,19 @@
                 <input
                   type="search"
                   id="default-search"
-                  class="block min-w-full h-12 pl-10 outline-none rounded-lg bg-white"
+                  class="block xl:min-w-full h-12 pl-10 md:text-lg outline-none rounded-lg bg-white"
                   placeholder="Qidirish..."
                   required
                 />
               </div>
             </form>
+            <button
+              type="submit"
+              @click="is_search = !is_search"
+              class="bg-white lg:hidden rounded-lg px-4 py-2"
+            >
+              <img src="../assets/svg/search.svg" alt="search" />
+            </button>
             <button
               type="button"
               class="text-white bg-white rounded-lg px-4 py-2"
@@ -50,6 +55,22 @@
           </div>
         </div>
       </nav>
+      <form v-if="is_search" class="w-full">
+        <div class="relative lg:hidden w-full">
+          <div
+            class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+          >
+            <img src="../assets/svg/search.svg" alt="search" />
+          </div>
+          <input
+            type="search"
+            id="default-search"
+            class="block w-full h-12 pl-10 outline-none rounded-lg bg-white"
+            placeholder="Qidirish..."
+            required
+          />
+        </div>
+      </form>
     </section>
     <!-- Modal toggle -->
     <section>
@@ -529,17 +550,16 @@
 </template>
 
 <script setup>
-import { useGetProductStore } from "../composables/getAllProducts";
 import { useNotification } from "../composables/notification";
 
 const { showLoading, showSuccess, showWarning, showError } = useNotification();
-const getProduct = useGetProductStore();
 
 const open = ref(false);
 const price = ref();
 const description = ref();
 const options = ref([]);
 const optionsId = ref([]);
+const is_search = ref(false);
 
 const store = reactive({
   upload1: "",
@@ -772,7 +792,6 @@ const handleSubmit = () => {
               console.log(err);
               showError("Iltimos, Rasmlarni to'g'ri formatda kiriting!");
             });
-
         }
       } else {
         showError("Iltimos, ma'lumotlarni to'g'ri tartibda kiriting!");

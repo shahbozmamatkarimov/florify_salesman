@@ -32,16 +32,16 @@
           </li>
           <hr class="-mx-5" />
           <li class="-mb-3 text-[#6188FF]">Ijtimoiy tarmoqlar</li>
-          <li class="flex justify-between">
-            <div class="flex gap-2">
+          <li class="flex justify-between items-center pb-5">
+            <div class="flex items-center gap-2">
               <img src="../../assets/svg/facebook.svg" alt="facebook" />
               <p>@munavvar</p>
             </div>
-            <div class="flex gap-2">
+            <div class="flex items-center gap-2">
               <img src="../../assets/svg/instagramm.svg" alt="facebook" />
               <p>@munavvar</p>
             </div>
-            <div class="flex gap-2 pb-5">
+            <div class="flex items-center gap-2">
               <img src="../../assets/svg/telegram.svg" alt="facebook" />
               <p>@munavvar</p>
             </div>
