@@ -9,7 +9,6 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
-    "@nuxt/devtools": "latest",
     "autoprefixer": "^10.4.15",
     "nuxt": "^3.7.0",
     "postcss": "^8.4.29",
@@ -22,7 +21,9 @@
     "ant-design-vue": "^4.0.2",
     "apexcharts": "^3.42.0",
     "flowbite": "^1.8.1",
+    "pinia": "^2.1.6",
     "sass": "^1.66.1",
+    "vue": "^3.3.4",
     "vue3-apexcharts": "^1.4.4",
     "vuex": "^4.1.0"
   }

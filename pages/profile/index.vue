@@ -1,4 +1,3 @@
-
 <template>
   <main>
     <NavbarTop>Profil</NavbarTop>
@@ -7,7 +6,7 @@
         <ul class="bg-[#FFFFFF] rounded-xl font-medium p-5 space-y-6">
           <li class="flex items-center justify-between">
             <h1 class="text-2xl font-semibold">Shaxsiy ma'lumotlar</h1>
-            <img src="../../assets/svg/editBtn.svg" alt="edit" />
+            <img class="cursor-pointer" @click="store.modal = true" src="../../assets/svg/editBtn.svg" alt="edit" />
           </li>
           <hr class="-mx-5" />
           <li class="flex items-center gap-5">
@@ -30,9 +29,9 @@
             <p class="text-[#6188FF] pb-1">Telefon raqam</p>
             <p class="font-medium">+998 91 476 9070</p>
           </li>
-          <hr class="-mx-5" />
-          <li class="-mb-3 text-[#6188FF]">Ijtimoiy tarmoqlar</li>
-          <li class="flex justify-between items-center pb-5">
+          <!-- <hr class="-mx-5" /> -->
+          <!-- <li class="-mb-3 text-[#6188FF]">Ijtimoiy tarmoqlar</li> -->
+          <!-- <li class="flex justify-between items-center pb-5">
             <div class="flex items-center gap-2">
               <img src="../../assets/svg/facebook.svg" alt="facebook" />
               <p>@munavvar</p>
@@ -45,7 +44,7 @@
               <img src="../../assets/svg/telegram.svg" alt="facebook" />
               <p>@munavvar</p>
             </div>
-          </li>
+          </li> -->
         </ul>
         <ul class="bg-[#FFFFFF] rounded-xl font-medium p-5 space-y-6">
           <li class="flex items-center justify-between">
@@ -61,7 +60,7 @@
           </li>
           <hr class="-mx-5" />
           <li>
-            <p class="text-[#6188FF] pb-1">Do‘kon telefon raqam</p>
+            <p class="text-[#6188FF] pb-1">Do‘kon telefon raqami</p>
             <p class="font-medium">+998 95 002 7987</p>
           </li>
           <hr class="-mx-5 pb-10" />
@@ -127,24 +126,138 @@
         </ul>
       </div>
     </section>
+
+    <!-- edit modal -->
+    <div v-show="store.modal"
+      tabindex="-1"
+      class="flex justify-center min-h-screen items-center bg-[#8080804c] absolute top-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
+    >
+      <ul class="bg-[#FFFFFF] rounded-xl font-medium p-5 space-y-6 w-[30rem]">
+        <li class="flex items-center justify-between">
+          <h1 class="text-2xl font-semibold">Shaxsiy ma'lumotlar</h1>
+          <i @click="closeModal" class="bx bx-x text-2xl font-bold cursor-pointer"></i>
+        </li>
+        <hr class="-mx-5" />
+        <li class="flex items-center gap-5">
+          <img
+            class="h-24 w-24 object-cover shadowPhoto bg-gray-300 rounded-full"
+            src="https://sxprotection.com.au/wp-content/uploads/2016/07/team-placeholder.png"
+            alt="Photo"
+          />
+          <a-dropdown class="-ml-11 mt-16" :trigger="['click']">
+            <a class="items-center ant-dropdown-link" @click.prevent>
+              <i class="bx bxs-camera-plus text-3xl"></i>
+            </a>
+            <template #overlay>
+              <a-menu>
+                <a-menu-item @click="() => getOneProduct(i.id)">
+                  O'zgartirish
+                </a-menu-item>
+                <a-menu-divider />
+                <a-menu-item @click="() => deleteProduct(i.id)"
+                  >O'chirish</a-menu-item
+                >
+              </a-menu>
+            </template>
+          </a-dropdown>
+          <div class="w-full">
+            <h1 class="text-lg font-semibold">
+              <a-input
+                class="rounded-md h-9"
+                v-model:value="value"
+                placeholder="To'liq ismingizni kiriting..."
+              />
+            </h1>
+            <p class="font-medium">
+              <a-input
+                class="rounded-md mt-2 h-9"
+                v-model:value="value"
+                placeholder="Manzilingizni kiriting..."
+              />
+            </p>
+          </div>
+        </li>
+        <li>
+          <p class="text-[#6188FF] pb-1">Email</p>
+          <p class="font-semibold">
+            <a-input
+              class="rounded-md"
+              v-model:value="value"
+              placeholder="Emailingizni kiriting..."
+            />
+          </p>
+        </li>
+        <hr class="-mx-5" />
+        <li>
+          <p class="text-[#6188FF] pb-1">Telefon raqam</p>
+          <p class="font-medium">
+            <a-input
+              class="rounded-md"
+              v-model:value="value"
+              placeholder="Telefon raqamingizni kiriting..."
+            />
+          </p>
+        </li>
+        <!-- <hr class="-mx-5" /> -->
+        <!-- <li class="-mb-3 text-[#6188FF]">Ijtimoiy tarmoqlar</li> -->
+        <!-- <li class="flex justify-between items-center pb-5">
+        <div class="flex items-center gap-2">
+          <img src="../../assets/svg/facebook.svg" alt="facebook" />
+          <p>@munavvar</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <img src="../../assets/svg/instagramm.svg" alt="facebook" />
+          <p>@munavvar</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <img src="../../assets/svg/telegram.svg" alt="facebook" />
+          <p>@munavvar</p>
+        </div>
+      </li> -->
+        <li
+          class="flex items-center justify-between p-6 -mx-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600"
+        >
+          <button
+            @click="closeModal"
+            data-modal-hide="defaultModal"
+            type="button"
+            class="text-gray-500 bg-white hover:bg-red-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
+          >
+            Bekor qilish
+          </button>
+          <button
+            data-modal-hide="defaultModal"
+            type="submit  "
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          >
+            Saqlash
+          </button>
+        </li>
+      </ul>
+    </div>
   </main>
 </template>
 
-<script>
+<script setup>
 definePageMeta({
   layout: "custom",
 });
-export default {
-  setup() {
-    const state = reactive({
-      count: 0,
-    });
 
-    return {
-      ...toRefs(state),
-    };
-  },
-};
+const store = reactive({
+  modal: false,
+})
+
+const form = reactive({
+  full_name: "",
+  address: "",
+  email: "",
+  phone: "",
+  image: "",
+})
+
+function closeModal() {
+  store.modal = false;
+}
 </script>
 
 <style lang="scss" scoped>

@@ -26,7 +26,7 @@
         >
           <button
             @click="returnPage"
-            :class="store.page == 1 ? 'bg-gray-300' : ''"
+            :class="productStore.store.page == 1 ? 'bg-gray-300' : ''"
             class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 focus:z-20 focus:outline-offset-0"
           >
             <svg
@@ -45,24 +45,38 @@
           <button
             @click="
               () => {
-                store.page = store.page > 5 ? store.page + i - 5 : i;
-                getProduct(store.token, store.page);
+                productStore.store.page =
+                  productStore.store.page > 5
+                    ? productStore.store.page + i - 5
+                    : i;
+                getProduct(productStore.store.token, productStore.store.page);
               }
             "
-            v-for="i in store.total_pages >= 5 ? 5 : store.total_pages"
+            v-for="i in productStore.store.total_pages >= 5
+              ? 5
+              : productStore.store.total_pages"
             :key="i"
             :class="
-              store.page == (store.page > 5 ? store.page + i - 5 : i)
+              productStore.store.page ==
+              (productStore.store.page > 5
+                ? productStore.store.page + i - 5
+                : i)
                 ? 'bg-[#5C0099] text-white'
                 : ''
             "
             class="relative inline-flex items-center hover:bg-[#9630d9] px-4 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 focus:z-20 focus:outline-offset-0"
           >
-            {{ store.page > 5 ? store.page + i - 5 : i }}
+            {{
+              productStore.store.page > 5 ? productStore.store.page + i - 5 : i
+            }}
           </button>
           <button
             @click="addPage"
-            :class="store.total_pages <= store.page ? 'bg-gray-300' : ''"
+            :class="
+              productStore.store.total_pages <= productStore.store.page
+                ? 'bg-gray-300'
+                : ''
+            "
             class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 focus:z-20 focus:outline-offset-0"
           >
             <svg
@@ -87,7 +101,7 @@
         </nav>
       </section>
       <section
-        v-if="store.isLoading"
+        v-if="productStore.store.isLoading"
         class="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 grid-cols-2 gap-5"
       >
         <div v-for="i in 8" :key="i.id" class="max-w-sm bg-white rounded-lg">
@@ -128,7 +142,7 @@
           </div>
         </div>
       </section>
-      <section v-else-if="!store.products?.length || false">
+      <section v-else-if="!productStore.allProducts?.length || false">
         <p
           class="flex flex-col items-center justify-center bg-white rounded-xl shadow h-80 gap-5"
         >
@@ -141,7 +155,7 @@
         class="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 grid-cols-2 gap-5"
       >
         <div
-          v-for="i in store.products"
+          v-for="i in productStore.allProducts"
           :key="i.id"
           class="max-w-sm bg-white rounded-lg"
         >
@@ -155,7 +169,7 @@
           <img
             v-if="i.image?.length"
             class="rounded-t-lg cursor-pointer w-full h-[166px] object-cover"
-            :src="baseUrl + i.image[0]?.image"
+            :src="baseUrlImage + '/' + i.image[0]?.image"
             alt="img"
             @click="
               open = true;
@@ -179,7 +193,7 @@
                 </a>
                 <template #overlay>
                   <a-menu>
-                    <a-menu-item @click="() => getOneProduct(i.id)">
+                    <a-menu-item @click="() => getOneEditProduct(i.id)">
                       O'zgartirish
                     </a-menu-item>
                     <a-menu-item key="1"> Ko'rish </a-menu-item>
@@ -263,9 +277,13 @@
               </div>
               <!-- Modal body -->
               <div class="px-10 py-5">
-                <ul class="space-y-6" v-for="i in store.showProduct" :key="i?.id">
+                <ul
+                  class="space-y-6 imageContainer"
+                  v-for="i in store.showProduct"
+                  :key="i?.id"
+                >
                   <li class="font-semibold text-lg text-[#242424]">
-                    {{i.name}}
+                    {{ i.name }}
                   </li>
                   <li class="flex gap-6 items-center">
                     <button
@@ -273,22 +291,28 @@
                     >
                       Sotuvda
                     </button>
-                    <p>#{{i.id}}</p>
+                    <p>#{{ i.id }}</p>
                   </li>
                   <li>Mahsulot rasmi</li>
-                  <li class="flex items-center gap-5">
+                  <li
+                    v-if="i.image?.length"
+                    @scroll="(e) => hiddenButton(e)"
+                    class="flex items-center relative gap-5 overflow-hidden overflow-x-auto"
+                  >
                     <img
-                      class="w-60 h-56 rounded-xl"
-                      src="../../assets/images/stripes.jpg"
+                      v-for="(img, index) in i.image"
+                      :key="index"
+                      :class="
+                        index == 0
+                          ? 'w-60 h-56 rounded-xl'
+                          : 'w-40 h-40 rounded-xl'
+                      "
+                      :src="baseUrlImage + '/' + img.image"
                       alt="img"
                     />
-                    <img
-                      v-for="i in 3"
-                      :key="i"
-                      class="w-44 h-40 rounded-xl"
-                      src="../../assets/images/stripes.jpg"
-                      alt="img"
-                    />
+                    <button
+                      class="hiddenButton bx bx-chevron-right text-4xl sticky top-0 bottom-0 right-5 bg-gray-200 h-10 w-10 my-auto rounded-full"
+                    ></button>
                   </li>
                   <li>Narxi</li>
                   <li class="font-medium text-lg">{{ i.price }} so‘m</li>
@@ -301,7 +325,7 @@
                     <a
                       class="text-[#6188FF] font-medium text-lg border-b border-[#6188FF]"
                       href="#"
-                      >{{i.name}}</a
+                      >{{ i.name }}</a
                     >
                   </li>
                   <hr />
@@ -337,9 +361,13 @@
           >
             <div>
               <p class="text-sm text-gray-700">
-                <span class="font-medium">{{ store.total_count }}</span>
+                <span class="font-medium">{{
+                  productStore.store.total_count
+                }}</span>
                 ta natijadan
-                <span class="font-medium">{{ store.currentPage }}</span>
+                <span class="font-medium">{{
+                  productStore.store.currentPage
+                }}</span>
                 dan
                 <span class="font-medium">10</span>
                 gacha koʻrsatilmoqda
@@ -352,7 +380,7 @@
               >
                 <button
                   @click="returnPage"
-                  :class="store.page == 1 ? 'bg-gray-300' : ''"
+                  :class="productStore.store.page == 1 ? 'bg-gray-300' : ''"
                   class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 focus:z-20 focus:outline-offset-0"
                 >
                   <svg
@@ -371,24 +399,43 @@
                 <button
                   @click="
                     () => {
-                      store.page = store.page > 5 ? store.page + i - 5 : i;
-                      getProduct(store.token, store.page);
+                      productStore.store.page =
+                        productStore.store.page > 5
+                          ? productStore.store.page + i - 5
+                          : i;
+                      getProduct(
+                        productStore.store.token,
+                        productStore.store.page
+                      );
                     }
                   "
-                  v-for="i in store.total_pages >= 5 ? 5 : store.total_pages"
+                  v-for="i in productStore.store.total_pages >= 5
+                    ? 5
+                    : productStore.store.total_pages"
                   :key="i"
                   :class="
-                    store.page == (store.page > 5 ? store.page + i - 5 : i)
+                    productStore.store.page ==
+                    (productStore.store.page > 5
+                      ? productStore.store.page + i - 5
+                      : i)
                       ? 'bg-[#5C0099] text-white'
                       : ''
                   "
                   class="relative inline-flex items-center hover:bg-[#9630d9] px-4 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 focus:z-20 focus:outline-offset-0"
                 >
-                  {{ store.page > 5 ? store.page + i - 5 : i }}
+                  {{
+                    productStore.store.page > 5
+                      ? productStore.store.page + i - 5
+                      : i
+                  }}
                 </button>
                 <button
                   @click="addPage"
-                  :class="store.total_pages <= store.page ? 'bg-gray-300' : ''"
+                  :class="
+                    productStore.store.total_pages <= productStore.store.page
+                      ? 'bg-gray-300'
+                      : ''
+                  "
                   class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 focus:z-20 focus:outline-offset-0"
                 >
                   <svg
@@ -415,13 +462,15 @@
 
 <script setup>
 import { useNotification } from "../composables/notification";
+import { useProductsStore } from "@/store/products";
 
 const { showLoading, showSuccess, showWarning, showError } = useNotification();
+const productStore = useProductsStore();
 
 const runtimeconfig = useRuntimeConfig();
-const baseUrl = ref(runtimeconfig.public.apiBaseUrl?.slice(0, -4));
+const baseUrlImage = ref(runtimeconfig.public.apiBaseUrl?.slice(0, -4));
+const baseUrl = runtimeconfig.public.apiBaseUrl;
 const router = useRouter();
-console.log(baseUrl.value);
 
 const category = [
   "Hammasi",
@@ -435,84 +484,54 @@ const open = ref(false);
 const step = ref(0);
 
 const store = reactive({
-  products: [],
-  isLoading: true,
-  currentPage: 0,
-  total_count: 0,
-  total_pages: 0,
-  page: 1,
   showProduct: "",
+  token: "",
 });
 
 function addPage() {
-  if (store.total_pages <= store.page) return;
-  store.page += 1;
-  getProduct(store.token, store.page);
+  if (productStore.store.total_pages <= productStore.store.page) return;
+  productStore.store.page += 1;
+  productStore.getProducts();
 }
 
 function returnPage() {
-  if (store.page < 2) return;
-  store.page -= 1;
-  getProduct(store.token, store.page);
+  if (productStore.store.page < 2) return;
+  productStore.store.page -= 1;
+  productStore.getProducts();
 }
 
-function getProduct(token, page) {
-  store.isLoading = true;
-  fetch(`https://florify-market.onrender.com/api/product/page?page=${page}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  })
-    .then((res) => res.json())
-    .then((res) => {
-      if (
-        res.message === "Token vaqti tugagan!" ||
-        res.message === "Token topilmadi!"
-      ) {
-        router.push("/login");
-      }
-      console.log(res.data?.records);
-      console.log(res.data?.pagination);
-      store.products = res.data?.records;
-      store.currentPage = res.data?.pagination?.currentPage;
-      store.total_count = res.data?.pagination?.total_count;
-      store.total_pages = res.data?.pagination?.total_pages;
-      store.isLoading = false;
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+function hiddenButton(e) {
+  console.log(document.querySelector(".imageContainer").offsetWidth);
+  console.log(e);
+  document.querySelector(".hiddenButton").className += " hidden";
+}
+
+function getOneEditProduct(id) {
+  productStore.getOneProduct(id);
 }
 
 function getOneProduct(id) {
-  fetch(`https://florify-market.onrender.com/api/product/${id}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${store.token}`,
-    },
-  })
-    .then((res) => res.json())
-    .then((res) => {
-      if (
-        res.message === "Token vaqti tugagan!" ||
-        res.message === "Token topilmadi!"
-      ) {
-        router.push("/login");
-      }
-      console.log(res);
-      store.showProduct = [res];
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-}
+    fetch(baseUrl + `/product/${id}`)
+      .then((res) => res.json())
+      .then((res) => {
+        if (
+          res.message === "Token vaqti tugagan!" ||
+          res.message === "Token topilmadi!"
+        ) {
+          router.push("/login");
+        }
+        console.log(res);
+        store.showProduct = [res];
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
 
 function deleteProduct(id) {
   showLoading("So'rov yuborilmoqda...");
-  fetch(`https://florify-market.onrender.com/api/product/${id}`, {
+  fetch(baseUrl + `/product/${id}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
@@ -529,7 +548,7 @@ function deleteProduct(id) {
       }
       console.log(res);
       showSuccess(res.message);
-      getProduct(store.token, store.page);
+      productStore.getProducts();
     })
     .catch((err) => {
       console.log(err);
@@ -538,7 +557,7 @@ function deleteProduct(id) {
 
 onMounted(() => {
   const token = localStorage.getItem("token");
-  getProduct(token, store.page);
+  productStore.getProducts();
 });
 </script>
 

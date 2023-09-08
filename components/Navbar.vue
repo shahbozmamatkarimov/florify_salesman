@@ -43,7 +43,7 @@
             >
               <img src="../assets/svg/bell.svg" alt="search" />
             </button>
-            <div @click="() => (open = true)">
+            <div @click="() => (productStore.store.openEditModal = true)">
               <button
                 type="button"
                 class="flex items-center gap-2 text-white bg-[#45D469] hover:bg-[#2ead4d] font-medium rounded-lg px-5 py-2.5"
@@ -76,7 +76,7 @@
     <section>
       <!-- Main modal -->
       <div
-        v-if="open"
+        v-if="productStore.store.openEditModal"
         tabindex="-1"
         aria-hidden="true"
         class="flex justify-center items-center bg-[#8c8cee0d] backdrop-blur-[1px] fixed top-0 left-0 right-0 z-50 w-full md:inset-0 h-[calc(100%-1rem)]"
@@ -535,11 +535,38 @@
                 Bekor qilish
               </button>
               <button
+                v-if="!store.is_submit"
                 data-modal-hide="defaultModal"
-                type="submit  "
+                type="submit"
                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                :disabled="store.is_submit ? true : false"
               >
                 Yuklash
+              </button>
+              <button
+                v-else
+                disabled="true"
+                type="button"
+                class="text-white bg-blue-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center hover:bg-gray-100 hover:text-blue-700 focus:z-10 border border-gray-300 focus:ring-4 focus:outline-none focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 inline-flex items-center"
+              >
+                <svg
+                  aria-hidden="true"
+                  role="status"
+                  class="inline mr-2 w-4 h-4 text-gray-200 animate-spin dark:text-gray-600"
+                  viewBox="0 0 100 101"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                    fill="currentColor"
+                  ></path>
+                  <path
+                    d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                    fill="#1C64F2"
+                  ></path>
+                </svg>
+                Yuklanmoqda...
               </button>
             </div>
           </form>
@@ -551,10 +578,15 @@
 
 <script setup>
 import { useNotification } from "../composables/notification";
+import { useProductsStore } from "@/store/products";
 
 const { showLoading, showSuccess, showWarning, showError } = useNotification();
+const productStore = useProductsStore();
 
-const open = ref(false);
+const runtimeconfig = useRuntimeConfig();
+const baseUrlImage = ref(runtimeconfig.public.apiBaseUrl?.slice(0, -3));
+const baseUrl = runtimeconfig.public.apiBaseUrl;
+
 const price = ref();
 const description = ref();
 const options = ref([]);
@@ -583,6 +615,7 @@ const store = reactive({
   name5: "",
   size5: "",
   step: 2,
+  is_submit: false,
 });
 
 const create = reactive({
@@ -591,7 +624,7 @@ const create = reactive({
   price: "",
   color: "red",
   category_id: "Kategoriyani tanlang",
-  salesman_id: "d03d1775-08e7-40fb-8465-951647a926e9",
+  salesman_id: "aff39d4f-1f55-4875-a0b9-efc10e547a89",
   quantity: "",
 });
 
@@ -622,9 +655,9 @@ function closeModal() {
   create.price = "";
   create.color = "red";
   create.category_id = "Kategoriyani tanlang";
-  create.salesman_id = "d03d1775-08e7-40fb-8465-951647a926e9";
+  create.salesman_id = "aff39d4f-1f55-4875-a0b9-efc10e547a89";
   create.quantity = "";
-  open.value = false;
+  productStore.store.openEditModal = false;
 }
 
 const filterOption = (input, option) => {
@@ -682,7 +715,7 @@ function uploadFile(e, number) {
 }
 
 function getCategory() {
-  fetch("https://florify-market.onrender.com/api/category", {
+  fetch("https://florify.onrender.com/api/category", {
     method: "GET",
     headers: {
       Accept: "application/json",
@@ -724,8 +757,8 @@ const handleSubmit = () => {
   const token = localStorage.getItem("token");
 
   showLoading("Ma'lumotlar yuborilmoqda...");
-
-  fetch("https://florify-market.onrender.com/api/product", {
+  store.is_submit = true;
+  fetch("https://florify.onrender.com/api/product", {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -761,18 +794,21 @@ const handleSubmit = () => {
           store.upload4,
           store.upload5,
         ];
-
+        let images = 0;
+        let t = 0;
         for (let i = 0; i < 5; i++) {
           if (files[i]) {
-            const formData = new FormData();
-            formData.append("image", uploadFiles[i]);
-            uploadImage(formData);
+            if (uploadFiles[i]) {
+              images += 1;
+              const formData = new FormData();
+              formData.append("image", uploadFiles[i]);
+              uploadImage(formData);
+            }
           }
         }
-
         function uploadImage(formData) {
           fetch(
-            `https://florify-market.onrender.com/api/image/create/${res.product?.id}`,
+            `https://florify.onrender.com/api/image/create/${res.product?.id}`,
             {
               method: "POST",
               body: formData,
@@ -781,9 +817,14 @@ const handleSubmit = () => {
             .then((res) => {
               console.log(res);
               if (res.status === 201) {
-                getProduct.getProducts(token);
-                closeModal();
-                showSuccess("Mahsulot qo'shildi");
+                t += 1;
+                // getProduct.getProducts(token);
+                if (t == images) {
+                  closeModal();
+                  showSuccess("Mahsulot qo'shildi");
+                  store.is_submit = false;
+                  productStore.getProducts(1);
+                }
               } else {
                 showError("Iltimos, Rasmlarni to'g'ri formatda kiriting!");
               }
@@ -802,6 +843,27 @@ const handleSubmit = () => {
       showError("Iltimos, ma'lumotlarni to'g'ri tartibda kiriting!");
     });
 };
+
+watch(
+  () => productStore.showProductById,
+  () => {
+    const product = productStore.showProductById;
+    console.log(product);
+    create.name = product.name;
+    create.description = product.description;
+    create.price = product.price;
+    create.color = product.color;
+    create.category_id = product.category_id;
+    create.salesman_id = product.salesman_id;
+    create.quantity = product.quantity;
+
+    store.step = product.image?.length;
+    for (let i = 1; i <= product.image?.length; i++) {
+      store[`file${i}`] = baseUrlImage.value + product.image[i-1]?.image;
+      // store[`upload${i}`] = baseUrlImage.value + product.upload[i-1]?.image;
+    }
+  }
+);
 
 onBeforeMount(() => {
   getCategory();

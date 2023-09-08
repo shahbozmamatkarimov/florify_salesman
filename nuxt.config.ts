@@ -18,7 +18,7 @@ export default defineNuxtConfig({
   imports: {
     autoImport: true,
   },
-  modules: ["@ant-design-vue/nuxt"],
+  modules: ["@ant-design-vue/nuxt", "@pinia/nuxt"],
   css: ["~/assets/main.css"],
   postcss: {
     plugins: {
