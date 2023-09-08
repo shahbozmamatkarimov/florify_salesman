@@ -859,7 +859,7 @@ watch(
 
     store.step = product.image?.length;
     for (let i = 1; i <= product.image?.length; i++) {
-      store[`file${i}`] = baseUrlImage.value + product.image[i-1]?.image;
+      store[`file${i}`] = baseUrlImage.value + product.image[i - 1]?.image;
       // store[`upload${i}`] = baseUrlImage.value + product.upload[i-1]?.image;
     }
   }

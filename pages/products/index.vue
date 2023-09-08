@@ -49,7 +49,7 @@
                   productStore.store.page > 5
                     ? productStore.store.page + i - 5
                     : i;
-                getProduct(productStore.store.token, productStore.store.page);
+                productStore.getProducts();
               }
             "
             v-for="i in productStore.store.total_pages >= 5
@@ -403,10 +403,7 @@
                         productStore.store.page > 5
                           ? productStore.store.page + i - 5
                           : i;
-                      getProduct(
-                        productStore.store.token,
-                        productStore.store.page
-                      );
+                      productStore.getProducts();
                     }
                   "
                   v-for="i in productStore.store.total_pages >= 5
@@ -511,23 +508,22 @@ function getOneEditProduct(id) {
 }
 
 function getOneProduct(id) {
-    fetch(baseUrl + `/product/${id}`)
-      .then((res) => res.json())
-      .then((res) => {
-        if (
-          res.message === "Token vaqti tugagan!" ||
-          res.message === "Token topilmadi!"
-        ) {
-          router.push("/login");
-        }
-        console.log(res);
-        store.showProduct = [res];
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-
+  fetch(baseUrl + `/product/${id}`)
+    .then((res) => res.json())
+    .then((res) => {
+      if (
+        res.message === "Token vaqti tugagan!" ||
+        res.message === "Token topilmadi!"
+      ) {
+        router.push("/login");
+      }
+      console.log(res);
+      store.showProduct = [res];
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
 
 function deleteProduct(id) {
   showLoading("So'rov yuborilmoqda...");
