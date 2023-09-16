@@ -57,9 +57,19 @@
   </main>
 </template>
 <script setup>
+definePageMeta({
+  middleware: [
+    "auth",
+  ],
+});
+
 import { useNotification } from "../../composables/notification";
 const { showLoading, showSuccess, showError } = useNotification();
 const router = useRouter();
+
+const runtimeconfig = useRuntimeConfig();
+const baseUrl = runtimeconfig.public.apiBaseUrl;
+
 definePageMeta({
   layout: "none",
 });
@@ -75,7 +85,7 @@ const handleSubmit = () => {
     phone: form.phone,
     password: form.password,
   };
-  fetch("https://florify-market.onrender.com/api/salesman/login", {
+  fetch(baseUrl + "/salesman/login", {
     method: "POST",
     body: JSON.stringify(data),
     headers: {
@@ -87,6 +97,7 @@ const handleSubmit = () => {
     .then((res) => {
       console.log(res);
       localStorage.setItem("token", res.access_token);
+      localStorage.setItem("salesman_id", res.salesman?.id);
       if (res.message === "Parol mos kelmadi!") {
         showError("Telefon raqami topilmadi!");
         return;

@@ -43,7 +43,7 @@
             >
               <img src="../assets/svg/bell.svg" alt="search" />
             </button>
-            <div @click="() => (productStore.store.openEditModal = true)">
+            <div @click="() => (productStore.state.openEditModal = true)">
               <button
                 type="button"
                 class="flex items-center gap-2 text-white bg-[#45D469] hover:bg-[#2ead4d] font-medium rounded-lg px-5 py-2.5"
@@ -76,7 +76,7 @@
     <section>
       <!-- Main modal -->
       <div
-        v-if="productStore.store.openEditModal"
+        v-if="productStore.state.openEditModal"
         tabindex="-1"
         aria-hidden="true"
         class="flex justify-center items-center bg-[#8c8cee0d] backdrop-blur-[1px] fixed top-0 left-0 right-0 z-50 w-full md:inset-0 h-[calc(100%-1rem)]"
@@ -624,7 +624,7 @@ const create = reactive({
   price: "",
   color: "red",
   category_id: "Kategoriyani tanlang",
-  salesman_id: "aff39d4f-1f55-4875-a0b9-efc10e547a89",
+  salesman_id: "",
   quantity: "",
 });
 
@@ -655,9 +655,9 @@ function closeModal() {
   create.price = "";
   create.color = "red";
   create.category_id = "Kategoriyani tanlang";
-  create.salesman_id = "aff39d4f-1f55-4875-a0b9-efc10e547a89";
+  create.salesman_id = "";
   create.quantity = "";
-  productStore.store.openEditModal = false;
+  productStore.state.openEditModal = false;
 }
 
 const filterOption = (input, option) => {
@@ -868,6 +868,10 @@ watch(
 onBeforeMount(() => {
   getCategory();
 });
+
+onMounted(() => {
+  create.salesman_id = localStorage.getItem("salesman_id");
+})
 </script>
 
 <style lang="scss" scoped>

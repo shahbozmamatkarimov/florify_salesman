@@ -29,6 +29,12 @@
   </main>
 </template>
 <script setup>
+definePageMeta({
+  middleware: [
+    "auth",
+  ],
+});
+
 import { useRouter } from "vue-router";
 const router = useRouter();
 

@@ -1,26 +1,21 @@
 import { defineStore } from "pinia";
 
-export const useProductsStore = defineStore("products", () => {
+export const useCardStore = defineStore("card", () => {
   const runtimeconfig = useRuntimeConfig();
   const baseUrl = runtimeconfig.public.apiBaseUrl;
 
-  const state = reactive({
+  const store = reactive({
     products: [],
     isLoading: true,
-    currentPage: 0,
-    total_count: 0,
-    total_pages: 0,
-    page: 1,
-    showProduct: "",
-    openEditModal: false,
+    modal: false,
   });
 
-  const allProducts = computed(() => state.products);
-  const showProductById = computed(() => state.showProduct);
+  const allProducts = computed(() => store.products);
+  const showProductById = computed(() => store.showProduct);
 
   function getProducts() {
-    state.isLoading = true;
-    fetch(baseUrl + `/product/page?page=${state.page}`)
+    store.isLoading = true;
+    fetch(baseUrl + `/product/page?page=${store.page}`)
       .then((res) => res.json())
       .then((res) => {
         if (
@@ -31,11 +26,11 @@ export const useProductsStore = defineStore("products", () => {
         }
         console.log(res.data?.records);
         console.log(res.data?.pagination);
-        state.products = res.data?.records;
-        state.currentPage = res.data?.pagination?.currentPage;
-        state.total_count = res.data?.pagination?.total_count;
-        state.total_pages = res.data?.pagination?.total_pages;
-        state.isLoading = false;
+        store.products = res.data?.records;
+        store.currentPage = res.data?.pagination?.currentPage;
+        store.total_count = res.data?.pagination?.total_count;
+        store.total_pages = res.data?.pagination?.total_pages;
+        store.isLoading = false;
       })
       .catch((err) => {
         console.log(err);
@@ -43,8 +38,8 @@ export const useProductsStore = defineStore("products", () => {
   }
 
   function getOneProduct(id) {
-    state.openEditModal = true;
-    state.isLoading = true;
+    store.openEditModal = true;
+    store.isLoading = true;
     fetch(baseUrl + `/product/${id}`)
       .then((res) => res.json())
       .then((res) => {
@@ -55,13 +50,13 @@ export const useProductsStore = defineStore("products", () => {
           router.push("/login");
         }
         console.log(res);
-        state.showProduct = res;
-        state.isLoading = false;
+        store.showProduct = res;
+        store.isLoading = false;
       })
       .catch((err) => {
         console.log(err);
       });
   }
 
-  return { state, getProducts, getOneProduct, allProducts, showProductById };
+  return { store, getProducts, getOneProduct, allProducts, showProductById };
 });

@@ -222,12 +222,11 @@
   </main>
 </template>
 <script setup>
-// layout
-// const  layout = "custom"
-// layout
-
 definePageMeta({
   layout: "custom",
+  middleware: [
+    "auth",
+  ],
 });
 
 const comment = ref("");

@@ -26,7 +26,7 @@
         >
           <button
             @click="returnPage"
-            :class="productStore.store.page == 1 ? 'bg-gray-300' : ''"
+            :class="productStore.state.page == 1 ? 'bg-gray-300' : ''"
             class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 focus:z-20 focus:outline-offset-0"
           >
             <svg
@@ -45,21 +45,21 @@
           <button
             @click="
               () => {
-                productStore.store.page =
-                  productStore.store.page > 5
-                    ? productStore.store.page + i - 5
+                productStore.state.page =
+                  productStore.state.page > 5
+                    ? productStore.state.page + i - 5
                     : i;
                 productStore.getProducts();
               }
             "
-            v-for="i in productStore.store.total_pages >= 5
+            v-for="i in productStore.state.total_pages >= 5
               ? 5
-              : productStore.store.total_pages"
+              : productStore.state.total_pages"
             :key="i"
             :class="
-              productStore.store.page ==
-              (productStore.store.page > 5
-                ? productStore.store.page + i - 5
+              productStore.state.page ==
+              (productStore.state.page > 5
+                ? productStore.state.page + i - 5
                 : i)
                 ? 'bg-[#5C0099] text-white'
                 : ''
@@ -67,13 +67,13 @@
             class="relative inline-flex items-center hover:bg-[#9630d9] px-4 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 focus:z-20 focus:outline-offset-0"
           >
             {{
-              productStore.store.page > 5 ? productStore.store.page + i - 5 : i
+              productStore.state.page > 5 ? productStore.state.page + i - 5 : i
             }}
           </button>
           <button
             @click="addPage"
             :class="
-              productStore.store.total_pages <= productStore.store.page
+              productStore.state.total_pages <= productStore.state.page
                 ? 'bg-gray-300'
                 : ''
             "
@@ -101,7 +101,7 @@
         </nav>
       </section>
       <section
-        v-if="productStore.store.isLoading"
+        v-if="productStore.state.isLoading"
         class="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 grid-cols-2 gap-5"
       >
         <div v-for="i in 8" :key="i.id" class="max-w-sm bg-white rounded-lg">
@@ -196,7 +196,15 @@
                     <a-menu-item @click="() => getOneEditProduct(i.id)">
                       O'zgartirish
                     </a-menu-item>
-                    <a-menu-item key="1"> Ko'rish </a-menu-item>
+                    <a-menu-item
+                      key="1"
+                      @click="
+                        open = true;
+                        getOneProduct(i.id);
+                      "
+                    >
+                      Ko'rish
+                    </a-menu-item>
                     <a-menu-divider />
                     <a-menu-item @click="() => deleteProduct(i.id)"
                       >O'chirish</a-menu-item
@@ -362,11 +370,11 @@
             <div>
               <p class="text-sm text-gray-700">
                 <span class="font-medium">{{
-                  productStore.store.total_count
+                  productStore.state.total_count
                 }}</span>
                 ta natijadan
                 <span class="font-medium">{{
-                  productStore.store.currentPage
+                  productStore.state.currentPage
                 }}</span>
                 dan
                 <span class="font-medium">10</span>
@@ -380,7 +388,7 @@
               >
                 <button
                   @click="returnPage"
-                  :class="productStore.store.page == 1 ? 'bg-gray-300' : ''"
+                  :class="productStore.state.page == 1 ? 'bg-gray-300' : ''"
                   class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 focus:z-20 focus:outline-offset-0"
                 >
                   <svg
@@ -399,21 +407,21 @@
                 <button
                   @click="
                     () => {
-                      productStore.store.page =
-                        productStore.store.page > 5
-                          ? productStore.store.page + i - 5
+                      productStore.state.page =
+                        productStore.state.page > 5
+                          ? productStore.state.page + i - 5
                           : i;
                       productStore.getProducts();
                     }
                   "
-                  v-for="i in productStore.store.total_pages >= 5
+                  v-for="i in productStore.state.total_pages >= 5
                     ? 5
-                    : productStore.store.total_pages"
+                    : productStore.state.total_pages"
                   :key="i"
                   :class="
-                    productStore.store.page ==
-                    (productStore.store.page > 5
-                      ? productStore.store.page + i - 5
+                    productStore.state.page ==
+                    (productStore.state.page > 5
+                      ? productStore.state.page + i - 5
                       : i)
                       ? 'bg-[#5C0099] text-white'
                       : ''
@@ -421,15 +429,15 @@
                   class="relative inline-flex items-center hover:bg-[#9630d9] px-4 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 focus:z-20 focus:outline-offset-0"
                 >
                   {{
-                    productStore.store.page > 5
-                      ? productStore.store.page + i - 5
+                    productStore.state.page > 5
+                      ? productStore.state.page + i - 5
                       : i
                   }}
                 </button>
                 <button
                   @click="addPage"
                   :class="
-                    productStore.store.total_pages <= productStore.store.page
+                    productStore.state.total_pages <= productStore.state.page
                       ? 'bg-gray-300'
                       : ''
                   "
@@ -458,6 +466,12 @@
 </template>
 
 <script setup>
+definePageMeta({
+  middleware: [
+    "auth",
+  ],
+});
+
 import { useNotification } from "../composables/notification";
 import { useProductsStore } from "@/store/products";
 
@@ -486,14 +500,14 @@ const store = reactive({
 });
 
 function addPage() {
-  if (productStore.store.total_pages <= productStore.store.page) return;
-  productStore.store.page += 1;
+  if (productStore.state.total_pages <= productStore.state.page) return;
+  productStore.state.page += 1;
   productStore.getProducts();
 }
 
 function returnPage() {
-  if (productStore.store.page < 2) return;
-  productStore.store.page -= 1;
+  if (productStore.state.page < 2) return;
+  productStore.state.page -= 1;
   productStore.getProducts();
 }
 
@@ -548,7 +562,7 @@ function deleteProduct(id) {
     })
     .catch((err) => {
       console.log(err);
-    });
+    }); 
 }
 
 onMounted(() => {

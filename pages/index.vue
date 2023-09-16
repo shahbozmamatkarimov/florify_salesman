@@ -1,4 +1,3 @@
-
 <template>
   <main>
     <Navbar>Dashboard</Navbar>
@@ -656,6 +655,12 @@
 </template>
 
 <script setup>
+definePageMeta({
+  middleware: [
+    "auth",
+  ],
+});
+
 const orders = ref([
   {
     id: "#568914",

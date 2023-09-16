@@ -177,6 +177,12 @@
 </template>
 
 <script setup>
+definePageMeta({
+  middleware: [
+    "auth",
+  ],
+});
+
 const step = ref(1);
 </script>
 

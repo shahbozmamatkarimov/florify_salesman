@@ -20,6 +20,13 @@ export default defineNuxtConfig({
   },
   modules: ["@ant-design-vue/nuxt", "@pinia/nuxt"],
   css: ["~/assets/main.css"],
+  plugins: [
+    {
+      src: "~/plugins/aos",
+      mode: "client",
+      ssr: false,
+    },
+  ],
   postcss: {
     plugins: {
       tailwindcss: {},
