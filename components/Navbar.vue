@@ -72,8 +72,8 @@
         </div>
       </form>
     </section>
-    <!-- Modal toggle -->
-    <section>
+
+    <section :class="store.is_submit? 'pointer-events-none':''">
       <!-- Main modal -->
       <div
         v-if="productStore.state.openEditModal"
@@ -818,6 +818,8 @@ const handleSubmit = () => {
               console.log(res);
               if (res.status === 201) {
                 t += 1;
+
+                console.log(t, images);
                 // getProduct.getProducts(token);
                 if (t == images) {
                   closeModal();
@@ -871,7 +873,7 @@ onBeforeMount(() => {
 
 onMounted(() => {
   create.salesman_id = localStorage.getItem("salesman_id");
-})
+});
 </script>
 
 <style lang="scss" scoped>
