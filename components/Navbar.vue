@@ -655,7 +655,6 @@ function closeModal() {
   create.price = "";
   create.color = "red";
   create.category_id = "Kategoriyani tanlang";
-  create.salesman_id = "";
   create.quantity = "";
   productStore.state.openEditModal = false;
 }
@@ -734,7 +733,7 @@ function getCategory() {
       for (let i of res) {
         options.value.push({
           value: i.id,
-          label: i.name,
+          label: i.uz,
         });
         optionsId.value.push(i.id);
       }

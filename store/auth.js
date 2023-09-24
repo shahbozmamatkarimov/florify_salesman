@@ -7,6 +7,7 @@ export const useAuthStore = defineStore("isLogged", () => {
 
   function checkAuth() {
     if (process.client){
+      console.log(router.currentRoute.value);
         const id = localStorage.getItem("salesman_id");
         const token = localStorage.getItem("token");
         fetch(baseUrl + `/salesman/profile/${id}`, {
@@ -22,6 +23,7 @@ export const useAuthStore = defineStore("isLogged", () => {
                 res.message === "Token vaqti tugagan!" ||
                 res.message === "Token topilmadi!"
               ) {
+                if (router.currentRoute.value.fullPath == "login") return
                 router.push("/login");
               }
               return true;
