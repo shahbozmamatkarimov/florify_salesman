@@ -714,7 +714,7 @@ function uploadFile(e, number) {
 }
 
 function getCategory() {
-  fetch("https://florify.onrender.com/api/category", {
+  fetch("https://api.florify.uz/api/category", {
     method: "GET",
     headers: {
       Accept: "application/json",
@@ -757,7 +757,7 @@ const handleSubmit = () => {
 
   showLoading("Ma'lumotlar yuborilmoqda...");
   store.is_submit = true;
-  fetch("https://florify.onrender.com/api/product", {
+  fetch("https://api.florify.uz/api/product", {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -807,7 +807,7 @@ const handleSubmit = () => {
         }
         function uploadImage(formData) {
           fetch(
-            `https://florify.onrender.com/api/image/create/${res.product?.id}`,
+            `https://api.florify.uz/api/image/create/${res.product?.id}`,
             {
               method: "POST",
               body: formData,
