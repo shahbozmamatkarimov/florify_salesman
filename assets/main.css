@@ -2,11 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body {
-    overflow: hidden;
-    background: #F4F4F6;
+html,
+body {
+  overflow: hidden;
+  background: #f4f4f6;
 }
 
-::-webkit-scrollbar{
-width: 0;
+::-webkit-scrollbar {
+  width: 0;
+}
+
+:where(.css-dev-only-do-not-override-hkh161).ant-modal .ant-modal-close,
+:where(.css-dev-only-do-not-override-hkh161).ant-modal .ant-modal-footer {
+  display: none;
+}
+
+[rel="2"] {
+  display: none;
 }

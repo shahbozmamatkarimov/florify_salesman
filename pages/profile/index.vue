@@ -78,7 +78,7 @@
         </ul>
       </div>
 
-      <div class="pb-20 overflow-hidden overflow-y-auto max-h-[82vh]">
+      <!-- <div class="pb-20 overflow-hidden overflow-y-auto max-h-[82vh]">
         <ul
           class="flex flex-col h-[699px] rounded-xl items-center bg-[#FFFFFF]"
         >
@@ -136,13 +136,131 @@
             </div>
           </li>
         </ul>
-      </div>
+      </div> -->
     </section>
 
     <EditCard v-show="card.store.modal" />
 
+    <!-- edit info -->
+    <a-modal v-model:open="store.modal" centered>
+      <form @submit.prevent="useProfile.editProfile">
+        <ul class="bg-[#FFFFFF] rounded-xl font-medium p-5 space-y-6 w-[30rem]">
+          <li class="flex items-center justify-between">
+            <h1 class="text-2xl font-semibold">Shaxsiy ma'lumotlar</h1>
+            <i
+              @click="closeModal"
+              class="bx bx-x text-2xl font-bold cursor-pointer"
+            ></i>
+          </li>
+          <hr class="-mx-5" />
+          <li class="flex items-center gap-5">
+            <img
+              v-if="!store.userImage"
+              class="min-w-[6rem] h-24 w-24 object-cover shadowPhoto bg-gray-300 rounded-full"
+              src="https://sxprotection.com.au/wp-content/uploads/2016/07/team-placeholder.png"
+              alt="Photo"
+            />
+            <img
+              v-else
+              class="min-w-[6rem] h-24 w-24 object-cover shadowPhoto bg-gray-300 rounded-full"
+              :src="store.userImage"
+              alt="Photo"
+            />
+            <a-dropdown class="-ml-11 mt-16" :trigger="['click']">
+              <a class="items-center ant-dropdown-link" @click.prevent>
+                <i class="bx bxs-camera-plus text-3xl"></i>
+              </a>
+              <template #overlay>
+                <a-menu>
+                  <a-menu-item>
+                    <label for="userPhoto">O'zgartirish</label>
+                  </a-menu-item>
+                  <a-menu-divider />
+                  <a-menu-item @click="() => deleteProduct(i.id)"
+                    >O'chirish</a-menu-item
+                  >
+                </a-menu>
+              </template>
+            </a-dropdown>
+            <input
+              id="userPhoto"
+              @change="(e) => uploadFile(e)"
+              class="w-0 h-0 overflow-hidden"
+              type="file"
+              accept="image/*"
+            />
+            <div class="w-full">
+              <h1 class="text-lg font-semibold">
+                <a-input
+                  type="text"
+                  class="rounded-md h-9"
+                  v-model:value="useProfile.profile.full_name"
+                  placeholder="To'liq ismingizni kiriting..."
+                  required
+                />
+              </h1>
+              <p class="font-medium">
+                <a-input
+                  type="text"
+                  class="rounded-md mt-2 h-9"
+                  v-model:value="useProfile.profile.address"
+                  placeholder="Manzilingizni kiriting..."
+                  required
+                />
+              </p>
+            </div>
+          </li>
+          <li>
+            <p class="text-[#6188FF] pb-1">Email</p>
+            <p class="font-semibold">
+              <a-input
+                type="email"
+                class="rounded-md"
+                v-model:value="useProfile.profile.email"
+                placeholder="Emailingizni kiriting..."
+                required
+              />
+            </p>
+          </li>
+          <hr class="-mx-5" />
+          <li>
+            <p class="text-[#6188FF] pb-1">Telefon raqam</p>
+            <p class="font-medium">
+              <a-input
+                type="tel"
+                prefix="+998"
+                class="rounded-md"
+                v-model:value="useProfile.profile.phone"
+                placeholder=""
+                required
+              />
+            </p>
+          </li>
+          <li
+            class="flex items-center justify-between p-6 -mx-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600"
+          >
+            <button
+              @click="closeModal"
+              data-modal-hide="defaultModal"
+              type="button"
+              class="text-gray-500 bg-white hover:bg-red-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
+            >
+              Bekor qilish
+            </button>
+            <button
+              data-modal-hide="defaultModal"
+              type="submit"
+              class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            >
+              Saqlash
+            </button>
+          </li>
+        </ul>
+      </form>
+    </a-modal>
+
     <!-- edit modal -->
-    <form
+    <!-- <form
       @submit.prevent="handleSubmit"
       v-show="store.modal"
       tabindex="-1"
@@ -260,7 +378,7 @@
           </button>
         </li>
       </ul>
-    </form>
+    </form> -->
 
     <!-- edit location -->
     <form
@@ -331,15 +449,15 @@
 </template>
 
 <script setup>
+import { useProfileStore } from "@/store";
+import { useNotification } from "../composables/notification";
+import { useCardStore } from "@/store/card";
+
 definePageMeta({
-  middleware: [
-    "auth",
-  ],
+  middleware: ["auth"],
 });
 
-import { useNotification } from "../composables/notification";
-import { useCardStore } from "@/store/card"
-
+const useProfile = useProfileStore();
 const card = useCardStore();
 const { showLoading, showSuccess, showWarning, showError } = useNotification();
 
@@ -366,7 +484,6 @@ const form = reactive({
   address: "",
   email: "",
   phone: "",
-  image: "",
 });
 
 function closeModal() {
@@ -381,7 +498,7 @@ function uploadFile(e) {
   }
   const file = e.target.files[0];
   store.userImage = URL.createObjectURL(file);
-  form.image = file;
+  useProfile.profile.image = file;
 }
 
 function handleSubmit() {

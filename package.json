@@ -21,6 +21,7 @@
     "ant-design-vue": "^4.0.2",
     "aos": "^2.3.4",
     "apexcharts": "^3.42.0",
+    "axios": "^1.6.0",
     "flowbite": "^1.8.1",
     "pinia": "^2.1.6",
     "sass": "^1.66.1",
