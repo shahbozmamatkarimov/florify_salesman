@@ -2,7 +2,7 @@
   <header>
     <Sidebar />
 
-    <div class="sm:ml-64">
+    <div class="md:ml-64">
         <slot />
     </div>
   </header>

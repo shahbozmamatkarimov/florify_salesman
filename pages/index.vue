@@ -284,16 +284,21 @@
           </div>
         </div>
     </section> -->
-    <div class="px-10 pb-20 overflow-hidden overflow-y-auto max-h-[82vh]">
-      <section class="-mt-8 mb-10">
+    <div
+      class="lg:px-10 sm:px-5 md:pb-20 pb-16 overflow-hidden custom_scroll overflow-y-auto max-h-[82vh]"
+    >
+      <section class="-mt-8 lg:mb-10 mb-4">
         <Chart />
       </section>
-      <section class="bg-white p-5 rounded-xl">
-        <h1 class="text-2xl font-medium">Buyurtmalar</h1>
+      <section class="bg-white py-5 rounded-xl whitespace-nowrap">
+        <div class="flex items-center justify-between px-5">
+          <h1 class="text-2xl font-medium">Buyurtmalar</h1>
+          <img class="cursor-pointer" src="@/assets/svg/reload.svg" />
+        </div>
 
-        <div class="relative overflow-x-auto sm:rounded-lg">
+        <div class="relative px-5 overflow-x-auto sm:rounded-lg">
           <div class="flex items-center justify-between py-4 bg-white">
-            <div class="relative">
+            <div class="relative lg:h-full lg:w-full w-0 h-0 overflow-hidden">
               <div
                 class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
               >
@@ -315,43 +320,57 @@
               </div>
               <input
                 id="table-search-users"
-                type="text"
-                class="block p-2 pl-10 text-sm border-0 focus:ring-0 border-gray-300 rounded-lg w-80 bg-[#F4F4F6]"
+                type="search"
+                class="block p-2 pl-10 h-[46px] text-sm border-0 focus:ring-0 border-gray-300 rounded-lg w-80 bg-[#F4F4F6]"
                 placeholder="Qidirish..."
               />
             </div>
-            <div class="flex gap-5">
-              <input
-                type="date"
-                class="bg-[#F4F4F6] border-0 focus:ring-0 rounded-lg"
-              />
-              <select class="bg-[#F4F4F6] border-0 focus:ring-0 rounded-lg">
-                <option value="0">Status</option>
-                <option value="1">To'langan</option>
-                <option value="2">Kutilmoqda</option>
-              </select>
+            <div class="flex gap-14">
+              <div class="flex gap-5">
+                <a-space class="h-[46px]" direction="vertical" :size="12">
+                  <a-date-picker v-model:value="value1" />
+                </a-space>
+                <img
+                  class="-ml-14 z-10"
+                  src="@/assets/svg/calendar.svg"
+                  alt=""
+                />
+              </div>
+              <div class="flex status mr-4">
+                <a-select
+                  v-if="is_mount"
+                  v-model:value="store.status"
+                  :options="options"
+                  class="placeholder-black"
+                ></a-select>
+                <img
+                  class="-ml-6 mt-5 w-2 h-2 scale-150"
+                  src="@/assets/svg/strelka.svg"
+                  alt=""
+                />
+              </div>
             </div>
           </div>
           <hr class="py-3" />
-          <table class="w-full text-sm text-left">
+          <table class="w-full md:mx-0 -mx-5 text-sm text-left">
             <thead
-              class="bg-[#F4F4F6] rounded-xl overflow-hidden font-semibold"
+              class="overflow-hidden font-semibold"
             >
-              <tr>
+              <tr class="bg-[#F4F4F6] rounded-xl overflow-hidden">
                 <th scope="col" class="p-4">
                   <div class="flex items-center">
                     <input
                       id="checkbox-all-search"
                       type="checkbox"
-                      class="w-4 h-4 focus:ring-0 bg-gray-100 border-gray-300 rounded"
+                      class="w-4 h-4 focus:ring-0 bg-gray-100 lg:border-[rgba(0, 0, 0, 0.20)] rounded"
                     />
                   </div>
                 </th>
-                <th scope="col" class="px-6 py-3">Buyurtma ID</th>
-                <th scope="col" class="px-6 py-3">Sana</th>
-                <th scope="col" class="px-6 py-3">Summa</th>
-                <th scope="col" class="px-6 py-3">To‘lov holati</th>
-                <th scope="col" class="px-6 py-3">Tafsilotlarni ko'rish</th>
+                <th scope="col" class="sm:px-6 px-2 py-3">Buyurtma ID</th>
+                <th scope="col" class="sm:px-6 px-2 py-3">Sana</th>
+                <th scope="col" class="sm:px-6 px-2 py-3">Summa</th>
+                <th scope="col" class="sm:px-6 px-2 py-3">To‘lov holati</th>
+                <th scope="col" class="sm:px-6 px-2 py-3">Tafsilotlarni ko'rish</th>
               </tr>
             </thead>
             <tbody>
@@ -360,7 +379,7 @@
                 :key="i.id"
                 class="bg-white rounded-xl text-sm border-b hover:bg-[#F4F4F6]"
               >
-                <td class="w-4 p-4">
+                <td class="w-4 py-4 sm:px-4 px-2">
                   <div class="flex items-center">
                     <input
                       id="checkbox-table-search-1"
@@ -371,15 +390,15 @@
                 </td>
                 <th
                   scope="row"
-                  class="flex font-semibold text-[#088178] items-center px-6 py-4 whitespace-nowrap"
+                  class="flex font-semibold text-[#088178] items-center sm:px-6 px-2 py-4 whitespace-nowrap"
                 >
                   {{ i.id }}
                 </th>
-                <td class="px-6 py-4">{{ i.date }}</td>
-                <td class="px-6 py-4">
+                <td class="sm:px-6 px-2 py-4">{{ i.date }}</td>
+                <td class="sm:px-6 px-2 py-4">
                   {{ i.sum }}
                 </td>
-                <td class="px-6 py-4 font-medium">
+                <td class="sm:px-6 px-2 py-4 font-medium">
                   <button
                     v-if="i.status === 'To\'langan'"
                     class="bg-[#0881780D] px-3 py-1.5 rounded-md text-[#088178]"
@@ -393,7 +412,7 @@
                     {{ i.status }}
                   </button>
                 </td>
-                <td class="px-6 py-4">
+                <td class="sm:px-6 px-2 py-4">
                   <button
                     class="text-white bg-[#088178] font-medium px-3 py-1 rounded-md"
                   >
@@ -404,7 +423,7 @@
             </tbody>
           </table>
 
-          <nav class="py-5">
+          <nav class="py-5 sticky left-0">
             <ul class="flex items-center -space-x-px h-10 text-base">
               <li>
                 <a
@@ -506,7 +525,6 @@
                         d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
                       />
                     </svg>
-                    <span class="sr-only">Close modal</span>
                   </button>
                 </div>
                 <!-- Modal body -->
@@ -656,10 +674,24 @@
 
 <script setup>
 definePageMeta({
-  middleware: [
-    "auth",
-  ],
+  middleware: ["auth"],
 });
+
+const is_mount = ref(false);
+
+const store = reactive({
+  status: "Status",
+});
+const options = ref([
+  {
+    value: "To'langan",
+    label: "To'langan",
+  },
+  {
+    value: "Kutilmoqda",
+    label: "Kutilmoqda",
+  },
+]);
 
 const orders = ref([
   {
@@ -711,6 +743,10 @@ const orders = ref([
     status: "To'langan",
   },
 ]);
+
+onMounted(() => {
+  is_mount.value = true;
+});
 </script>
 
 <style lang="scss" scoped></style>

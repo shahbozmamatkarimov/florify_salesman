@@ -1,47 +1,40 @@
-
 <template>
-  <main class="pt-20">
-    <section class="flex gap-10 items-center justify-between">
+  <main class="custom_scroll md:pt-20 pt-10">
+    <section
+      class="lg:flex lg:space-y-0 space-y-4 gap-10 items-center justify-between"
+    >
       <div
         id="main"
-        class="rounded-xl overflow-hidden overflow-x-auto w-full h-[25rem] px-5 pb-10 bg-[#FFFFFF]"
+        class="rounded-xl overflow-hidden overflow-x-auto h-[369px] w-full px-5 pb-10 bg-[#FFFFFF]"
       >
         <div class="flex justify-between sticky left-0 items-center gap-2 pt-5">
           <div class="flex gap-2 items-center">
             <img class="pt-1" src="../assets/svg/money.svg" alt="money" />
-            <h1 class="font-medium text-3xl">122 552 250,80 so‘m</h1>
+            <h1 class="font-medium xl:text-3xl text-xl whitespace-nowrap">
+              122 552 250,80 so‘m
+            </h1>
           </div>
           <div class="flex mr-4">
-            <select
-              class="duration-100 border cursor-pointer border-gray-300 focus:border-gray-300 focus:ring-0 rounded-lg"
-            >
-              <option value="january">January</option>
-              <option value="february">February</option>
-              <option value="march">March</option>
-              <option value="april">April</option>
-              <option value="may">May</option>
-              <option value="june">June</option>
-              <option value="july">July</option>
-              <option value="august">August</option>
-              <option value="september">September</option>
-              <option value="october">October</option>
-              <option value="november">November</option>
-              <option value="december">December</option>
-            </select>
+            <a-select
+              v-if="is_mount"
+              v-model:value="store.selectedMonth"
+              :options="options"
+              class="placeholder-black"
+            ></a-select>
             <img
-              class="-ml-6 scale-150"
-              src="./../assets/svg/strelka.svg"
+              class="-ml-5 mt-3 w-2 h-2 scale-150"
+              src="@/assets/svg/strelka.svg"
               alt=""
             />
           </div>
         </div>
         <!-- chart -->
-        <div class="mt-4 row">
+        <div class="mt-12 row">
           <div class="mt-4 col-md-6 mt-md-0">
             <div class="card z-index-2">
               <div class="card-body">
                 <div class="chart -ml-4">
-                  <GradientLineChart />
+                  <GradientLineChart class="h-[212px] min-w-[651px]" />
                 </div>
               </div>
             </div>
@@ -50,38 +43,108 @@
       </div>
 
       <!-- chart 2 -->
-      <div id="main" class="w-[400px] px-10 bg-[#FFFFFF] py-8 rounded-xl">
-        <h1 class="text-sm">Tashriflar soni</h1>
-        <p class="font-medium text-3xl py-2">1.345.987</p>
-        <div class="text-white font-medium py-5">
-          <div
-            class="bg-[#EF9B00] w-44 h-44 rounded-full flex flex-col space-y-1 items-center justify-center"
-          >
-            <h1 class="text-sm">Mobil dastur</h1>
-            <p class="text-xl">1.148.541</p>
+      <div
+        id="main"
+        class="flex items-center justify-center relative h-[369px] lg:w-[300px] w-full px-10 bg-[#FFFFFF] py-8 rounded-xl"
+      >
+        <div class="max-w-[311px]">
+          <h1 class="lg:text-sm text-2xl lg:font-normal font-medium">Tashriflar soni</h1>
+          <p class="font-medium lg:text-3xl text-[22px] py-2">1.345.987</p>
+          <div class="text-white font-medium py-5">
+            <div
+              class="bg-[#EF9B00] w-44 h-44 rounded-full flex flex-col space-y-1 items-center justify-center"
+            >
+              <h1 class="text-sm">Mobil dastur</h1>
+              <p class="text-xl">1.148.541</p>
+            </div>
+            <div
+              class="bg-[#4684CE] w-28 h-28 rounded-full ml-32 -mt-16 flex flex-col space-y-1 items-center justify-center"
+            >
+              <h1>Veb sayt</h1>
+              <p>9.999.999</p>
+            </div>
           </div>
-          <div
-            class="bg-[#4684CE] w-28 h-28 rounded-full ml-32 -mt-16 flex flex-col space-y-1 items-center justify-center"
-          >
-            <h1>Veb sayt</h1>
-            <p>9.999.999</p>
-          </div>
+        </div>
+        <div>
+          <img class="absolute top-5 right-5 cursor-pointer" src="@/assets/svg/reload.svg" />
         </div>
       </div>
     </section>
   </main>
 </template>
 
-
 <script setup>
-// import GradientLineChart from "./GradientLineChart.vue";
-// import BarChart from "./BarChart.vue";
+const is_mount = ref(false);
+
+const store = reactive({
+  selectedMonth: "May",
+});
+
+const focus = () => {
+  console.log("focus");
+};
+
+const handleChange = (value) => {
+  console.log(`selected ${value}`);
+};
+
 definePageMeta({
   layout: "default",
   middleware: ["auth"],
 });
 
 const data = ref([]);
+
+const options = ref([
+  {
+    value: "January",
+    label: "January",
+  },
+  {
+    value: "February",
+    label: "February",
+  },
+  {
+    value: "March",
+    label: "March",
+  },
+  {
+    value: "April",
+    label: "April",
+  },
+  {
+    value: "May",
+    label: "May",
+  },
+  {
+    value: "June",
+    label: "June",
+  },
+  {
+    value: "July",
+    label: "July",
+  },
+  {
+    value: "August",
+    label: "August",
+  },
+  {
+    value: "September",
+    label: "September",
+  },
+  {
+    value: "October",
+    label: "October",
+  },
+  {
+    value: "November",
+    label: "November",
+  },
+  {
+    value: "December",
+    label: "December",
+  },
+]);
 
 onMounted(() => {
   data.value = {
@@ -118,9 +181,9 @@ onMounted(() => {
       { order: 20, sum: "4.568.150" },
     ],
   };
+  is_mount.value = true;
 });
 </script>
-
 
 <style lang="scss" scoped>
 .scale-x-125 {

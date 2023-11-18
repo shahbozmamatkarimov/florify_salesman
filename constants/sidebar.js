@@ -1,4 +1,9 @@
 /* eslint-disable prettier/prettier */
+import _dashboard from "../assets/sidebar/_1.svg";
+import _products from "../assets/sidebar/_2.svg";
+import _profile from "../assets/sidebar/_3.svg";
+import _comments from "../assets/sidebar/_4.svg";
+import _settings from "../assets/sidebar/_5.svg";
 import dashboard from "../assets/sidebar/1.svg";
 import products from "../assets/sidebar/2.svg";
 import profile from "../assets/sidebar/3.svg";
@@ -11,27 +16,44 @@ import comments1 from "../assets/sidebar/14.svg";
 import settings1 from "../assets/sidebar/15.svg";
 
 export const sidebar = [
-    { id: 1, icon: dashboard, icon1: dashboard1, title: "Dashboard", path: "/" },
-    {
-        id: 2,
-        icon: products,
-        icon1: products1,
-        title: "Mahsulotlar",
-        path: "/products",
-    },
-    { id: 3, icon: profile, icon1: profile1, title: "Profil", path: "/profile" },
-    {
-        id: 4,
-        icon: comments,
-        icon1: comments1,
-        title: "Sharhlar",
-        path: "/comments",
-    },
-    {
-        id: 5,
-        icon: settings,
-        icon1: settings1,
-        title: "Sozlamalar",
-        path: "/settings",
-    },
+  {
+    id: 1,
+    _icon: _dashboard,
+    icon: dashboard,
+    icon1: dashboard1,
+    title: "Dashboard",
+    path: "/",
+  },
+  {
+    id: 2,
+    _icon: _products,
+    icon: products,
+    icon1: products1,
+    title: "Mahsulotlar",
+    path: "/products",
+  },
+  {
+    id: 3,
+    _icon: _profile,
+    icon: profile,
+    icon1: profile1,
+    title: "Profil",
+    path: "/profile",
+  },
+  {
+    id: 4,
+    _icon: _comments,
+    icon: comments,
+    icon1: comments1,
+    title: "Sharhlar",
+    path: "/comments",
+  },
+  {
+    id: 5,
+    _icon: _settings,
+    icon: settings,
+    icon1: settings1,
+    title: "Sozlamalar",
+    path: "/settings",
+  },
 ];

@@ -1,10 +1,12 @@
 <template>
   <main>
-    <section class="border-b-2 mx-10 mb-1">
+    <section
+      class="sm:bg-transparent bg-white sm:border-b-2 lg:px-10 px-5 mb-1"
+    >
       <nav class="flex items-center w-full z-50 -mt-1">
-        <div class="w-full flex flex-wrap items-center h-32 justify-between">
+        <div class="w-full flex items-center md:h-32 h-[75px] justify-between">
           <div
-            class="flex items-center gap-1 self-center text-2xl font-semibold whitespace-nowrap dark:text-white"
+            class="flex items-center gap-1 self-center md:text-2xl text-[22px] font-semibold whitespace-nowrap"
           >
             <h1><slot></slot></h1>
             <img
@@ -13,7 +15,7 @@
               alt="star"
             />
           </div>
-          <div class="flex xl:w-auto w-full justify-between gap-6">
+          <div class="sm:flex hidden w-auto justify-between gap-6">
             <form class="lg:block hidden">
               <div class="relative xl:min-w-[350px]">
                 <div
@@ -46,16 +48,32 @@
             <div @click="() => (productStore.state.openEditModal = true)">
               <button
                 type="button"
-                class="flex items-center gap-2 text-white bg-[#45D469] hover:bg-[#2ead4d] font-medium rounded-lg px-5 py-2.5"
+                class="flex items-center gap-2 text-white bg-[#088178] hover:bg-[#08817970] font-medium rounded-lg px-5 py-2.5"
               >
                 <img src="../assets/svg/plus.svg" alt="search" />
-                Mahsulot qo'shish
+                <span class="xl:block hidden">Mahsulot qo'shish</span>
               </button>
             </div>
           </div>
+          <div class="flex sm:hidden gap-5">
+            <img
+              class="cursor-pointer"
+              @click="is_search = !is_search"
+              src="../assets/svg/search.svg"
+              alt="search"
+            />
+            <img
+              class="cursor-pointer"
+              src="../assets/svg/menu.svg"
+              alt="search"
+            />
+          </div>
         </div>
       </nav>
-      <form v-if="is_search" class="w-full">
+      <form
+        :class="is_search ? 'h-[48px]' : '!h-0'"
+        class="w-full duration-700 overflow-hidden"
+      >
         <div class="relative lg:hidden w-full">
           <div
             class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
@@ -73,7 +91,7 @@
       </form>
     </section>
 
-    <section :class="store.is_submit? 'pointer-events-none':''">
+    <section :class="store.is_submit ? 'pointer-events-none' : ''">
       <!-- Main modal -->
       <div
         v-if="productStore.state.openEditModal"
@@ -806,13 +824,10 @@ const handleSubmit = () => {
           }
         }
         function uploadImage(formData) {
-          fetch(
-            `https://api.florify.uz/api/image/create/${res.product?.id}`,
-            {
-              method: "POST",
-              body: formData,
-            }
-          )
+          fetch(`https://api.florify.uz/api/image/create/${res.product?.id}`, {
+            method: "POST",
+            body: formData,
+          })
             .then((res) => {
               console.log(res);
               if (res.status === 201) {
