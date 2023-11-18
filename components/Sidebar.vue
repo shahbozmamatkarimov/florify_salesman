@@ -58,8 +58,10 @@
       </aside>
     </section>
     <section>
-      <aside class="fixed w-full md:hidden z-50 bottom-0 h-[72px] py-[10px] bg-white">
-        <ul class="my-auto grid grid-cols-5 sm:px-0 px-5 justify-center gap-[27px]">
+      <aside
+        class="fixed w-full md:hidden z-50 bottom-0 h-[72px] py-[10px] bg-white"
+      >
+        <ul class="my-auto grid grid-cols-5 justify-center">
           <li class="mx-auto" v-for="i in sidebar" :key="i.id">
             <router-link
               :to="i.path"
