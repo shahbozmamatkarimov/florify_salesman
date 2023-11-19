@@ -1,10 +1,10 @@
 <template>
   <main>
-    <NavbarTop>Profil</NavbarTop>
+    <Navbar>Profil</Navbar>
 
-    <section class="grid grid-cols-2 gap-5 px-10">
+    <section class="grid lg:grid-cols-2 gap-5 lg:px-10 sm:px-5 px-0 pt-5">
       <div class="space-y-5 pb-20 overflow-hidden overflow-y-auto max-h-[82vh]">
-        <ul class="bg-[#FFFFFF] rounded-xl font-medium p-5 space-y-6">
+        <ul class="bg-[#FFFFFF] sm:rounded-xl font-medium p-5 space-y-6">
           <li class="flex items-center justify-between">
             <h1 class="text-2xl font-semibold">Shaxsiy ma'lumotlar</h1>
             <img
@@ -16,11 +16,16 @@
           </li>
           <hr class="-mx-5" />
           <li class="flex items-center gap-5">
-            <img
-              class="h-24 w-24 object-cover shadowPhoto bg-gray-300 rounded-full"
-              src="https://sxprotection.com.au/wp-content/uploads/2016/07/team-placeholder.png"
-              alt="Photo"
-            />
+            <div
+              class="flex items-center justify-center min-w-[6rem] h-24 w-24 object-cover shadowPhoto bg-[#7112AF] rounded-full"
+              v-if="!store.userImage"
+            >
+              <img
+                class="h-12 w-12"
+                src="@/assets/nodata/userplaceholder.svg"
+                alt="Photo"
+              />
+            </div>
             <div>
               <h1 class="text-lg font-semibold">Rahmatulloh Madraximov</h1>
               <p class="font-medium">Tashkent, Uzbekistan</p>
@@ -52,7 +57,9 @@
             </div>
           </li> -->
         </ul>
-        <ul class="bg-[#FFFFFF] rounded-xl font-medium p-5 space-y-6">
+        <ul
+          class="bg-[#FFFFFF] text-[#242424] sm:rounded-xl font-medium p-5 space-y-6"
+        >
           <li class="flex items-center justify-between">
             <h1 class="text-2xl font-semibold">Do'kon ma'lumotlari</h1>
             <img
@@ -139,12 +146,14 @@
       </div> -->
     </section>
 
-    <EditCard v-show="card.store.modal" />
+    <!-- <EditCard v-show="card.store.modal" /> -->
 
     <!-- edit info -->
     <a-modal v-model:open="store.modal" centered>
       <form @submit.prevent="useProfile.editProfile">
-        <ul class="bg-[#FFFFFF] rounded-xl font-medium p-5 space-y-6 w-[30rem]">
+        <ul
+          class="bg-[#FFFFFF] rounded-xl font-medium md:p-5 space-y-6 max-w-[30rem] w-full"
+        >
           <li class="flex items-center justify-between">
             <h1 class="text-2xl font-semibold">Shaxsiy ma'lumotlar</h1>
             <i
@@ -154,15 +163,19 @@
           </li>
           <hr class="-mx-5" />
           <li class="flex items-center gap-5">
-            <img
+            <div
+              class="flex items-center justify-center min-w-[6rem] h-24 w-24 object-cover shadowPhoto bg-[#7112AF] rounded-full"
               v-if="!store.userImage"
-              class="min-w-[6rem] h-24 w-24 object-cover shadowPhoto bg-gray-300 rounded-full"
-              src="https://sxprotection.com.au/wp-content/uploads/2016/07/team-placeholder.png"
-              alt="Photo"
-            />
+            >
+              <img
+                class="h-12 w-12"
+                src="@/assets/nodata/userplaceholder.svg"
+                alt="Photo"
+              />
+            </div>
             <img
               v-else
-              class="min-w-[6rem] h-24 w-24 object-cover shadowPhoto bg-gray-300 rounded-full"
+              class="md:min-w-[6rem] md:h-24 md:w-24 h-16 w-16 object-cover shadowPhoto bg-gray-300 rounded-full"
               :src="store.userImage"
               alt="Photo"
             />
@@ -237,7 +250,7 @@
             </p>
           </li>
           <li
-            class="flex items-center justify-between p-6 -mx-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600"
+            class="flex items-center justify-between pt-5 px-5 -mx-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600"
           >
             <button
               @click="closeModal"
@@ -279,7 +292,7 @@
           <img
             v-if="!store.userImage"
             class="min-w-[6rem] h-24 w-24 object-cover shadowPhoto bg-gray-300 rounded-full"
-            src="https://sxprotection.com.au/wp-content/uploads/2016/07/team-placeholder.png"
+            src="@/assets/nodata/userplaceholder.svg"
             alt="Photo"
           />
           <img
@@ -380,71 +393,69 @@
       </ul>
     </form> -->
 
-    <!-- edit location -->
-    <form
-      @submit.prevent="handleSubmit"
-      v-show="store.editLocation"
-      tabindex="-1"
-      class="flex justify-center min-h-screen items-center bg-[#8080804c] absolute top-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
-    >
-      <ul
-        class="bg-[#FFFFFF] rounded-xl min-w-[25rem] font-medium p-5 space-y-6"
-      >
-        <li class="flex items-center justify-between">
-          <h1 class="text-2xl font-semibold">Do'kon ma'lumotlari</h1>
-          <i
-            @click="closeModal"
-            class="bx bx-x text-2xl font-bold cursor-pointer"
-          ></i>
-        </li>
-        <hr class="-mx-5" />
-        <li>
-          <p class="text-[#6188FF] pb-1">Manzil</p>
-          <p class="font-medium">
-            <a-input
-              type="text"
-              class="rounded-md mt-2 h-9"
-              v-model:value="form.address"
-              placeholder="Manzilingizni kiriting..."
-              required
-            />
-          </p>
-        </li>
-        <hr class="-mx-5" />
-        <li>
-          <p class="text-[#6188FF] pb-1">Do'kon telefon raqami</p>
-          <p class="font-medium">
-            <a-input
-              type="tel"
-              prefix="+998"
-              class="rounded-md"
-              v-model:value="store.phone"
-              placeholder=""
-              required
-            />
-          </p>
-        </li>
-        <li
-          class="flex items-center justify-between p-6 -mx-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600"
+    <!-- edit info -->
+    <a-modal v-model:open="store.editLocation" centered>
+      <!-- edit location -->
+      <form @submit.prevent="handleSubmit">
+        <ul
+          class="bg-[#FFFFFF] rounded-xl max-w-[25rem] w-full font-medium mx-auto sm:px-5 sm:py-5 space-y-6"
         >
-          <button
-            @click="closeModal"
-            data-modal-hide="defaultModal"
-            type="button"
-            class="text-gray-500 bg-white hover:bg-red-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
+          <li class="flex items-center justify-between">
+            <h1 class="text-2xl font-semibold">Do'kon ma'lumotlari</h1>
+            <i
+              @click="closeModal"
+              class="bx bx-x text-2xl font-bold cursor-pointer"
+            ></i>
+          </li>
+          <hr class="-mx-5" />
+          <li>
+            <p class="text-[#6188FF] pb-1">Manzil</p>
+            <p class="font-medium">
+              <a-input
+                type="text"
+                class="rounded-md mt-2 h-9"
+                v-model:value="form.address"
+                placeholder="Manzilingizni kiriting..."
+                required
+              />
+            </p>
+          </li>
+          <hr class="-mx-5" />
+          <li>
+            <p class="text-[#6188FF] pb-1">Do'kon telefon raqami</p>
+            <p class="font-medium">
+              <a-input
+                type="tel"
+                prefix="+998"
+                class="rounded-md"
+                v-model:value="store.phone"
+                placeholder=""
+                required
+              />
+            </p>
+          </li>
+          <li
+            class="flex items-center justify-between px-5 pt-5 -mx-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600"
           >
-            Bekor qilish
-          </button>
-          <button
-            data-modal-hide="defaultModal"
-            type="submit"
-            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-          >
-            Saqlash
-          </button>
-        </li>
-      </ul>
-    </form>
+            <button
+              @click="closeModal"
+              data-modal-hide="defaultModal"
+              type="button"
+              class="text-gray-500 bg-white hover:bg-red-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
+            >
+              Bekor qilish
+            </button>
+            <button
+              data-modal-hide="defaultModal"
+              type="submit"
+              class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            >
+              Saqlash
+            </button>
+          </li>
+        </ul>
+      </form>
+    </a-modal>
   </main>
 </template>
 
@@ -467,7 +478,7 @@ const baseUrl = runtimeconfig.public.apiBaseUrl;
 const router = useRouter();
 
 definePageMeta({
-  layout: "custom",
+  // layout: "custom",
 });
 
 const store = reactive({

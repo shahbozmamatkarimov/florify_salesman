@@ -290,10 +290,10 @@
       <section class="-mt-8 lg:mb-10 mb-4">
         <Chart />
       </section>
-      <section class="bg-white py-5 rounded-xl whitespace-nowrap">
+      <section class="bg-white py-5 sm:rounded-xl whitespace-nowrap">
         <div class="flex items-center justify-between px-5">
           <h1 class="text-2xl font-medium">Buyurtmalar</h1>
-          <img class="cursor-pointer" src="@/assets/svg/reload.svg" />
+          <img class="cursor-pointer reload" src="@/assets/svg/reload.svg" />
         </div>
 
         <div class="relative px-5 overflow-x-auto sm:rounded-lg">
@@ -379,15 +379,15 @@
                 :key="i.id"
                 class="bg-white rounded-xl text-sm border-b hover:bg-[#F4F4F6]"
               >
-                <td class="w-4 py-4 sm:px-4 px-2">
+                <th class="p-4">
                   <div class="flex items-center">
                     <input
-                      id="checkbox-table-search-1"
+                      id="checkbox-all-search"
                       type="checkbox"
-                      class="w-4 h-4 focus:ring-0 bg-gray-100 border-gray-300 rounded"
+                      class="w-4 h-4 focus:ring-0 bg-gray-100 lg:border-[rgba(0, 0, 0, 0.20)] rounded"
                     />
                   </div>
-                </td>
+                </th>
                 <th
                   scope="row"
                   class="flex font-semibold text-[#088178] items-center sm:px-6 px-2 py-4 whitespace-nowrap"

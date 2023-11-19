@@ -5,7 +5,7 @@
     >
       <div
         id="main"
-        class="rounded-xl overflow-hidden overflow-x-auto h-[369px] w-full px-5 pb-10 bg-[#FFFFFF]"
+        class="sm:rounded-xl overflow-hidden overflow-x-auto h-[369px] w-full px-5 pb-10 bg-[#FFFFFF]"
       >
         <div class="flex justify-between sticky left-0 items-center gap-2 pt-5">
           <div class="flex gap-2 items-center">
@@ -45,7 +45,7 @@
       <!-- chart 2 -->
       <div
         id="main"
-        class="flex items-center justify-center relative h-[369px] lg:w-[300px] w-full px-10 bg-[#FFFFFF] py-8 rounded-xl"
+        class="flex items-center justify-center relative h-[369px] lg:w-[300px] w-full px-10 bg-[#FFFFFF] py-8 sm:rounded-xl"
       >
         <div class="max-w-[311px]">
           <h1 class="lg:text-sm text-2xl lg:font-normal font-medium">Tashriflar soni</h1>
@@ -66,7 +66,7 @@
           </div>
         </div>
         <div>
-          <img class="absolute top-5 right-5 cursor-pointer" src="@/assets/svg/reload.svg" />
+          <img class="absolute top-5 right-5 cursor-pointer reload" src="@/assets/svg/reload.svg" />
         </div>
       </div>
     </section>

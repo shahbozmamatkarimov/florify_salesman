@@ -1,13 +1,16 @@
 <template>
   <main>
-    <NavbarTop>Sharhlar</NavbarTop>
+    <Navbar>Sharhlar</Navbar>
     <div
-      class="flex gap-10 px-10 overflow-hidden overflow-y-auto mb-2 max-h-[90vh]"
+      class="lg:flex lg:gap-10 gap-5 lg:px-10 sm:px-5 pt-5 overflow-hidden overflow-y-auto mb-2 max-h-[calc(100vh_-_200px)]"
     >
-      <section class="w-full bg-white rounded-xl mb-2">
-        <div class="mb-4">
+      <section
+        :class="`${store.is_chat ? 'lg:block hidden' : ''}`"
+        class="w-full lg:max-w-[calc(100vw_-_675px)] overflow-hidden whitespace-nowrap bg-white sm:rounded-xl mb-2"
+      >
+        <div class="mb-4 scroll_chat">
           <ul
-            class="flex text-[#666666] flex-wrap px-6 text-sm font-medium text-center"
+            class="flex lg:max-w-[600px] overflow-hidden overflow-x-auto text-[#666666] px-6 text-sm font-medium text-center"
           >
             <li class="mr-2">
               <button
@@ -42,18 +45,20 @@
         <div>
           <div class="bg-gray-50">
             <div
-              class="relative overflow-x-auto overflow-hidden overflow-y-auto max-h-[71vh] shadow-md rounded-b-xl"
+              class="relative overflow-x-auto overflow-hidden w-full overflow-y-auto rounded-b-xl"
             >
-              <table class="w-full text-sm text-left text-gray-500">
+              <table
+                class="w-full min-w-[500px] text-sm text-left text-gray-500"
+              >
                 <thead>
                   <tr>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
+                    <th class="min-w-[70px]"></th>
+                    <th class="min-w-[70px]"></th>
+                    <th class="min-w-[70px]"></th>
+                    <th class="min-w-[70px]"></th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody @click="store.is_chat = true">
                   <tr
                     v-for="i in 10"
                     :key="i"
@@ -92,55 +97,57 @@
               </table>
             </div>
           </div>
-          <div
-            id="dashboard"
-            class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800"
-            role="tabpanel"
-            aria-labelledby="dashboard-tab"
-          >
-            <p class="text-sm text-gray-500">
-              This is some placeholder content the
-              <strong class="font-medium text-gray-800 dark:text-white"
-                >Dashboard tab's associated content</strong
-              >. Clicking another tab will toggle the visibility of this one for
-              the next. The tab JavaScript swaps classes to control the content
-              visibility and styling.
-            </p>
-          </div>
-          <div
-            id="settings"
-            class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800"
-            role="tabpanel"
-            aria-labelledby="settings-tab"
-          >
-            <p class="text-sm text-gray-500">
-              This is some placeholder content the
-              <strong class="font-medium text-gray-800 dark:text-white"
-                >Settings tab's associated content</strong
-              >. Clicking another tab will toggle the visibility of this one for
-              the next. The tab JavaScript swaps classes to control the content
-              visibility and styling.
-            </p>
-          </div>
-          <div
-            id="contacts"
-            class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800"
-            role="tabpanel"
-            aria-labelledby="contacts-tab"
-          >
-            <p class="text-sm text-gray-500">
-              This is some placeholder content the
-              <strong class="font-medium text-gray-800 dark:text-white"
-                >Contacts tab's associated content</strong
-              >. Clicking another tab will toggle the visibility of this one for
-              the next. The tab JavaScript swaps classes to control the content
-              visibility and styling.
-            </p>
+          <div>
+            <div
+              id="dashboard"
+              class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800"
+              role="tabpanel"
+              aria-labelledby="dashboard-tab"
+            >
+              <p class="text-sm text-gray-500">
+                This is some placeholder content the
+                <strong class="font-medium text-gray-800 dark:text-white"
+                  >Dashboard tab's associated content</strong
+                >. Clicking another tab will toggle the visibility of this one
+                for the next. The tab JavaScript swaps classes to control the
+                content visibility and styling.
+              </p>
+            </div>
+            <div
+              id="settings"
+              class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800"
+              role="tabpanel"
+              aria-labelledby="settings-tab"
+            >
+              <p class="text-sm text-gray-500">
+                This is some placeholder content the
+                <strong class="font-medium text-gray-800 dark:text-white"
+                  >Settings tab's associated content</strong
+                >. Clicking another tab will toggle the visibility of this one
+                for the next. The tab JavaScript swaps classes to control the
+                content visibility and styling.
+              </p>
+            </div>
+            <div
+              id="contacts"
+              class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800"
+              role="tabpanel"
+              aria-labelledby="contacts-tab"
+            >
+              <p class="text-sm text-gray-500">
+                This is some placeholder content the
+                <strong class="font-medium text-gray-800 dark:text-white"
+                  >Contacts tab's associated content</strong
+                >. Clicking another tab will toggle the visibility of this one
+                for the next. The tab JavaScript swaps classes to control the
+                content visibility and styling.
+              </p>
+            </div>
           </div>
         </div>
       </section>
       <section
-        class="flex hidden flex-col max-h-[70vh] shadow sticky top-0 items-center justify-center w-[420px] bg-white rounded-xl"
+        class="flex hidden flex-col max-h-[70vh] shadow sticky top-0 items-center justify-center w-[420px] bg-white sm:rounded-xl"
       >
         <img src="../../assets/svg/message.svg" alt="message" />
         <h1 class="w-40 text-center">
@@ -148,14 +155,38 @@
         </h1>
       </section>
       <section
-        class="flex flex-col overflow-hidden overflow-y-auto p-5 text-sm max-h-[80vh] shadow sticky top-0 items-center w-[420px] bg-white rounded-xl"
+        :class="`${
+          store.is_chat
+            ? 'lg:max-w-[420px] max-w-full w-full'
+            : 'lg:block hidden'
+        }`"
+        class="flex min-w-[300px] flex-col overflow-hidden overflow-y-auto p-5 text-sm max-h-[80vh] shadow sticky top-0 items-center max-w-[420px] bg-white sm:rounded-xl"
       >
         <ul class="space-y-5">
-          <li>Haridorga javob yozish</li>
-          <hr />
-          <li class="font-medium text-[#242424]">Lolalar assorti</li>
+          <li
+            class="flex items-center sm:p-0 p-6 sm:relative fixed top-0 left-0 sm:h-auto h-[75px] bg-white w-full gap-[45px]"
+          >
+            <img
+              class="lg:hidden block cursor-pointer"
+              @click="store.is_chat = false"
+              src="@/assets/svg/leftArrow.svg"
+              alt=""
+            />
+            <span
+              class="sm:text-[16px] sm:font-normal font-medium sn:leading-normal leading-7 text-lg"
+              >Haridorga javob yozish</span
+            >
+          </li>
+          <hr class="sm:block hidden" />
+          <li
+            class="sm:font-medium font-semibold sm:text-[16px] border-b sm:border-white text-xl sm:pb-0 pb-5 sm:!mt-1 !-mt-1 text-[#242424]"
+          >
+            Lolalar assorti
+          </li>
           <li class="flex justify-between">
-            <p class="font-medium text-sm">Umida Salohiddinova</p>
+            <p class="font-medium sm:text-sm text-[16px]">
+              Umida Salohiddinova
+            </p>
             <div class="flex">
               <img
                 v-for="i in 5"
@@ -166,15 +197,19 @@
             </div>
           </li>
           <li class="flex justify-between">
-            <h1 class="text-[#454545] text-sm">Buyurtma qilgan vaqt</h1>
+            <h1 class="text-[#454545] sm:text-sm text-[16px]">
+              Buyurtma qilgan vaqt
+            </h1>
             <p class="text-[#242424]">29 Dek, 2022</p>
           </li>
           <li class="flex justify-between">
-            <h1 class="text-[#454545] text-sm">Sharh qoldirgan</h1>
+            <h1 class="text-[#454545] sm:text-sm text-[16px]">
+              Sharh qoldirgan
+            </h1>
             <p class="text-[#242424]">2 Iyul, 2023</p>
           </li>
           <li class="flex justify-between">
-            <h1 class="text-[#454545] text-sm">ID sharh</h1>
+            <h1 class="text-[#454545] sm:text-sm text-[16px]">ID sharh</h1>
             <p class="text-[#242424]">268153</p>
           </li>
           <hr />
@@ -223,10 +258,12 @@
 </template>
 <script setup>
 definePageMeta({
-  layout: "custom",
-  middleware: [
-    "auth",
-  ],
+  // layout: "custom",
+  middleware: ["auth"],
+});
+
+const store = reactive({
+  is_chat: false,
 });
 
 const comment = ref("");

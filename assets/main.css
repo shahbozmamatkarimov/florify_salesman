@@ -17,8 +17,17 @@ body {
   height: 16px;
 }
 
+.scroll_chat ::-webkit-scrollbar {
+  height: 0;
+}
+
 .custom_scroll ::-webkit-scrollbar-thumb {
   background: #5c0099;
+  border-radius: 10px;
+}
+
+.overflow-x-auto ::-webkit-scrollbar-thumb {
+  background-color: #5c0099;
   border-radius: 10px;
 }
 
@@ -72,13 +81,38 @@ body {
   line-height: normal !important;
 }
 
+.ant-input-affix-wrapper {
+  height: 40px !important;
+}
+
 .status .ant-select-selector {
   padding: 8px 14px !important;
   width: 120px !important;
 }
 
+.ant-select-selector, .ant-input-affix-wrapper-lg, .ant-input-affix-wrapper-lg *, .ant-input-number-lg {
+  background: #F9F9F9 !important;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: 0 !important;
+}
+
+.ant-select-selection-overflow-item {
+  display: none !important;
+}
+
+.border-dashed {
+    border: dashed 2px #a7a1a1d8;
+}
+
 @media (min-width: 768px) {
   .border-b {
     border-bottom: 0 !important;
+  }
+}
+
+@media (min-width: 768px){
+  .reload {
+    display: none !important;
   }
 }

@@ -1,7 +1,7 @@
 <template>
   <main>
     <Navbar>Mahsulotlar</Navbar>
-    <div class="px-10 overflow-hidden overflow-y-auto max-h-[82vh]">
+    <div class="lg:px-10 px-5 pb-20 overflow-hidden overflow-y-auto max-h-[82vh]">
       <section>
         <ul class="flex gap-10 border-b-2 py-5 text-[#555555] -mt-2">
           <li
@@ -144,7 +144,7 @@
       </section>
       <section v-else-if="!productStore.allProducts?.length || false">
         <p
-          class="flex flex-col items-center justify-center bg-white rounded-xl shadow h-80 gap-5"
+          class="flex flex-col items-center justify-center text-center bg-white rounded-xl shadow h-80 gap-5"
         >
           <img src="../../assets/svg/cartLoading.svg" alt="not_found" />
           Mahsulotlar topilmadi Figmaga qarab o'zgartiriladi...

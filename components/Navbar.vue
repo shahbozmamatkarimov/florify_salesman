@@ -17,7 +17,7 @@
           </div>
           <div class="sm:flex hidden w-auto justify-between gap-6">
             <form class="lg:block hidden">
-              <div class="relative xl:min-w-[350px]">
+              <div class="relative xl:min-w-[380px]">
                 <div
                   class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
                 >
@@ -97,22 +97,22 @@
         v-if="productStore.state.openEditModal"
         tabindex="-1"
         aria-hidden="true"
-        class="flex justify-center items-center bg-[#8c8cee0d] backdrop-blur-[1px] fixed top-0 left-0 right-0 z-50 w-full md:inset-0 h-[calc(100%-1rem)]"
+        class="flex justify-center items-center bg-[#8c8cee0d] backdrop-blur-[1px] fixed top-0 left-0 right-0 z-50 w-full md:inset-0 overflow-hidden"
       >
-        <div class="relative ml-[260px] w-full max-h-full">
+        <div class="relative lg:ml-[260px] w-full max-h-full">
           <!-- Modal content -->
           <form
             @submit.prevent="handleSubmit"
-            class="relative w-full bg-[#F4F4F6] shadow dark:bg-gray-700"
+            class="relative w-full sm:p-5 bg-[#F4F4F6] overflow-hidden dark:bg-gray-700"
           >
             <!-- Modal header -->
             <div
-              class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600"
+              class="flex items-start sm:-mx-5 justify-between p-4 border-b rounded-t dark:border-gray-600"
             >
               <div
-                class="flex items-center gap-1 self-center text-2xl font-semibold whitespace-nowrap"
+                class="flex items-center  gap-1 self-center text-2xl font-semibold whitespace-nowrap"
               >
-                <h1>Mahsulot qo‘shish</h1>
+                <h1>Mahsulot qo'shish</h1>
                 <img
                   class="font-semibold text-3xl"
                   src="../assets/svg/star.svg"
@@ -130,25 +130,29 @@
             </div>
             <!-- Modal body -->
             <div
-              class="gap-10 grid grid-cols-2 w-full overflow-x-hidden overflow-y-auto max-h-[79vh]"
+              class="xl:gap-16 gap-5 p-5 bg-white rounded-t-xl md:flex justify-between w-full overflow-x-hidden overflow-y-auto md:max-h-[calc(100vh_-_170px)] max-h-[calc(100vh_-_245px)]"
             >
-              <div class="flex col-span-1 flex-col p-6">
-                <div class="border-b-2 pb-5 mb-5 space-y-5">
+              <div class="flex flex-col w-full">
+                <div class="border-b-2 w-[80%] pb-5 mb-5 space-y-5">
                   <label for="category">Mahsulot kategoriyasi</label>
-                  <a-select
-                    id="category"
-                    size="large"
-                    v-model:value="create.category_id"
-                    show-search
-                    placeholder="Kategoriyani tanlang"
-                    style="width: 100%"
-                    :options="options"
-                    :filter-option="filterOption"
-                    @focus="handleFocus"
-                    @blur="handleBlur"
-                    @change="handleChange"
-                    required=""
-                  ></a-select>
+                  <div class="flex">
+                    <a-select
+                      id="category"
+                      size="large"
+                      v-model:value="create.category_id"
+                      show-search
+                      placeholder="Kategoriyani tanlang"
+                      style="width: 100%"
+                      :options="options"
+                      :filter-option="filterOption"
+                      required=""
+                    ></a-select>
+                    <img
+                      class="-ml-6 mt-4 w-2 h-2 scale-150"
+                      src="@/assets/svg/strelka.svg"
+                      alt=""
+                    />
+                  </div>
                   <!-- <button
                     type="button"
                     class="py-3 px-4 max-w-fit bg-[#fff] rounded-lg text-[#242424]"
@@ -156,9 +160,9 @@
                     Tasdiqlash
                   </button> -->
                 </div>
-                <div class="space-y-5 pb-5">
+                <div class="space-y-5 pb-5 w-[80%]">
                   <label class="flex gap-3" for="name"
-                    ><span>Mahsulot nomi<i class="text-[#FF6161]">*</i></span
+                    ><span>Mahsulot nomi <i class="text-[#FF6161]">*</i></span
                     ><img src="../assets/svg/warn.svg" alt="img"
                   /></label>
                   <a-input
@@ -167,13 +171,64 @@
                     v-model:value="create.name"
                     placeholder="Mahsulot nomini kiriting"
                     show-count
-                    :maxlength="20"
+                    :maxlength="70"
                     required
                   />
                 </div>
+                <div class="border-b-2 pb-5 mb-5 space-y-5">
+                  <label for="category"
+                    >Mahsulot rangi <i class="text-[#FF6161]">*</i></label
+                  >
+                  <div class="flex flex-wrap w-full gap-5">
+                    <div class="flex min-w-[200px] max-w-fit">
+                      <a-select
+                        id="category"
+                        size="large"
+                        v-model:value="create.selected_colors"
+                        mode="multiple"
+                        show-search
+                        placeholder="Rangni tanlang"
+                        style="width: 100%"
+                        :filter-option="filterOption"
+                        required=""
+                      >
+                        <a-select-option
+                          :class="`!text-[${i.value}]`"
+                          v-for="i in colors"
+                          :value="i.value"
+                          :label="i.label"
+                        >
+                          <p
+                            :class="`text-[${i.value}]`"
+                            :style="`color: ${i.value}`"
+                          >
+                            {{ i.label }}
+                          </p>
+                        </a-select-option>
+                      </a-select>
+                      <img
+                        class="-ml-6 mt-4 w-2 h-2 scale-150"
+                        src="@/assets/svg/strelka.svg"
+                        alt=""
+                      />
+                    </div>
+                    <div class="flex flex-wrap max-w-fit gap-2">
+                      <p
+                        v-for="(i, index) in create.selected_colors"
+                        @click="create.selected_colors?.splice(index, 1)"
+                        :class="`w-8 h-8 rounded-full ${
+                          i == '#FFF' ? 'border-gray-600' : 'border-white'
+                        }`"
+                        class="border cursor-pointer"
+                        :style="`background: ${i}`"
+                      ></p>
+                    </div>
+                  </div>
+                </div>
                 <div class="pb-5 space-y-5">
                   <label class="flex gap-3" for="description"
-                    ><span>Mahsulot tavsifi<i class="text-[#FF6161]">*</i></span
+                    ><span
+                      >Mahsulot tavsifi <i class="text-[#FF6161]">*</i></span
                     ><img src="../assets/svg/warn.svg" alt="img"
                   /></label>
                   <div>
@@ -187,7 +242,9 @@
                   </div>
                 </div>
                 <div class="pb-5 space-y-5">
-                  <label for="price">Mahsulot narxi *</label><br />
+                  <label for="price"
+                    >Mahsulot narxi <span class="text-[#FF6161]">*</span></label
+                  ><br />
                   <a-space>
                     <a-input-number
                       id="price"
@@ -215,7 +272,7 @@
                   </a-space>
                 </div>
               </div>
-              <div class="pt-6 w-full">
+              <div class="text-[#555555] xl:max-w-[400px] max-w-[380px] w-full">
                 <h1 class="text-lg">
                   Mahsulot galeriyasi <i class="text-[#FF6161]">*</i>
                 </h1>
@@ -223,7 +280,7 @@
                 <!---------------------------- Main Image -------------------------------------->
 
                 <div
-                  class="mt-6 border border-gray-200 rounded-xl w-[400px] h-[360px] relative"
+                  class="mt-6 border border-gray-200 rounded-xl xl:max-w-[400px] max-w-[380px] w-full xl:h-[360px] h-[340px] relative"
                   v-if="store.file1"
                 >
                   <img
@@ -248,7 +305,7 @@
                 <label
                   v-else
                   for="imageMain"
-                  class="flex flex-col mt-6 gap-3 text-center justify-center items-center w-[400px] h-[360px] bg-white border rounded-xl border-dashed border-[#F9F9F9]"
+                  class="flex flex-col mt-6 gap-3 text-center justify-center items-center xl:max-w-[400px] max-w-[380px] w-full xl:h-[360px] h-[340px] bg-[#F9F9F9] border rounded-xl border-dashed border-[#F9F9F9]"
                 >
                   <div>
                     <img
@@ -277,7 +334,7 @@
                 <!---------------------------- image1 -------------------------------------->
 
                 <div
-                  class="flex items-center justify-between gap-2 h-[80px] w-[400px] bg-white rounded-xl"
+                  class="flex items-center justify-between gap-2 h-[80px] xl:max-w-[400px] max-w-[380px] w-full bg-white rounded-xl"
                   v-if="store.file2"
                 >
                   <div class="flex px-2 items-center gap-2">
@@ -312,16 +369,21 @@
                 <label
                   v-else
                   for="image1"
-                  class="flex px-2 items-center justify-around h-[80px] w-[400px] bg-white rounded-xl"
+                  class="flex border-dashed px-2 items-center h-[80px] xl:max-w-[400px] max-w-[380px] w-full bg-white rounded-xl"
                 >
-                  <img
-                    class="scale-150"
-                    src="../assets/svg/upload.svg"
-                    alt="img"
-                  />
+                  <div class="w-[50px] mr-4">
+                    <img
+                      class="scale-150 mx-auto"
+                      src="../assets/svg/upload.svg"
+                      alt="img"
+                    />
+                  </div>
                   <div class="text-[15px]">
                     R<span class="lowercase"
-                      >asmni shu yerga qo‘ying yoki ko‘rib chiqing</span
+                      >asmni shu yerga qo‘ying
+                      <span class="sm:inline hidden"
+                        >yoki ko‘rib chiqing</span
+                      ></span
                     >
                     <p>
                       (J<span class="lowercase">peg, png ruxsat berilgan)</span>
@@ -338,7 +400,7 @@
                 <!---------------------------- image2 -------------------------------------->
 
                 <div
-                  class="flex items-center justify-between gap-2 h-[80px] w-[400px] bg-white rounded-xl"
+                  class="flex items-center justify-between gap-2 h-[80px] xl:max-w-[400px] max-w-[380px] w-full bg-white rounded-xl"
                   v-if="store.file3"
                 >
                   <div class="flex px-2 items-center gap-2">
@@ -373,16 +435,21 @@
                 <label
                   v-else
                   for="image2"
-                  class="flex px-2 items-center justify-around h-[80px] w-[400px] bg-white rounded-xl"
+                  class="flex border-dashed px-2 items-center h-[80px] xl:max-w-[400px] max-w-[380px] w-full bg-white rounded-xl"
                 >
-                  <img
-                    class="scale-150"
-                    src="../assets/svg/upload.svg"
-                    alt="img"
-                  />
+                  <div class="w-[50px] mr-4">
+                    <img
+                      class="scale-150 mx-auto"
+                      src="../assets/svg/upload.svg"
+                      alt="img"
+                    />
+                  </div>
                   <div class="text-[15px]">
                     R<span class="lowercase"
-                      >asmni shu yerga qo‘ying yoki ko‘rib chiqing</span
+                      >asmni shu yerga qo‘ying
+                      <span class="sm:inline hidden"
+                        >yoki ko‘rib chiqing</span
+                      ></span
                     >
                     <p>
                       (J<span class="lowercase">peg, png ruxsat berilgan)</span>
@@ -400,15 +467,15 @@
 
                 <div v-show="store.step > 2">
                   <div
-                    class="flex items-center justify-between gap-2 h-[80px] w-[400px] bg-white rounded-xl"
+                    class="flex items-center justify-between gap-2 h-[80px] xl:max-w-[400px] max-w-[380px] w-full bg-white rounded-xl"
                     v-if="store.file4"
                   >
                     <div class="flex px-2 items-center gap-2">
                       <img
-                        class="w-[60px] h-[60px] border border-gray-200 object-cover rounded-xl"
-                        :src="store.file4"
-                        alt="img"
-                      />
+                      class="w-[60px] h-[60px] border border-gray-200 object-cover rounded-xl"
+                      :src="store.file4"
+                      alt="img"
+                    />
                       <div class="space-y-1">
                         <h1 class="text-[#232321] line-clamp-1 font-semibold">
                           {{ store.name4 }}
@@ -437,16 +504,21 @@
                   <label
                     v-else
                     for="image4"
-                    class="flex px-2 items-center justify-around h-[80px] w-[400px] bg-white rounded-xl"
+                    class="flex border-dashed px-2 items-center h-[80px] xl:max-w-[400px] max-w-[380px] w-full bg-white rounded-xl"
                   >
-                    <img
-                      class="scale-150"
-                      src="../assets/svg/upload.svg"
-                      alt="img"
-                    />
+                    <div class="w-[50px] mr-4">
+                      <img
+                        class="scale-150 mx-auto"
+                        src="../assets/svg/upload.svg"
+                        alt="img"
+                      />
+                    </div>
                     <div class="text-[15px]">
                       R<span class="lowercase"
-                        >asmni shu yerga qo‘ying yoki ko‘rib chiqing</span
+                        >asmni shu yerga qo‘ying
+                        <span class="sm:inline hidden"
+                          >yoki ko‘rib chiqing</span
+                        ></span
                       >
                       <p>
                         (J<span class="lowercase"
@@ -472,10 +544,10 @@
                   >
                     <div class="flex px-2 items-center gap-2">
                       <img
-                        class="w-[60px] h-[60px] border border-gray-200 object-cover rounded-xl"
-                        :src="store.file5"
-                        alt="img"
-                      />
+                      class="w-[60px] h-[60px] border border-gray-200 object-cover rounded-xl"
+                      :src="store.file5"
+                      alt="img"
+                    />
                       <div class="space-y-1">
                         <h1 class="text-[#232321] line-clamp-1 font-semibold">
                           {{ store.name5 }}
@@ -504,16 +576,21 @@
                   <label
                     v-else
                     for="image5"
-                    class="flex px-2 items-center justify-around h-[80px] w-[400px] bg-white rounded-xl"
+                    class="flex border-dashed px-2 items-center h-[80px] xl:max-w-[400px] max-w-[380px] w-full bg-white rounded-xl"
                   >
-                    <img
-                      class="scale-150"
-                      src="../assets/svg/upload.svg"
-                      alt="img"
-                    />
+                    <div class="w-[50px] mr-4">
+                      <img
+                        class="scale-150 mx-auto"
+                        src="../assets/svg/upload.svg"
+                        alt="img"
+                      />
+                    </div>
                     <div class="text-[15px]">
                       R<span class="lowercase"
-                        >asmni shu yerga qo‘ying yoki ko‘rib chiqing</span
+                        >asmni shu yerga qo‘ying
+                        <span class="sm:inline hidden"
+                          >yoki ko‘rib chiqing</span
+                        ></span
                       >
                       <p>
                         (J<span class="lowercase"
@@ -534,58 +611,60 @@
                   v-show="store.step < 4"
                   @click="() => (store.step += 1)"
                   type="button"
-                  class="mt-6 h-[50px] w-[400px] bg-white rounded-xl"
+                  class="flex gap-[10px] items-center justify-center  h-[50px] mb-5 xl:max-w-[400px] max-w-[380px] w-full bg-[#F9F9F9] rounded-xl"
                 >
-                  Rasm qo‘shish
+                  <img class="mt-1 md:hidden" src="@/assets/svg/addPhoto.svg" alt=""> Rasm qo‘shish
                 </button>
               </div>
             </div>
             <!-- Modal footer -->
-            <div
-              class="flex items-center justify-between p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600"
-            >
-              <button
-                @click="() => closeModal()"
-                data-modal-hide="defaultModal"
-                type="button"
-                class="text-gray-500 bg-white hover:bg-red-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
+            <div class="px-5 sm:pb-0 pb-5 bg-white rounded-b-xl">
+              <div
+                class="flex items-center justify-between space-x-2 py-3 border-t border-gray-200 rounded-b dark:border-gray-600"
               >
-                Bekor qilish
-              </button>
-              <button
-                v-if="!store.is_submit"
-                data-modal-hide="defaultModal"
-                type="submit"
-                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                :disabled="store.is_submit ? true : false"
-              >
-                Yuklash
-              </button>
-              <button
-                v-else
-                disabled="true"
-                type="button"
-                class="text-white bg-blue-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center hover:bg-gray-100 hover:text-blue-700 focus:z-10 border border-gray-300 focus:ring-4 focus:outline-none focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 inline-flex items-center"
-              >
-                <svg
-                  aria-hidden="true"
-                  role="status"
-                  class="inline mr-2 w-4 h-4 text-gray-200 animate-spin dark:text-gray-600"
-                  viewBox="0 0 100 101"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
+                <button
+                  @click="() => closeModal()"
+                  data-modal-hide="defaultModal"
+                  type="button"
+                  class="text-gray-500 whitespace-nowrap bg-white hover:bg-red-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium max-w-[400px] w-full py-2 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
                 >
-                  <path
-                    d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                    fill="currentColor"
-                  ></path>
-                  <path
-                    d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                    fill="#1C64F2"
-                  ></path>
-                </svg>
-                Yuklanmoqda...
-              </button>
+                  Bekor qilish
+                </button>
+                <button
+                  v-if="!store.is_submit"
+                  data-modal-hide="defaultModal"
+                  type="submit"
+                  class="bg-[#F9F9F9] hover:bg-[#b8b4b4] max-w-[400px] w-full focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  :disabled="store.is_submit ? true : false"
+                >
+                  Tayyor
+                </button>
+                <button
+                  v-else
+                  disabled="true"
+                  type="button"
+                  class="text-white bg-blue-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center hover:bg-gray-100 hover:text-blue-700 focus:z-10 border border-gray-300 focus:ring-4 focus:outline-none focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 inline-flex items-center"
+                >
+                  <svg
+                    aria-hidden="true"
+                    role="status"
+                    class="inline mr-2 w-4 h-4 text-gray-200 animate-spin dark:text-gray-600"
+                    viewBox="0 0 100 101"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                      fill="currentColor"
+                    ></path>
+                    <path
+                      d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                      fill="#1C64F2"
+                    ></path>
+                  </svg>
+                  Yuklanmoqda...
+                </button>
+              </div>
             </div>
           </form>
         </div>
@@ -610,6 +689,49 @@ const description = ref();
 const options = ref([]);
 const optionsId = ref([]);
 const is_search = ref(false);
+
+const colors = [
+  {
+    value: "#FFF",
+    label: "Oq",
+  },
+  {
+    value: "#FF6161",
+    label: "Qizil",
+  },
+  {
+    value: "#6161FF",
+    label: "Ko'k",
+  },
+  {
+    value: "#FF61FF",
+    label: "Pushti",
+  },
+  {
+    value: "#61FFFF",
+    label: "Moviy",
+  },
+  {
+    value: "#FFFF61",
+    label: "Sariq",
+  },
+  {
+    value: "#616161",
+    label: "Qora",
+  },
+  {
+    value: "#FFA07A",
+    label: "Och qizil",
+  },
+  {
+    value: "#8A2BE2",
+    label: "Binafsha",
+  },
+  {
+    value: "#32CD32",
+    label: "Yashil",
+  },
+];
 
 const store = reactive({
   upload1: "",
@@ -642,6 +764,7 @@ const create = reactive({
   price: "",
   color: "red",
   category_id: "Kategoriyani tanlang",
+  selected_colors: "",
   salesman_id: "",
   quantity: "",
 });
@@ -678,7 +801,8 @@ function closeModal() {
 }
 
 const filterOption = (input, option) => {
-  return option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+  console.log(input, option);
+  return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
 };
 
 function deleteFile(id) {
