@@ -78,7 +78,7 @@
         v-show="step === 1"
         class="relative col-span-2 pb-20 overflow-hidden overflow-y-auto lg:min-h-[calc(100vh_-_170px)] min-h-[calc(100vh_-_200px)] max-h-[calc(100vh_-_170px)] bg-white overflow-x-auto shadow-md sm:rounded-xl"
       >
-        <h1 class="flex justify-between py-4 px-5 text-2xl font-semibold">
+        <h1 class="sm:relative fixed sm:h-auto h-[75px] bg-white w-full top-0 left-0 flex items-center justify-between py-4 px-5 text-2xl font-semibold">
           <img
             class="lg:hidden block cursor-pointer"
             @click="store.is_chat = false"
@@ -88,7 +88,7 @@
           Chek <span></span>
         </h1>
 
-        <hr class="-mx-10" />
+        <hr class="-mx-10 sm:!mt-0 !-mt-2" />
       </div>
 
       <div
@@ -96,9 +96,7 @@
         v-show="step === 2"
         class="relative custom_scroll col-span-2 pb-20 overflow-hidden overflow-y-auto lg:min-h-[calc(100vh_-_170px)] min-h-[calc(100vh_-_200px)] max-h-[calc(100vh_-_170px)] bg-white overflow-x-auto shadow-md sm:rounded-xl"
       >
-        <h1
-          class="flex justify-between px-6 py-4 text-2xl font-medium sticky left-0"
-        >
+        <h1 class="sm:relative fixed sm:h-auto h-[75px] bg-white w-full top-0 left-0 flex items-center justify-between py-4 px-5 text-2xl font-semibold">
           <img
             class="lg:hidden block cursor-pointer"
             @click="store.is_chat = false"
@@ -149,17 +147,17 @@
         v-show="step === 3"
         class="relative col-span-2 pb-20 space-y-4 px-10 overflow-hidden overflow-y-auto lg:min-h-[calc(100vh_-_170px)] min-h-[calc(100vh_-_200px)] max-h-[calc(100vh_-_170px)] bg-white overflow-x-auto shadow-md sm:rounded-xl"
       >
-        <h1 class="flex justify-between pt-4">
-          <img
-            class="lg:hidden block cursor-pointer"
-            @click="store.is_chat = false"
-            src="@/assets/svg/leftArrow.svg"
-            alt=""
-          />
-          Dastur tili <span></span>
-        </h1>
+      <h1 class="sm:relative fixed sm:h-auto h-[75px] bg-white w-full top-0 left-0 flex items-center justify-between py-4 px-5 text-2xl font-semibold">
+        <img
+          class="lg:hidden block cursor-pointer"
+          @click="store.is_chat = false"
+          src="@/assets/svg/leftArrow.svg"
+          alt=""
+        />
+        Dastur tili <span></span>
+      </h1>
 
-        <hr class="-mx-10" />
+      <hr class="-mx-10 sm:!mt-0 !mt-0" />
 
         <div class="flex items-center">
           <input
@@ -198,7 +196,7 @@
         v-show="step === 4"
         class="relative col-span-2 pb-20 space-y-4 px-10 overflow-hidden overflow-y-auto lg:min-h-[calc(100vh_-_170px)] min-h-[calc(100vh_-_200px)] max-h-[calc(100vh_-_170px)] bg-white overflow-x-auto shadow-md sm:rounded-xl"
       >
-        <h1 class="flex justify-between pt-4 text-2xl font-semibold">
+        <h1 class="sm:relative fixed sm:h-auto h-[75px] bg-white w-full top-0 left-0 flex items-center justify-between py-4 px-5 text-2xl font-semibold">
           <img
             class="lg:hidden block cursor-pointer"
             @click="store.is_chat = false"
@@ -208,7 +206,7 @@
           Xabarnomalar <span></span>
         </h1>
 
-        <hr class="-mx-10" />
+        <hr class="-mx-10 sm:!mt-0 !-mt-0" />
 
         <div class="flex justify-between items-center">
           <div>
