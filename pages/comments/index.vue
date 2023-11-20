@@ -2,11 +2,11 @@
   <main>
     <Navbar>Sharhlar</Navbar>
     <div
-      class="lg:flex lg:gap-10 gap-5 lg:px-10 sm:px-5 pt-5 overflow-hidden overflow-y-auto mb-2 max-h-[calc(100vh_-_200px)]"
+      class="lg:flex lg:gap-10 gap-5 lg:px-10 sm:px-5 pt-5 overflow-hidden overflow-y-auto mb-2 max-h-[calc(100vh_-_150px)]"
     >
       <section
         :class="`${store.is_chat ? 'lg:block hidden' : ''}`"
-        class="w-full lg:max-w-[calc(100vw_-_675px)] overflow-hidden whitespace-nowrap bg-white sm:rounded-xl mb-2"
+        class="w-full lg:max-w-[calc(100vw_-_675px)] overflow-y-auto overflow-hidden whitespace-nowrap bg-white sm:rounded-xl mb-2"
       >
         <div class="mb-4 scroll_chat">
           <ul

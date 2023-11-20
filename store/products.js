@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import axios from "axios";
 
 export const useProductsStore = defineStore("products", () => {
   const runtimeconfig = useRuntimeConfig();
@@ -20,8 +21,8 @@ export const useProductsStore = defineStore("products", () => {
 
   function getProducts() {
     state.isLoading = true;
-    fetch(baseUrl + `/product/page?page=${state.page}`)
-      .then((res) => res.json())
+    axios
+      .get(baseUrl + "/product/1:10")
       .then((res) => {
         if (
           res.message === "Token vaqti tugagan!" ||
@@ -29,12 +30,12 @@ export const useProductsStore = defineStore("products", () => {
         ) {
           router.push("/login");
         }
-        console.log(res.data?.records);
-        console.log(res.data?.pagination);
-        state.products = res.data?.records;
-        state.currentPage = res.data?.pagination?.currentPage;
-        state.total_count = res.data?.pagination?.total_count;
-        state.total_pages = res.data?.pagination?.total_pages;
+        console.log(res.data.data?.records);
+        console.log(res.data.data?.pagination);
+        state.products = res.data.data?.records;
+        state.currentPage = res.data.data?.pagination?.currentPage;
+        state.total_count = res.data.data?.pagination?.total_count;
+        state.total_pages = res.data.data?.pagination?.total_pages;
         state.isLoading = false;
       })
       .catch((err) => {

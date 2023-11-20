@@ -3,7 +3,7 @@
     <Navbar>Mahsulotlar</Navbar>
     <div class="lg:px-10 px-5 pb-20 overflow-hidden overflow-y-auto max-h-[82vh]">
       <section>
-        <ul class="flex gap-10 border-b-2 py-5 text-[#555555] -mt-2">
+        <ul class="flex md:gap-10 gap-5 overflow-x-auto overflow-hidden border-b-2 py-5 text-[#555555] -mt-2">
           <li
             v-for="(i, index) in category"
             :key="i"
@@ -94,20 +94,20 @@
           </button>
         </nav>
         <nav
-          class="flex items-center border cursor-pointer border-[#666666] rounded-lg px-4 py-2 gap-3 h-10 w-32"
+          class="flex items-center border cursor-pointer sm:border-[#666666] border-[#2424241A] rounded-lg sm:px-5 px-3 sm:bg-transparent bg-white py-2 gap-3 h-10"
         >
           <img class="h-6 w-6" src="../../assets/svg/filter.svg" alt="filter" />
-          Filtrlash
+          <span class="sm:block hidden">Filtrlash</span>
         </nav>
       </section>
       <section
         v-if="productStore.state.isLoading"
-        class="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 grid-cols-2 gap-5"
+        class="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 grid-cols-2 flowersGrid gap-5"
       >
         <div v-for="i in 8" :key="i.id" class="max-w-sm bg-white rounded-lg">
           <img
             alt="img"
-            class="rounded-t-lg animate-pulse cursor-pointer border w-full h-[166px] object-cover"
+            class="rounded-t-lg animate-pulse cursor-pointer border w-full h-[166px] flowerImage object-cover"
             src="https://redthread.uoregon.edu/files/original/affd16fd5264cab9197da4cd1a996f820e601ee4.png"
             @click="open = true"
           />
@@ -152,12 +152,12 @@
       </section>
       <section
         v-else
-        class="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 grid-cols-2 gap-5"
+        class="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 grid-cols-2 justify-center items-center flowersGrid gap-5"
       >
         <div
           v-for="i in productStore.allProducts"
           :key="i.id"
-          class="max-w-sm bg-white rounded-lg"
+          class="max-w-sm w-full bg-white rounded-lg"
         >
           <img
             v-if="!i.image?.length"
@@ -168,7 +168,7 @@
           />
           <img
             v-if="i.image?.length"
-            class="rounded-t-lg cursor-pointer w-full h-[166px] object-cover"
+            class="rounded-t-lg cursor-pointer w-full h-[166px] object-cover flowerImage"
             :src="baseUrlImage + '/' + i.image[0]?.image"
             alt="img"
             @click="
@@ -352,23 +352,11 @@
         <div
           class="flex items-center mt-20 justify-between border-t rounded-lg border-gray-200 bg-white px-4 py-3 sm:px-6"
         >
-          <div class="flex flex-1 justify-between sm:hidden">
-            <a
-              href="#"
-              class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-              >Previous</a
-            >
-            <a
-              href="#"
-              class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-              >Next</a
-            >
-          </div>
           <div
-            class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between"
+            class="flex items-center w-full sm:flex-1 sm:items-center sm:justify-between justify-center"
           >
             <div>
-              <p class="text-sm text-gray-700">
+              <p class="sm:block hidden text-sm text-gray-700">
                 <span class="font-medium">{{
                   productStore.state.total_count
                 }}</span>
@@ -486,9 +474,7 @@ const router = useRouter();
 const category = [
   "Hammasi",
   "Sotilganlar",
-  "Sotilmaganlar",
-  "Arxivlanganlar",
-  "Bloklanganlar",
+  "Qaytarilganlar",
 ];
 
 const open = ref(false);
