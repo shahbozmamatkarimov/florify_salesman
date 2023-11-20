@@ -1,9 +1,13 @@
 <template>
   <main>
     <Navbar>Mahsulotlar</Navbar>
-    <div class="lg:px-10 px-5 pb-20 overflow-hidden overflow-y-auto max-h-[82vh]">
+    <div
+      class="lg:px-10 px-5 pb-20 overflow-hidden overflow-y-auto max-h-[82vh]"
+    >
       <section>
-        <ul class="flex md:gap-10 gap-5 overflow-x-auto overflow-hidden border-b-2 py-5 text-[#555555] -mt-2">
+        <ul
+          class="flex md:gap-10 gap-5 overflow-x-auto overflow-hidden border-b-2 py-5 text-[#555555] -mt-2"
+        >
           <li
             v-for="(i, index) in category"
             :key="i"
@@ -162,7 +166,7 @@
           <img
             v-if="!i.image?.length"
             alt="img"
-            class="rounded-t-lg cursor-pointer border w-full h-[166px] object-cover"
+            class="rounded-t-lg cursor-pointer border w-full h-[166px] object-cover flowerImage"
             src="https://redthread.uoregon.edu/files/original/affd16fd5264cab9197da4cd1a996f820e601ee4.png"
             @click="open = true"
           />
@@ -353,19 +357,21 @@
           class="flex items-center mt-20 justify-between border-t rounded-lg border-gray-200 bg-white px-4 py-3 sm:px-6"
         >
           <div
-            class="flex items-center w-full sm:flex-1 sm:items-center sm:justify-between justify-center"
+            class="flex items-center w-full sm:flex-1 sm:items-center lg:justify-between justify-center"
           >
             <div>
-              <p class="sm:block hidden text-sm text-gray-700">
+              <p class="lg:block hidden text-sm text-gray-700">
                 <span class="font-medium">{{
                   productStore.state.total_count
                 }}</span>
                 ta natijadan
                 <span class="font-medium">{{
-                  productStore.state.currentPage
+                  productStore.state.currentPage * 10 - 10 + 1
                 }}</span>
                 dan
-                <span class="font-medium">10</span>
+                <span class="font-medium">{{
+                  productStore.state.currentPage * 10
+                }}</span>
                 gacha koʻrsatilmoqda
               </p>
             </div>
@@ -445,6 +451,22 @@
                   </svg>
                 </button>
               </nav>
+              <div>
+                <p class="lg:hidden block text-sm text-gray-700">
+                  <span class="font-medium">{{
+                    productStore.state.total_count
+                  }}</span>
+                  ta natijadan
+                  <span class="font-medium">{{
+                    productStore.state.currentPage * 10 - 10 + 1
+                  }}</span>
+                  dan
+                  <span class="font-medium">{{
+                    productStore.state.currentPage * 10
+                  }}</span>
+                  gacha koʻrsatilmoqda
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -455,9 +477,7 @@
 
 <script setup>
 definePageMeta({
-  middleware: [
-    "auth",
-  ],
+  middleware: ["auth"],
 });
 
 import { useNotification } from "../composables/notification";
@@ -471,11 +491,7 @@ const baseUrlImage = ref(runtimeconfig.public.apiBaseUrl?.slice(0, -4));
 const baseUrl = runtimeconfig.public.apiBaseUrl;
 const router = useRouter();
 
-const category = [
-  "Hammasi",
-  "Sotilganlar",
-  "Qaytarilganlar",
-];
+const category = ["Hammasi", "Sotilganlar", "Qaytarilganlar"];
 
 const open = ref(false);
 const step = ref(0);
@@ -504,12 +520,12 @@ function hiddenButton(e) {
 }
 
 function getOneEditProduct(id) {
+  console.log(id);
   productStore.getOneProduct(id);
 }
 
 function getOneProduct(id) {
-  fetch(baseUrl + `/product/${id}`)
-    .then((res) => res.json())
+  axios.get(baseUrl + `/product/${id}`)
     .then((res) => {
       if (
         res.message === "Token vaqti tugagan!" ||
@@ -548,7 +564,7 @@ function deleteProduct(id) {
     })
     .catch((err) => {
       console.log(err);
-    }); 
+    });
 }
 
 onMounted(() => {

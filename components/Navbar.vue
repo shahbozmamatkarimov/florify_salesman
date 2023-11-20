@@ -110,7 +110,7 @@
               class="flex items-start sm:-mx-5 justify-between p-4 border-b rounded-t dark:border-gray-600"
             >
               <div
-                class="flex items-center  gap-1 self-center text-2xl font-semibold whitespace-nowrap"
+                class="flex items-center gap-1 self-center text-2xl font-semibold whitespace-nowrap"
               >
                 <h1>Mahsulot qo'shish</h1>
                 <img
@@ -472,10 +472,10 @@
                   >
                     <div class="flex px-2 items-center gap-2">
                       <img
-                      class="w-[60px] h-[60px] border border-gray-200 object-cover rounded-xl"
-                      :src="store.file4"
-                      alt="img"
-                    />
+                        class="w-[60px] h-[60px] border border-gray-200 object-cover rounded-xl"
+                        :src="store.file4"
+                        alt="img"
+                      />
                       <div class="space-y-1">
                         <h1 class="text-[#232321] line-clamp-1 font-semibold">
                           {{ store.name4 }}
@@ -544,10 +544,10 @@
                   >
                     <div class="flex px-2 items-center gap-2">
                       <img
-                      class="w-[60px] h-[60px] border border-gray-200 object-cover rounded-xl"
-                      :src="store.file5"
-                      alt="img"
-                    />
+                        class="w-[60px] h-[60px] border border-gray-200 object-cover rounded-xl"
+                        :src="store.file5"
+                        alt="img"
+                      />
                       <div class="space-y-1">
                         <h1 class="text-[#232321] line-clamp-1 font-semibold">
                           {{ store.name5 }}
@@ -611,9 +611,14 @@
                   v-show="store.step < 4"
                   @click="() => (store.step += 1)"
                   type="button"
-                  class="flex gap-[10px] items-center justify-center  h-[50px] mb-5 xl:max-w-[400px] max-w-[380px] w-full bg-[#F9F9F9] rounded-xl"
+                  class="flex gap-[10px] items-center justify-center h-[50px] mb-5 xl:max-w-[400px] max-w-[380px] w-full bg-[#F9F9F9] rounded-xl"
                 >
-                  <img class="mt-1 md:hidden" src="@/assets/svg/addPhoto.svg" alt=""> Rasm qo‘shish
+                  <img
+                    class="mt-1 md:hidden"
+                    src="@/assets/svg/addPhoto.svg"
+                    alt=""
+                  />
+                  Rasm qo‘shish
                 </button>
               </div>
             </div>
@@ -674,6 +679,7 @@
 </template>
 
 <script setup>
+import axios from "axios";
 import { useNotification } from "../composables/notification";
 import { useProductsStore } from "@/store/products";
 
@@ -935,6 +941,23 @@ const handleSubmit = () => {
           store.upload4,
           store.upload5,
         ];
+
+        const fileName = [
+          store.name1,
+          store.name2,
+          store.name3,
+          store.name4,
+          store.name5,
+        ];
+
+        const fileSize = [
+          store.size1,
+          store.size2,
+          store.size3,
+          store.size4,
+          store.size5,
+        ];
+
         let images = 0;
         let t = 0;
         for (let i = 0; i < 5; i++) {
@@ -943,15 +966,22 @@ const handleSubmit = () => {
               images += 1;
               const formData = new FormData();
               formData.append("image", uploadFiles[i]);
+              console.log(fileName[i]);
+              console.log(fileSize[i]);
+              formData.append("product_id", res.product.id);
+              formData.append("name", fileName[i]);
+              formData.append("size", fileSize[i]);
               uploadImage(formData);
             }
           }
         }
         function uploadImage(formData) {
-          fetch(`https://api.florify.uz/api/image/create/${res.product?.id}`, {
-            method: "POST",
-            body: formData,
-          })
+          // fetch("https://api.florify.uz/api/image", {
+          //   method: "POST",
+          //   body: formData,
+          // });
+          axios
+            .post(baseUrl + "/image", formData)
             .then((res) => {
               console.log(res);
               if (res.status === 201) {

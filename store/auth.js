@@ -7,7 +7,6 @@ export const useAuthStore = defineStore("isLogged", () => {
 
   function checkAuth() {
     if (process.client) {
-      console.log(router.currentRoute.value);
       const id = localStorage.getItem("salesman_id");
       const token = localStorage.getItem("token");
       fetch(baseUrl + `/salesman/profile/${id}`, {

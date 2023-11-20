@@ -22,7 +22,7 @@ export const useProductsStore = defineStore("products", () => {
   function getProducts() {
     state.isLoading = true;
     axios
-      .get(baseUrl + "/product/1:10")
+      .get(baseUrl + "/product/" + state.page + ":10")
       .then((res) => {
         if (
           res.message === "Token vaqti tugagan!" ||

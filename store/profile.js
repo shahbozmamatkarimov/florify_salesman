@@ -4,25 +4,28 @@ import axios from "axios";
 export const useProfileStore = defineStore("profile", () => {
   const runtimeconfig = useRuntimeConfig();
   const baseUrl = runtimeconfig.public.apiBaseUrl;
+  const baseUrlImage = ref(runtimeconfig.public.apiBaseUrl?.slice(0, -4));
 
-  const store = reactive({});
+  const store = reactive({
+    userImage: "",
+    profile: "",
+    editInfoModal: false,
+  });
 
   const profile = reactive({
     image: "",
-    full_name: "",
+    username: "",
     phone: "",
     address: "",
     email: "",
   });
 
   function editProfile() {
-    console.log("Hello from");
     const token = localStorage.getItem("token");
     const id = localStorage.getItem("salesman_id");
-    console.log(profile.phone);
     const formData = new FormData();
     formData.append("image", profile.image);
-    formData.append("full_name", profile.full_name);
+    formData.append("username", profile.username);
     formData.append("phone", "+998" + profile.phone);
     formData.append("address", profile.address);
     formData.append("email", profile.email);
@@ -34,11 +37,37 @@ export const useProfileStore = defineStore("profile", () => {
       })
       .then((res) => {
         console.log(res);
+        store.editInfoModal = false;
+        getProfile();
+      })
+      .catch((err) => {
+        store.editInfoModal = false;
+        console.log(err);
+      });
+  }
+
+  function getProfile() {
+    const id = localStorage.getItem("salesman_id");
+    axios
+      .get(baseUrl + `/salesman/${id}`)
+      .then((res) => {
+        if (
+          res.message === "Token vaqti tugagan!" ||
+          res.message === "Token topilmadi!"
+        ) {
+          router.push("/login");
+        }
+        console.log(res);
+        store.profile = res.data;
+        profile.username = res.data?.username;
+        profile.address = res.data?.address;
+        profile.phone = res.data?.phone?.slice(4);
+        store.userImage = baseUrlImage.value + "/" + res.data?.image;
       })
       .catch((err) => {
         console.log(err);
       });
   }
 
-  return { store, profile, editProfile };
+  return { store, profile, editProfile, getProfile };
 });
