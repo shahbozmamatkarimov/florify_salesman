@@ -1,6 +1,6 @@
 <template>
   <main>
-    <Navbar>Sozlamalar</Navbar>
+    <Navbar>{{ $t("settings") }}</Navbar>
     <section class="grid lg:grid-cols-3 lg:px-10 sm:px-5 px-0 pt-5 gap-5">
       <ul
         :class="`${store.is_chat ? 'lg:block hidden' : ''}`"
@@ -20,7 +20,7 @@
               alt="check"
             />
           </div>
-          <p :class="{ 'text-[#5C0099]': step == 1 }">Chek</p>
+          <p :class="{ 'text-[#5C0099]': step == 1 }">{{ $t("check") }}</p>
         </li>
         <hr />
         <li class="px-10 py-3 flex gap-3 cursor-pointer" @click="step = 2">
@@ -36,7 +36,7 @@
               alt="check"
             />
           </div>
-          <p :class="{ 'text-[#5C0099]': step == 2 }">Session</p>
+          <p :class="{ 'text-[#5C0099]': step == 2 }">{{ $t("session") }}</p>
         </li>
         <hr />
         <li class="px-10 py-3 flex gap-3 cursor-pointer" @click="step = 3">
@@ -52,7 +52,9 @@
               alt="check"
             />
           </div>
-          <p :class="{ 'text-[#5C0099]': step == 3 }">Dastur tili</p>
+          <p :class="{ 'text-[#5C0099]': step == 3 }">
+            {{ $t("programm_lang") }}
+          </p>
         </li>
         <hr />
         <li class="px-10 py-3 flex gap-3 cursor-pointer" @click="step = 4">
@@ -68,7 +70,7 @@
               alt="check"
             />
           </div>
-          <p :class="{ 'text-[#5C0099]': step == 4 }">Xabarnomalar</p>
+          <p :class="{ 'text-[#5C0099]': step == 4 }">{{ $t("notices") }}</p>
         </li>
         <hr />
       </ul>
@@ -78,14 +80,16 @@
         v-show="step === 1"
         class="relative col-span-2 pb-20 overflow-hidden overflow-y-auto lg:min-h-[calc(100vh_-_170px)] min-h-[calc(100vh_-_200px)] max-h-[calc(100vh_-_170px)] bg-white overflow-x-auto shadow-md sm:rounded-xl"
       >
-        <h1 class="sm:relative fixed sm:h-auto h-[75px] bg-white w-full top-0 left-0 flex items-center justify-between py-4 px-5 text-2xl font-semibold">
+        <h1
+          class="sm:relative fixed sm:h-auto h-[75px] bg-white w-full top-0 left-0 flex items-center justify-between py-4 px-5 text-2xl font-semibold"
+        >
           <img
             class="lg:hidden block cursor-pointer"
             @click="store.is_chat = false"
             src="@/assets/svg/leftArrow.svg"
             alt=""
           />
-          Chek <span></span>
+          {{ $t("check") }} <span></span>
         </h1>
 
         <hr class="-mx-10 sm:!mt-0 !-mt-2" />
@@ -96,14 +100,16 @@
         v-show="step === 2"
         class="relative custom_scroll col-span-2 pb-20 overflow-hidden overflow-y-auto lg:min-h-[calc(100vh_-_170px)] min-h-[calc(100vh_-_200px)] max-h-[calc(100vh_-_170px)] bg-white overflow-x-auto shadow-md sm:rounded-xl"
       >
-        <h1 class="sm:relative fixed sm:h-auto h-[75px] bg-white w-full top-0 left-0 flex items-center justify-between py-4 px-5 text-2xl font-semibold">
+        <h1
+          class="sm:relative fixed sm:h-auto h-[75px] bg-white w-full top-0 left-0 flex items-center justify-between py-4 px-5 text-2xl font-semibold"
+        >
           <img
             class="lg:hidden block cursor-pointer"
             @click="store.is_chat = false"
             src="@/assets/svg/leftArrow.svg"
             alt=""
           />
-          Session <span></span>
+          {{ $t("session") }} <span></span>
         </h1>
         <table class="w-full whitespace-nowrap text-sm text-left">
           <thead class="text-xs uppercase bg-gray-50">
@@ -145,25 +151,34 @@
       <div
         :class="`${store.is_chat ? 'max-w-full w-full' : 'lg:block hidden'}`"
         v-show="step === 3"
-        class="relative col-span-2 pb-20 space-y-4 px-10 overflow-hidden overflow-y-auto lg:min-h-[calc(100vh_-_170px)] min-h-[calc(100vh_-_200px)] max-h-[calc(100vh_-_170px)] bg-white overflow-x-auto shadow-md sm:rounded-xl"
+        class="relative col-span-2 pb-20 space-y-4 px-5 overflow-hidden overflow-y-auto lg:min-h-[calc(100vh_-_170px)] min-h-[calc(100vh_-_200px)] max-h-[calc(100vh_-_170px)] bg-white overflow-x-auto shadow-md sm:rounded-xl"
       >
-      <h1 class="sm:relative fixed sm:h-auto h-[75px] bg-white w-full top-0 left-0 flex items-center justify-between py-4 px-5 text-2xl font-semibold">
-        <img
-          class="lg:hidden block cursor-pointer"
-          @click="store.is_chat = false"
-          src="@/assets/svg/leftArrow.svg"
-          alt=""
-        />
-        Dastur tili <span></span>
-      </h1>
+        <h1
+          class="sm:relative fixed sm:h-auto h-[75px] bg-white w-full top-0 left-0 flex items-center justify-between py-4 text-2xl font-semibold"
+        >
+          <img
+            class="lg:hidden block cursor-pointer"
+            @click="store.is_chat = false"
+            src="@/assets/svg/leftArrow.svg"
+            alt=""
+          />
+          {{ $t("programm_lang") }} <span></span>
+        </h1>
 
-      <hr class="-mx-10 sm:!mt-0 !mt-0" />
+        <hr class="-mx-10 sm:!mt-0 !mt-0" />
 
         <div class="flex items-center">
           <input
             id="default-radio-1"
             type="radio"
-            value=""
+            v-model="store.lang"
+            @click="
+              () => {
+                $i18n.locale = 'ru';
+                addStorage('ru');
+              }
+            "
+            value="ru"
             name="default-radio"
             class="w-4 h-4 text-[#5C0099] focus:ring-0 bg-transparent p-2 border-[#5C0099]"
           />
@@ -177,9 +192,15 @@
         <div class="flex items-center">
           <input
             id="default-radio-2"
-            checked="true"
             type="radio"
-            value=""
+            v-model="store.lang"
+            @click="
+              () => {
+                $i18n.locale = 'uz';
+                addStorage('uz');
+              }
+            "
+            value="uz"
             name="default-radio"
             class="w-4 h-4 text-[#5C0099] focus:ring-0 bg-transparent p-2 border-[#5C0099]"
           />
@@ -194,24 +215,26 @@
       <div
         :class="`${store.is_chat ? 'max-w-full w-full' : 'lg:block hidden'}`"
         v-show="step === 4"
-        class="relative col-span-2 pb-20 space-y-4 px-10 overflow-hidden overflow-y-auto lg:min-h-[calc(100vh_-_170px)] min-h-[calc(100vh_-_200px)] max-h-[calc(100vh_-_170px)] bg-white overflow-x-auto shadow-md sm:rounded-xl"
+        class="relative col-span-2 pb-20 space-y-4 px-5 overflow-hidden overflow-y-auto lg:min-h-[calc(100vh_-_170px)] min-h-[calc(100vh_-_200px)] max-h-[calc(100vh_-_170px)] bg-white overflow-x-auto shadow-md sm:rounded-xl"
       >
-        <h1 class="sm:relative fixed sm:h-auto h-[75px] bg-white w-full top-0 left-0 flex items-center justify-between py-4 px-5 text-2xl font-semibold">
+        <h1
+          class="sm:relative fixed sm:h-auto h-[75px] bg-white w-full top-0 left-0 flex items-center justify-between py-4 text-2xl font-semibold"
+        >
           <img
             class="lg:hidden block cursor-pointer"
             @click="store.is_chat = false"
             src="@/assets/svg/leftArrow.svg"
             alt=""
           />
-          Xabarnomalar <span></span>
+          {{ $t("notices") }} <span></span>
         </h1>
 
         <hr class="-mx-10 sm:!mt-0 !-mt-0" />
 
         <div class="flex justify-between items-center">
           <div>
-            <h1 class="font-semibold">Elektron pochta</h1>
-            <p class="text-gray-600">O'tkazib yuborilgan faollik xabarlari</p>
+            <h1 class="font-semibold">{{ $t("email") }}</h1>
+            <p class="text-gray-600">{{ $t("missed_activity") }}</p>
           </div>
 
           <label class="relative inline-flex items-center cursor-pointer">
@@ -224,8 +247,8 @@
         <hr class="-mx-10" />
         <div class="flex justify-between items-center">
           <div>
-            <h1 class="font-semibold">Buyurtma</h1>
-            <p class="text-gray-600">Buyurtma uchun xabarnoma</p>
+            <h1 class="font-semibold">{{ $t("order") }}</h1>
+            <p class="text-gray-600">{{ $t("order_message") }}</p>
           </div>
 
           <label class="relative inline-flex items-center cursor-pointer">
@@ -248,6 +271,16 @@ definePageMeta({
 
 const store = reactive({
   is_chat: false,
+  lang: "en",
+});
+
+const addStorage = (lang) => {
+  store.lang = lang;
+  localStorage?.setItem("language", lang);
+};
+
+onBeforeMount(() => {
+  store.lang = localStorage?.getItem("language");
 });
 
 const step = ref(1);

@@ -9,7 +9,7 @@
           class="flex md:gap-10 gap-5 overflow-x-auto overflow-hidden border-b-2 py-5 text-[#555555] -mt-2"
         >
           <li
-            v-for="(i, index) in category"
+            v-for="(i, index) in category[$t('uz')]"
             :key="i"
             :class="{ 'text-[#5C0099]': step == index }"
             class="leading-3 cursor-pointer duration-1000 pt-2 border-b-2 border-transparent font-bold"
@@ -101,7 +101,7 @@
           class="flex items-center border cursor-pointer sm:border-[#666666] border-[#2424241A] rounded-lg sm:px-5 px-3 sm:bg-transparent bg-white py-2 gap-3 h-10"
         >
           <img class="h-6 w-6" src="../../assets/svg/filter.svg" alt="filter" />
-          <span class="sm:block hidden">Filtrlash</span>
+          <span class="sm:block hidden">{{ $t("filter") }}</span>
         </nav>
       </section>
       <section
@@ -183,9 +183,16 @@
           <div class="p-5">
             <div class="flex justify-between items-center">
               <button
-                class="h-9 w-20 border pb-1 border-[#45D469] text-[#45D469] font-medium rounded-lg"
+                v-if="i.quantity !== 0"
+                class="h-[30px] px-[10px] border text-sm border-[#45D469] text-[#45D469] font-medium rounded-lg"
               >
-                Sotuvda
+                {{ $t("on_saling") }}
+              </button>
+              <button
+                v-else
+                class="h-[30px] px-[10px] text-sm border border-[#FF6161] text-[#FF6161] font-medium rounded-lg"
+              >
+                {{ $t("not_saling") }}
               </button>
               <a-dropdown :trigger="['click']">
                 <a class="items-center ant-dropdown-link" @click.prevent>
@@ -198,7 +205,7 @@
                 <template #overlay>
                   <a-menu>
                     <a-menu-item @click="() => getOneEditProduct(i.id)">
-                      O'zgartirish
+                      {{ $t("change") }}
                     </a-menu-item>
                     <a-menu-item
                       key="1"
@@ -207,38 +214,38 @@
                         getOneProduct(i.id);
                       "
                     >
-                      Ko'rish
+                      {{ $t("show") }}
                     </a-menu-item>
                     <a-menu-divider />
-                    <a-menu-item @click="() => deleteProduct(i.id)"
-                      >O'chirish</a-menu-item
-                    >
+                    <a-menu-item @click="() => deleteProduct(i.id)">
+                      {{ $t("delete") }}
+                    </a-menu-item>
                   </a-menu>
                 </template>
               </a-dropdown>
             </div>
             <div class="flex font-medium justify-between leading-10">
               <ul class="mb-3 text-[#666666] dark:text-gray-400">
-                <li>ID</li>
-                <li>Reyting</li>
-                <li>Ko‘rilganlar soni</li>
-                <li>Sotilgan</li>
-                <li>Qaytarilgan</li>
-                <li>Nuqson</li>
+                <li>{{ $t("id") }}</li>
+                <li>{{ $t("reyting") }}</li>
+                <li>{{ $t("viewed") }}</li>
+                <li>{{ $t("sale") }}</li>
+                <li>{{ $t("other") }}</li>
                 <li class="text-lg font-semibold text-[#242424]">
                   {{ i.name }}
                 </li>
                 <li class="text-[#000000]">
-                  <span>{{ i.price }}</span> so‘m dan
+                  <span v-if="$t('uz') != 'Uz'">{{ $t("from") }}</span>
+                  <span>{{ i.price }}</span> {{ $t("summ") }}
+                  <span v-if="$t('uz') == 'Uz'">{{ $t("from") }}</span>
                 </li>
               </ul>
               <ul class="mb-3 text-end text-[#000000] dark:text-gray-400">
                 <li>#{{ i.id }}</li>
-                <li>0.00</li>
-                <li>115</li>
-                <li>11</li>
-                <li>0</li>
-                <li>0</li>
+                <li>{{ (i.likeCount / 50).toFixed(2) }}</li>
+                <li>{{ i.watchedCount }}</li>
+                <li>{{ i.soldProductCount }}</li>
+                <li>{{ i.quantity }}</li>
               </ul>
             </div>
           </div>
@@ -251,29 +258,28 @@
           id="defaultModal"
           tabindex="-1"
           aria-hidden="true"
-          class="flex justify-center items-center absolute bg-[#8c8cee0d] backdrop-blur-[1px] z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
+          class="flex justify-center items-center md:mt-0 mt-[70px] md:max-h-full max-h-[calc(100vh_-_140px)] lg:bg-[#8c8cee0d] lg:backdrop-blur-[1px] fixed top-0 left-0 right-0 h-full z-50 w-full md:inset-0 overflow-hidden"
         >
-          <div class="relative w-full max-w-4xl max-h-full">
+          <div
+            class="relative lg:ml-[260px] bg-[#F9F9F9] md:py-0 py-5 w-full md:max-h-full max-h-[calc(100vh_-_140px)] h-full"
+          >
             <!-- Modal content -->
-            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <div
+              class="relative bg-white min-h-full overflow-y-auto md:max-h-full max-h-[calc(100vh_-_200px)] rounded-lg shadow dark:bg-gray-700"
+            >
               <!-- Modal header -->
               <div
                 class="flex items-center justify-between px-4 pt-1 pb-4 border-b rounded-t"
               >
-                <div>
-                  <ul class="flex flex-wrap text-sm font-medium text-center">
-                    <li class="mr-2">
+                <div class="sticky top-40">
+                  <ul
+                    class="flex flex-wrap sticky top-40 text-sm font-medium text-center"
+                  >
+                    <li class="mr-2 sticky top-40">
                       <button
-                        class="inline-block p-4 pb-2 border-b-2 text-[#5C0099] rounded-t-lg border-[#5C0099]"
+                        class="inline-block sticky top-40 p-4 pb-2 border-b-2 text-[#5C0099] rounded-t-lg border-[#5C0099]"
                       >
-                        Informatsiya
-                      </button>
-                    </li>
-                    <li class="mr-2">
-                      <button
-                        class="inline-block p-4 pb-2 border-b-2 border-transparent rounded-t-lg hover:text-[#5C0099] hover:border-[#5C0099]"
-                      >
-                        Tahrirlash
+                      {{$t("info")}}
                       </button>
                     </li>
                   </ul>
@@ -288,10 +294,10 @@
                 </button>
               </div>
               <!-- Modal body -->
-              <div class="px-10 py-5">
+              <div class="sm:px-10 px-5 py-5">
                 <ul
                   class="space-y-6 imageContainer"
-                  v-for="i in store.showProduct"
+                  v-for="i in productStore.state.showProduct"
                   :key="i?.id"
                 >
                   <li class="font-semibold text-lg text-[#242424]">
@@ -299,17 +305,23 @@
                   </li>
                   <li class="flex gap-6 items-center">
                     <button
-                      class="h-9 w-20 border pb-1 border-[#45D469] text-[#45D469] font-medium rounded-lg"
-                    >
-                      Sotuvda
-                    </button>
+                    v-if="i.quantity !== 0"
+                    class="h-[30px] px-[10px] border text-sm border-[#45D469] text-[#45D469] font-medium rounded-lg"
+                  >
+                    {{ $t("on_saling") }}
+                  </button>
+                  <button
+                    v-else
+                    class="h-[30px] px-[10px] text-sm border border-[#FF6161] text-[#FF6161] font-medium rounded-lg"
+                  >
+                    {{ $t("not_saling") }}
+                  </button>
                     <p>#{{ i.id }}</p>
                   </li>
-                  <li>Mahsulot rasmi</li>
+                  <li>{{$t("product_image")}}</li>
                   <li
                     v-if="i.image?.length"
-                    @scroll="(e) => hiddenButton(e)"
-                    class="flex items-center relative gap-5 overflow-hidden overflow-x-auto"
+                    class="xl:flex hidden items-center relative gap-5 overflow-hidden overflow-x-auto"
                   >
                     <img
                       v-for="(img, index) in i.image"
@@ -322,17 +334,49 @@
                       :src="baseUrlImage + '/' + img.image"
                       alt="img"
                     />
-                    <button
-                      class="hiddenButton bx bx-chevron-right text-4xl sticky top-0 bottom-0 right-5 bg-gray-200 h-10 w-10 my-auto rounded-full"
-                    ></button>
                   </li>
-                  <li>Narxi</li>
-                  <li class="font-medium text-lg">{{ i.price }} so‘m</li>
+                  <li
+                    v-if="i.image?.length"
+                    @scroll="(e) => hiddenButton(e)"
+                    class="xl:hidden flex flex-col items-start relative gap-5 overflow-hidden overflow-x-auto"
+                  >
+                    <img
+                      class="w-[440px] h-[450px] mainImage sticky left-0 rounded-xl"
+                      :src="baseUrlImage + '/' + i.image[0].image"
+                      alt="img"
+                    />
+                    <div class="flex gap-[14px]">
+                      <img
+                        v-for="(img, index) in i.image"
+                        :key="index"
+                        :class="
+                          index == 0
+                            ? 'hidden'
+                            : 'w-[100px] h-[100px] rounded-xl'
+                        "
+                        :src="baseUrlImage + '/' + img.image"
+                        alt="img"
+                      />
+                    </div>
+                  </li>
+                  <li>{{$t("color")}}</li>
+                  <li class="flex flex-wrap max-w-fit gap-2">
+                    <p
+                      v-for="(i, index) in i.color?.split(',')"
+                      :class="`border w-8 h-8 rounded-full ${
+                        i == '#FFF' ? 'border-gray-600' : 'border-white'
+                      }`"
+                      :style="`background: ${i}`"
+                    ></p>
+                  </li>
                   <hr />
-                  <li>KOMISSIYA</li>
+                  <li>{{$t("price")}}</li>
+                  <li class="font-medium text-lg">{{ i.price }} {{$t("summ")}}</li>
+                  <hr />
+                  <li>{{$t("interest_rate")}}</li>
                   <li class="font-medium text-lg">10 %</li>
                   <hr />
-                  <li>MAHSULOT KARTASIGA HAVOLA</li>
+                  <li>{{$t("link_for_product")}}</li>
                   <li>
                     <a
                       class="text-[#6188FF] font-medium text-lg border-b border-[#6188FF]"
@@ -341,10 +385,10 @@
                     >
                   </li>
                   <hr />
-                  <li>REYTINGI</li>
+                  <li>{{$t("reyting_of")}}</li>
                   <li class="flex gap-5 font-medium text-lg">
                     <img src="../../assets/svg/rating.svg" alt="rate" />
-                    <p>0./5 (0 ta sharh)</p>
+                    <p>0./5 (0 {{$t("comment_of")}})</p>
                   </li>
                 </ul>
               </div>
@@ -354,28 +398,45 @@
       </section>
       <section>
         <div
-          class="flex items-center mt-20 justify-between border-t rounded-lg border-gray-200 bg-white px-4 py-3 sm:px-6"
+          class="flex items-center center mt-20 justify-between border-t rounded-lg border-gray-200 bg-white px-4 py-3 sm:px-5"
         >
           <div
             class="flex items-center w-full sm:flex-1 sm:items-center lg:justify-between justify-center"
           >
             <div>
-              <p class="lg:block hidden text-sm text-gray-700">
+              <p
+                v-if="$t('uz') == 'Uz'"
+                class="lg:block hidden text-sm text-gray-700"
+              >
                 <span class="font-medium">{{
                   productStore.state.total_count
                 }}</span>
-                ta natijadan
+                {{ $t("pagination[0]") }}
                 <span class="font-medium">{{
                   productStore.state.currentPage * 10 - 10 + 1
                 }}</span>
-                dan
+                {{ $t("pagination[1]") }}
                 <span class="font-medium">{{
                   productStore.state.currentPage * 10
                 }}</span>
-                gacha koʻrsatilmoqda
+                {{ $t("pagination[2]") }}
+              </p>
+              <p v-else class="lg:block hidden text-sm text-gray-700">
+                {{ $t("pagination[0]") }}
+                <span class="font-medium">{{
+                  productStore.state.currentPage * 10 - 10 + 1
+                }}</span>
+                {{ $t("pagination[1]") }}
+                <span class="font-medium">{{
+                  productStore.state.currentPage * 10
+                }}</span>
+                {{ $t("pagination[2]") }}
+                <span class="font-medium">{{
+                  productStore.state.total_count
+                }}</span>
               </p>
             </div>
-            <div>
+            <div class="text-center">
               <nav
                 class="isolate inline-flex -space-x-px rounded-md shadow-sm"
                 aria-label="Pagination"
@@ -452,19 +513,39 @@
                 </button>
               </nav>
               <div>
-                <p class="lg:hidden block text-sm text-gray-700">
+                <p
+                  v-if="$t('uz') == 'Uz'"
+                  class="lg:hidden block pt-2 text-center text-sm text-gray-700"
+                >
                   <span class="font-medium">{{
                     productStore.state.total_count
                   }}</span>
-                  ta natijadan
+                  {{ $t("pagination[0]") }}
                   <span class="font-medium">{{
                     productStore.state.currentPage * 10 - 10 + 1
                   }}</span>
-                  dan
+                  {{ $t("pagination[1]") }}
                   <span class="font-medium">{{
                     productStore.state.currentPage * 10
                   }}</span>
-                  gacha koʻrsatilmoqda
+                  {{ $t("pagination[2]") }}
+                </p>
+                <p
+                  v-else
+                  class="lg:hidden block pt-2 text-center text-sm text-gray-700"
+                >
+                  {{ $t("pagination[0]") }}
+                  <span class="font-medium">{{
+                    productStore.state.currentPage * 10 - 10 + 1
+                  }}</span>
+                  {{ $t("pagination[1]") }}
+                  <span class="font-medium">{{
+                    productStore.state.currentPage * 10
+                  }}</span>
+                  {{ $t("pagination[2]") }}
+                  <span class="font-medium">{{
+                    productStore.state.total_count
+                  }}</span>
                 </p>
               </div>
             </div>
@@ -479,7 +560,7 @@
 definePageMeta({
   middleware: ["auth"],
 });
-
+import axios from "axios";
 import { useNotification } from "../composables/notification";
 import { useProductsStore } from "@/store/products";
 
@@ -491,7 +572,10 @@ const baseUrlImage = ref(runtimeconfig.public.apiBaseUrl?.slice(0, -4));
 const baseUrl = runtimeconfig.public.apiBaseUrl;
 const router = useRouter();
 
-const category = ["Hammasi", "Sotilganlar", "Qaytarilganlar"];
+const category = {
+  Uz: ["Hammasi", "Sotuvdagilar", "Sotilganlar"],
+  Уз: ["Все", "В продаже", "Распроданный"],
+};
 
 const open = ref(false);
 const step = ref(0);
@@ -500,6 +584,8 @@ const store = reactive({
   showProduct: "",
   token: "",
 });
+
+const quantity = ["All", "on_sale", "saled"];
 
 function addPage() {
   if (productStore.state.total_pages <= productStore.state.page) return;
@@ -513,32 +599,27 @@ function returnPage() {
   productStore.getProducts();
 }
 
-function hiddenButton(e) {
-  console.log(document.querySelector(".imageContainer").offsetWidth);
-  console.log(e);
-  document.querySelector(".hiddenButton").className += " hidden";
-}
-
 function getOneEditProduct(id) {
-  console.log(id);
-  productStore.getOneProduct(id);
+  productStore.getOneProduct(id, "edit");
 }
 
 function getOneProduct(id) {
-  axios.get(baseUrl + `/product/${id}`)
-    .then((res) => {
-      if (
-        res.message === "Token vaqti tugagan!" ||
-        res.message === "Token topilmadi!"
-      ) {
-        router.push("/login");
-      }
-      console.log(res);
-      store.showProduct = [res];
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  productStore.getOneProduct(id, "product");
+
+  // axios.get(baseUrl + `/product/getById/${id}`)
+  //   .then((res) => {
+  //     if (
+  //       res.message === "Token vaqti tugagan!" ||
+  //       res.message === "Token topilmadi!"
+  //     ) {
+  //       router.push("/login");
+  //     }
+  //     console.log(res);
+  //     store.showProduct = [res];
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //   });
 }
 
 function deleteProduct(id) {
@@ -567,10 +648,30 @@ function deleteProduct(id) {
     });
 }
 
+watch(
+  () => step.value,
+  () => {
+    productStore.state.quantity = quantity[step.value];
+    productStore.getProducts();
+  }
+);
+
 onMounted(() => {
   const token = localStorage.getItem("token");
   productStore.getProducts();
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@media (max-width: 450px) {
+  .mainImage {
+    height: 400px;
+  }
+}
+
+@media (max-width: 370px) {
+  .mainImage {
+    height: 370px;
+  }
+}
+</style>

@@ -11,14 +11,14 @@
           <div class="flex gap-2 items-center">
             <img class="pt-1" src="../assets/svg/money.svg" alt="money" />
             <h1 class="font-medium xl:text-3xl text-xl whitespace-nowrap">
-              122 552 250,80 so‘m
+              122 552 250,80 {{ $t("summ") }}
             </h1>
           </div>
           <div class="flex mr-4">
             <a-select
               v-if="is_mount"
-              v-model:value="store.selectedMonth"
-              :options="options"
+              v-model:value="store.selectedMonth[$t('uz')]"
+              :options="options[$t('uz')]"
               class="placeholder-black"
             ></a-select>
             <img
@@ -48,25 +48,30 @@
         class="flex items-center justify-center relative h-[369px] lg:w-[300px] w-full px-10 bg-[#FFFFFF] py-8 sm:rounded-xl"
       >
         <div class="max-w-[311px]">
-          <h1 class="lg:text-sm text-2xl lg:font-normal font-medium">Tashriflar soni</h1>
+          <h1 class="lg:text-sm text-2xl lg:font-normal font-medium">
+            {{ $t("visited_count") }}
+          </h1>
           <p class="font-medium lg:text-3xl text-[22px] py-2">1.345.987</p>
           <div class="text-white font-medium py-5">
             <div
               class="bg-[#EF9B00] w-44 h-44 rounded-full flex flex-col space-y-1 items-center justify-center"
             >
-              <h1 class="text-sm">Mobil dastur</h1>
+              <h1 class="text-sm">{{ $t("mobile") }}</h1>
               <p class="text-xl">1.148.541</p>
             </div>
             <div
               class="bg-[#4684CE] w-28 h-28 rounded-full ml-32 -mt-16 flex flex-col space-y-1 items-center justify-center"
             >
-              <h1>Veb sayt</h1>
+              <h1>{{ $t("website") }}</h1>
               <p>9.999.999</p>
             </div>
           </div>
         </div>
         <div>
-          <img class="absolute top-5 right-5 cursor-pointer reload" src="@/assets/svg/reload.svg" />
+          <img
+            class="absolute top-5 right-5 cursor-pointer reload"
+            src="@/assets/svg/reload.svg"
+          />
         </div>
       </div>
     </section>
@@ -77,7 +82,7 @@
 const is_mount = ref(false);
 
 const store = reactive({
-  selectedMonth: "May",
+  selectedMonth: {Uz: "May", Уз: "Май"},
 });
 
 const focus = () => {
@@ -95,56 +100,108 @@ definePageMeta({
 
 const data = ref([]);
 
-const options = ref([
-  {
-    value: "January",
-    label: "January",
+const options = ref({
+  Uz: [
+    {
+      value: "Yanvar",
+      label: "Yanvar",
+    },
+    {
+      value: "Fevral",
+      label: "Fevral",
+    },
+    {
+      value: "Mart",
+      label: "Mart",
+    },
+    {
+      value: "April",
+      label: "April",
+    },
+    {
+      value: "May",
+      label: "May",
+    },
+    {
+      value: "Iyun",
+      label: "Iyun",
+    },
+    {
+      value: "Iyul",
+      label: "Iyul",
+    },
+    {
+      value: "Avgust",
+      label: "Avgust",
+    },
+    {
+      value: "Sentabr",
+      label: "Sentabr",
+    },
+    {
+      value: "Oktabr",
+      label: "Oktabr",
+    },
+    {
+      value: "Noyabr",
+      label: "Noyabr",
+    },
+    {
+      value: "Dekabr",
+      label: "Dekabr",
+    },
+  ],
+  Уз: [
+    {
+    value: "Январь",
+    label: "Январь",
   },
   {
-    value: "February",
-    label: "February",
+    value: "Февраль",
+    label: "Февраль",
   },
   {
-    value: "March",
-    label: "March",
+    value: "Март",
+    label: "Март",
   },
   {
-    value: "April",
-    label: "April",
+    value: "Апрель",
+    label: "Апрель",
   },
   {
-    value: "May",
-    label: "May",
+    value: "Май",
+    label: "Май",
   },
   {
-    value: "June",
-    label: "June",
+    value: "Июнь",
+    label: "Июнь",
   },
   {
-    value: "July",
-    label: "July",
+    value: "Июль",
+    label: "Июль",
   },
   {
-    value: "August",
-    label: "August",
+    value: "Август",
+    label: "Август",
   },
   {
-    value: "September",
-    label: "September",
+    value: "Сентябрь",
+    label: "Сентябрь",
   },
   {
-    value: "October",
-    label: "October",
+    value: "Октябрь",
+    label: "Октябрь",
   },
   {
-    value: "November",
-    label: "November",
+    value: "Ноябрь",
+    label: "Ноябрь",
   },
   {
-    value: "December",
-    label: "December",
+    value: "Декабрь",
+    label: "Декабрь",
   },
-]);
+  ]
+});
 
 onMounted(() => {
   data.value = {

@@ -1,5 +1,8 @@
 <template>
   <main>
+    <p v-if="isMount && store.lang" class="hidden">
+      {{ ($i18n.locale = store.lang) }}
+    </p>
     <section
       class="sm:bg-transparent bg-white sm:border-b-2 lg:px-10 px-5 mb-1"
     >
@@ -27,7 +30,7 @@
                   type="search"
                   id="default-search"
                   class="block xl:min-w-full h-12 pl-10 md:text-lg outline-none rounded-lg bg-white"
-                  placeholder="Qidirish..."
+                  :placeholder="`${$t('search')}...`"
                   required
                 />
               </div>
@@ -51,7 +54,7 @@
                 class="flex items-center gap-2 text-white bg-[#088178] hover:bg-[#08817970] font-medium rounded-lg px-5 py-2.5"
               >
                 <img src="../assets/svg/plus.svg" alt="search" />
-                <span class="xl:block hidden">Mahsulot qo'shish</span>
+                <span class="xl:block hidden">{{ $t("add_product") }}</span>
               </button>
             </div>
           </div>
@@ -84,14 +87,14 @@
             type="search"
             id="default-search"
             class="block w-full h-12 pl-10 outline-none rounded-lg bg-white"
-            placeholder="Qidirish..."
+            :placeholder="`${$t('search')}...`"
             required
           />
         </div>
       </form>
     </section>
 
-    <section :class="store.is_submit ? 'pointer-events-none' : ''">
+    <section>
       <!-- Main modal -->
       <div
         v-if="productStore.state.openEditModal"
@@ -112,7 +115,7 @@
               <div
                 class="flex items-center gap-1 self-center text-2xl font-semibold whitespace-nowrap"
               >
-                <h1>Mahsulot qo'shish</h1>
+                <h1>{{ $t("add_product") }}</h1>
                 <img
                   class="font-semibold text-3xl"
                   src="../assets/svg/star.svg"
@@ -130,18 +133,23 @@
             </div>
             <!-- Modal body -->
             <div
+              :class="
+                store.is_submit || productStore.state.isLoading
+                  ? 'pointer-events-none'
+                  : ''
+              "
               class="xl:gap-16 gap-5 p-5 bg-white rounded-t-xl md:flex justify-between w-full overflow-x-hidden overflow-y-auto md:max-h-[calc(100vh_-_170px)] max-h-[calc(100vh_-_245px)]"
             >
               <div class="flex flex-col w-full">
                 <div class="border-b-2 w-[80%] pb-5 mb-5 space-y-5">
-                  <label for="category">Mahsulot kategoriyasi</label>
+                  <label for="category">{{ $t("product_category") }}</label>
                   <div class="flex">
                     <a-select
                       id="category"
                       size="large"
-                      v-model:value="create.category_id"
+                      v-model:value="create.category_id[$t('uz')]"
                       show-search
-                      placeholder="Kategoriyani tanlang"
+                      :placeholder="`${$t('select_category')}`"
                       style="width: 100%"
                       :options="options"
                       :filter-option="filterOption"
@@ -162,14 +170,16 @@
                 </div>
                 <div class="space-y-5 pb-5 w-[80%]">
                   <label class="flex gap-3" for="name"
-                    ><span>Mahsulot nomi <i class="text-[#FF6161]">*</i></span
+                    ><span
+                      >{{ $t("product_name") }}
+                      <i class="text-[#FF6161]">*</i></span
                     ><img src="../assets/svg/warn.svg" alt="img"
                   /></label>
                   <a-input
                     id="name"
                     size="large"
                     v-model:value="create.name"
-                    placeholder="Mahsulot nomini kiriting"
+                    :placeholder="`${$t('enter_pr_name')}`"
                     show-count
                     :maxlength="70"
                     required
@@ -177,17 +187,18 @@
                 </div>
                 <div class="border-b-2 pb-5 mb-5 space-y-5">
                   <label for="category"
-                    >Mahsulot rangi <i class="text-[#FF6161]">*</i></label
+                    >{{ $t("product_color") }}
+                    <i class="text-[#FF6161]">*</i></label
                   >
                   <div class="flex flex-wrap w-full gap-5">
                     <div class="flex min-w-[200px] max-w-fit">
                       <a-select
-                        id="category"
+                        id="product_color"
                         size="large"
-                        v-model:value="create.selected_colors"
+                        v-model:value="create.color"
                         mode="multiple"
                         show-search
-                        placeholder="Rangni tanlang"
+                        :placeholder="`${$t('select_pr_color')}`"
                         style="width: 100%"
                         :filter-option="filterOption"
                         required=""
@@ -212,10 +223,13 @@
                         alt=""
                       />
                     </div>
-                    <div class="flex flex-wrap max-w-fit gap-2">
+                    <div
+                      v-if="!store.is_submit"
+                      class="flex flex-wrap max-w-fit gap-2"
+                    >
                       <p
-                        v-for="(i, index) in create.selected_colors"
-                        @click="create.selected_colors?.splice(index, 1)"
+                        v-for="(i, index) in create.color"
+                        @click="create.color?.splice(index, 1)"
                         :class="`w-8 h-8 rounded-full ${
                           i == '#FFF' ? 'border-gray-600' : 'border-white'
                         }`"
@@ -228,14 +242,15 @@
                 <div class="pb-5 space-y-5">
                   <label class="flex gap-3" for="description"
                     ><span
-                      >Mahsulot tavsifi <i class="text-[#FF6161]">*</i></span
+                      >{{ $t("product_description") }}
+                      <i class="text-[#FF6161]">*</i></span
                     ><img src="../assets/svg/warn.svg" alt="img"
                   /></label>
                   <div>
                     <a-textarea
                       id="description"
                       v-model:value="create.description"
-                      placeholder="Tavsif yozish..."
+                      :placeholder="`${$t('write_description')}`"
                       :auto-size="{ minRows: 3, maxRows: 6 }"
                       required
                     />
@@ -243,7 +258,8 @@
                 </div>
                 <div class="pb-5 space-y-5">
                   <label for="price"
-                    >Mahsulot narxi <span class="text-[#FF6161]">*</span></label
+                    >{{ $t("product_price") }}
+                    <span class="text-[#FF6161]">*</span></label
                   ><br />
                   <a-space>
                     <a-input-number
@@ -251,21 +267,22 @@
                       v-model:value="create.price"
                       class="w-full placeholder-[#555555]"
                       size="large"
-                      placeholder="Mahsulot narxini kiriting"
+                      :placeholder="`${$t('enter_pr_price')}`"
                       type="number"
                       required
                     />
                   </a-space>
                 </div>
                 <div class="pb-5 space-y-5">
-                  <label for="deal">Zahira miqdori</label><br />
+                  <label for="deal">{{ $t("quantity_amount") }}</label
+                  ><br />
                   <a-space>
                     <a-input-number
                       id="deal"
                       v-model:value="create.quantity"
                       class="w-full placeholder-[#555555]"
                       size="large"
-                      placeholder="Zahira miqdorinii kiriting"
+                      :placeholder="`${$t('enter_quantity_amount')}`"
                       type="number"
                       required
                     />
@@ -274,7 +291,7 @@
               </div>
               <div class="text-[#555555] xl:max-w-[400px] max-w-[380px] w-full">
                 <h1 class="text-lg">
-                  Mahsulot galeriyasi <i class="text-[#FF6161]">*</i>
+                  {{ $t("gallery") }} <i class="text-[#FF6161]">*</i>
                 </h1>
 
                 <!---------------------------- Main Image -------------------------------------->
@@ -314,12 +331,10 @@
                       alt="img"
                     />
                     <p class="w-[210px]">
-                      R<span class="lowercase"
-                        >asmni shu yerga qo‘ying yoki yuklang</span
-                      >
+                      <span class="normal-case">{{ $t("drop_image") }}</span>
                     </p>
                     <p class="text-sm font-medium">
-                      (J<span class="lowercase">peg, png ruxsat berilgan)</span>
+                      <span class="normal-case">{{ $t("accepts") }}</span>
                     </p>
                   </div>
                 </label>
@@ -337,7 +352,7 @@
                   class="flex items-center justify-between gap-2 h-[80px] xl:max-w-[400px] max-w-[380px] w-full bg-white rounded-xl"
                   v-if="store.file2"
                 >
-                  <div class="flex px-2 items-center gap-2">
+                  <div class="flex px-2 max-w-[80%] items-center gap-2">
                     <img
                       class="w-[60px] h-[60px] border border-gray-200 object-cover rounded-xl"
                       :src="store.file2"
@@ -379,14 +394,9 @@
                     />
                   </div>
                   <div class="text-[15px]">
-                    R<span class="lowercase"
-                      >asmni shu yerga qo‘ying
-                      <span class="sm:inline hidden"
-                        >yoki ko‘rib chiqing</span
-                      ></span
-                    >
+                    <span class="normal-case">{{ $t("drop_image") }}</span>
                     <p>
-                      (J<span class="lowercase">peg, png ruxsat berilgan)</span>
+                      <span class="normal-case">{{ $t("accepts") }}</span>
                     </p>
                   </div>
                 </label>
@@ -403,7 +413,7 @@
                   class="flex items-center justify-between gap-2 h-[80px] xl:max-w-[400px] max-w-[380px] w-full bg-white rounded-xl"
                   v-if="store.file3"
                 >
-                  <div class="flex px-2 items-center gap-2">
+                  <div class="flex px-2 max-w-[80%] items-center gap-2">
                     <img
                       class="w-[60px] h-[60px] border border-gray-200 object-cover rounded-xl"
                       :src="store.file3"
@@ -445,14 +455,9 @@
                     />
                   </div>
                   <div class="text-[15px]">
-                    R<span class="lowercase"
-                      >asmni shu yerga qo‘ying
-                      <span class="sm:inline hidden"
-                        >yoki ko‘rib chiqing</span
-                      ></span
-                    >
+                    <span class="normal-case">{{ $t("drop_image") }}</span>
                     <p>
-                      (J<span class="lowercase">peg, png ruxsat berilgan)</span>
+                      <span class="normal-case">{{ $t("accepts") }}</span>
                     </p>
                   </div>
                 </label>
@@ -470,7 +475,7 @@
                     class="flex items-center justify-between gap-2 h-[80px] xl:max-w-[400px] max-w-[380px] w-full bg-white rounded-xl"
                     v-if="store.file4"
                   >
-                    <div class="flex px-2 items-center gap-2">
+                    <div class="flex px-2 max-w-[80%] items-center gap-2">
                       <img
                         class="w-[60px] h-[60px] border border-gray-200 object-cover rounded-xl"
                         :src="store.file4"
@@ -514,16 +519,9 @@
                       />
                     </div>
                     <div class="text-[15px]">
-                      R<span class="lowercase"
-                        >asmni shu yerga qo‘ying
-                        <span class="sm:inline hidden"
-                          >yoki ko‘rib chiqing</span
-                        ></span
-                      >
+                      <span class="normal-case">{{ $t("drop_image") }}</span>
                       <p>
-                        (J<span class="lowercase"
-                          >peg, png ruxsat berilgan)</span
-                        >
+                        <span class="normal-case">{{ $t("accepts") }}</span>
                       </p>
                     </div>
                   </label>
@@ -542,7 +540,7 @@
                     class="flex items-center justify-between gap-2 h-[80px] w-[400px] bg-white rounded-xl"
                     v-if="store.file5"
                   >
-                    <div class="flex px-2 items-center gap-2">
+                    <div class="flex px-2 max-w-[80%] items-center gap-2">
                       <img
                         class="w-[60px] h-[60px] border border-gray-200 object-cover rounded-xl"
                         :src="store.file5"
@@ -586,16 +584,9 @@
                       />
                     </div>
                     <div class="text-[15px]">
-                      R<span class="lowercase"
-                        >asmni shu yerga qo‘ying
-                        <span class="sm:inline hidden"
-                          >yoki ko‘rib chiqing</span
-                        ></span
-                      >
+                      <span class="normal-case">{{ $t("drop_image") }}</span>
                       <p>
-                        (J<span class="lowercase"
-                          >peg, png ruxsat berilgan)</span
-                        >
+                        <span class="normal-case">{{ $t("accepts") }}</span>
                       </p>
                     </div>
                   </label>
@@ -618,7 +609,7 @@
                     src="@/assets/svg/addPhoto.svg"
                     alt=""
                   />
-                  Rasm qo‘shish
+                  {{ $t("add_image") }}
                 </button>
               </div>
             </div>
@@ -633,7 +624,7 @@
                   type="button"
                   class="text-gray-500 whitespace-nowrap bg-white hover:bg-red-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium max-w-[400px] w-full py-2 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
                 >
-                  Bekor qilish
+                  {{ $t("cancel") }}
                 </button>
                 <button
                   v-if="!store.is_submit"
@@ -642,7 +633,7 @@
                   class="bg-[#F9F9F9] hover:bg-[#b8b4b4] max-w-[400px] w-full focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                   :disabled="store.is_submit ? true : false"
                 >
-                  Tayyor
+                  {{ $t("ready") }}
                 </button>
                 <button
                   v-else
@@ -695,7 +686,6 @@ const description = ref();
 const options = ref([]);
 const optionsId = ref([]);
 const is_search = ref(false);
-
 const colors = [
   {
     value: "#FFF",
@@ -739,7 +729,10 @@ const colors = [
   },
 ];
 
+const isMount = ref(false);
+
 const store = reactive({
+  lang: "uz",
   upload1: "",
   file1: "",
   name1: "",
@@ -762,15 +755,15 @@ const store = reactive({
   size5: "",
   step: 2,
   is_submit: false,
+  deletedFiles: [],
 });
 
 const create = reactive({
   name: "",
   description: "",
   price: "",
-  color: "red",
-  category_id: "Kategoriyani tanlang",
-  selected_colors: "",
+  color: [],
+  category_id: { Uz: "Kategoriyani tanlang", Уз: "Выберите категорию" },
   salesman_id: "",
   quantity: "",
 });
@@ -800,10 +793,11 @@ function closeModal() {
   create.name = "";
   create.description = "";
   create.price = "";
-  create.color = "red";
-  create.category_id = "Kategoriyani tanlang";
+  create.color = [];
+  create.category_id = { Uz: "Kategoriyani tanlang", Уз: "Выберите категорию" };
   create.quantity = "";
   productStore.state.openEditModal = false;
+  store.step = 2;
 }
 
 const filterOption = (input, option) => {
@@ -812,6 +806,11 @@ const filterOption = (input, option) => {
 };
 
 function deleteFile(id) {
+  const staticFile = productStore.state.showProduct.image[id - 1];
+  if (staticFile !== undefined) {
+    store.deletedFiles.push(id - 1);
+  }
+  console.log(staticFile);
   if (id === 2) {
     store.file2 = "";
   } else if (id === 3) {
@@ -828,40 +827,16 @@ function uploadFile(e, number) {
     showWarning("Iltimos, rasm kiriting!");
     return;
   }
-  if (number == 1) {
-    const file = e.target.files[0];
-    store.upload1 = file;
-    store.name1 = file.name;
-    store.size1 = Math.floor(file.size / 1000);
-    store.file1 = URL.createObjectURL(file);
-  } else if (number == 2) {
-    const file = e.target.files[0];
-    store.upload2 = file;
-    store.name2 = file.name;
-    store.size2 = Math.floor(file.size / 1000);
-    store.file2 = URL.createObjectURL(file);
-  } else if (number == 3) {
-    const file = e.target.files[0];
-    store.upload3 = file;
-    store.name3 = file.name;
-    store.size3 = Math.floor(file.size / 1000);
-    store.file3 = URL.createObjectURL(file);
-  } else if (number == 4) {
-    const file = e.target.files[0];
-    store.upload4 = file;
-    store.name4 = file.name;
-    store.size4 = Math.floor(file.size / 1000);
-    store.file4 = URL.createObjectURL(file);
-  } else {
-    const file = e.target.files[0];
-    store.upload5 = file;
-    store.name5 = file.name;
-    store.size5 = Math.floor(file.size / 1000);
-    store.file5 = URL.createObjectURL(file);
-  }
+
+  const file = e.target.files[0];
+  store["upload" + number] = file;
+  store["name" + number] = file.name;
+  store["size" + number] = Math.floor(file.size / 1000);
+  store["file" + number] = URL.createObjectURL(file);
 }
 
 function getCategory() {
+  productStore.state.isLoading = true;
   fetch("https://api.florify.uz/api/category", {
     method: "GET",
     headers: {
@@ -884,6 +859,7 @@ function getCategory() {
           label: i.uz,
         });
         optionsId.value.push(i.id);
+        productStore.state.isLoading = false;
       }
     })
     .catch((err) => {
@@ -892,7 +868,17 @@ function getCategory() {
 }
 
 const handleSubmit = () => {
-  if (create.category_id === "Kategoriyani tanlang") {
+  let staticFile = "";
+  console.log(create.color?.length);
+  if (create.color?.length == 0) {
+    showWarning("Iltimos, mahsulot rangini tanlang!");
+    return;
+  }
+
+  if (
+    create.category_id[$t("uz")] === "Kategoriyani tanlang" ||
+    create.category_id[$t("uz")] === "Выберите категорию"
+  ) {
     showWarning("Iltimos, Mahsulot kategoriyasini tanlang!");
     return;
   }
@@ -901,10 +887,21 @@ const handleSubmit = () => {
     return;
   }
 
+  if (productStore.state.editProduct) {
+    for (let i of store.deletedFiles) {
+      staticFile = productStore.state.showProduct.image[i];
+      deleteStaticFile(staticFile.id, staticFile.image);
+      productStore.state.showProduct.image[i] = undefined;
+    }
+    updateProduct();
+    return;
+  }
+
   const token = localStorage.getItem("token");
 
   showLoading("Ma'lumotlar yuborilmoqda...");
   store.is_submit = true;
+  create.color = create.color.join(",");
   fetch("https://api.florify.uz/api/product", {
     method: "POST",
     headers: {
@@ -926,37 +923,16 @@ const handleSubmit = () => {
       if (res.message === "Mahsulot qo'shildi") {
         showLoading("Rasmlar yuklanmoqda...");
 
-        const files = [
-          store.file1,
-          store.file2,
-          store.file3,
-          store.file4,
-          store.file5,
-        ];
-
-        const uploadFiles = [
-          store.upload1,
-          store.upload2,
-          store.upload3,
-          store.upload4,
-          store.upload5,
-        ];
-
-        const fileName = [
-          store.name1,
-          store.name2,
-          store.name3,
-          store.name4,
-          store.name5,
-        ];
-
-        const fileSize = [
-          store.size1,
-          store.size2,
-          store.size3,
-          store.size4,
-          store.size5,
-        ];
+        let files = [];
+        let uploadFiles = [];
+        let fileName = [];
+        let fileSize = [];
+        for (let i = 1; i <= 5; i++) {
+          files.push(store["file" + i]);
+          uploadFiles.push(store["upload" + i]);
+          fileName.push(store["name" + i]);
+          fileSize.push(store["size" + i]);
+        }
 
         let images = 0;
         let t = 0;
@@ -976,10 +952,6 @@ const handleSubmit = () => {
           }
         }
         function uploadImage(formData) {
-          // fetch("https://api.florify.uz/api/image", {
-          //   method: "POST",
-          //   body: formData,
-          // });
           axios
             .post(baseUrl + "/image", formData)
             .then((res) => {
@@ -994,6 +966,7 @@ const handleSubmit = () => {
                   showSuccess("Mahsulot qo'shildi");
                   store.is_submit = false;
                   productStore.getProducts(1);
+                  productStore.getProducts();
                 }
               } else {
                 showError("Iltimos, Rasmlarni to'g'ri formatda kiriting!");
@@ -1014,6 +987,126 @@ const handleSubmit = () => {
     });
 };
 
+function deleteStaticFile(id, file_name) {
+  axios
+    .delete(baseUrl + "/image/delete/" + id + "/" + file_name)
+    .then((res) => {})
+    .catch((err) => {
+      console.log(err);
+      showError("Xatolik yuz berdi!");
+    });
+}
+
+const updateProduct = () => {
+  const token = localStorage.getItem("token");
+
+  showLoading("Ma'lumotlar yuborilmoqda...");
+  store.is_submit = true;
+  fetch(
+    "https://api.florify.uz/api/product/" + productStore.state.editProductId,
+    {
+      method: "PATCH",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(create),
+    }
+  )
+    .then((res) => res.json())
+    .then((res) => {
+      if (
+        res.message == "Token vaqti tugagan!" ||
+        res.message == "Token topilmadi!"
+      ) {
+        router.push("/login");
+      }
+      if (res.message === "Mahsulot tafsilotlari tahrirlandi") {
+        let files = [];
+        let uploadFiles = [];
+        let fileName = [];
+        let fileSize = [];
+        for (let i = 1; i <= 5; i++) {
+          files.push(store["file" + i]);
+          uploadFiles.push(store["upload" + i]);
+          fileName.push(store["name" + i]);
+          fileSize.push(store["size" + i]);
+        }
+
+        console.log(files);
+        console.log(uploadFiles);
+        console.log(fileName);
+        console.log(fileSize);
+
+        console.log(productStore.state.showProduct.image);
+
+        let images = 0;
+        let t = 0;
+        for (let i = 0; i < fileSize.length; i++) {
+          console.log(typeof fileSize[i] == "number");
+          if (typeof fileSize[i] == "number") {
+            images += 1;
+            const formData = new FormData();
+            formData.append("image", uploadFiles[i]);
+            formData.append("product_id", res.product.id);
+            formData.append("name", fileName[i]);
+            formData.append("size", fileSize[i]);
+            const staticFile = productStore.state.showProduct.image[i];
+            if (staticFile !== undefined) {
+              deleteStaticFile(staticFile.id, staticFile.image);
+            }
+            uploadImage(formData);
+          }
+        }
+
+        if (images == 0) {
+          showSuccess("Mahsulot o'zgartirildi!");
+          store.is_submit = false;
+          productStore.getProducts();
+          closeModal();
+          return;
+        } else {
+          showLoading("Rasmlar yuklanmoqda...");
+        }
+        function uploadImage(formData) {
+          axios
+            .post(baseUrl + "/image", formData)
+            .then((res) => {
+              console.log(res);
+              if (res.status === 201) {
+                t += 1;
+                console.log(t, images);
+                // getProduct.getProducts(token);
+                if (t == images) {
+                  closeModal();
+                  showSuccess("Mahsulot qo'shildi");
+                  store.is_submit = false;
+                  productStore.getProducts(1);
+                }
+              } else {
+                store.is_submit = true;
+                showError("Iltimos, Rasmlarni to'g'ri formatda kiriting!");
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+              store.is_submit = true;
+              showError("Iltimos, Rasmlarni to'g'ri formatda kiriting!");
+            });
+        }
+      } else {
+        store.is_submit = true;
+        showError("Iltimos, ma'lumotlarni to'g'ri tartibda kiriting!");
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      store.is_submit = true;
+      showError("Iltimos, ma'lumotlarni to'g'ri tartibda kiriting!");
+    });
+};
+
 watch(
   () => productStore.showProductById,
   () => {
@@ -1022,7 +1115,7 @@ watch(
     create.name = product.name;
     create.description = product.description;
     create.price = product.price;
-    create.color = product.color;
+    create.color = product.color?.split(",");
     create.category_id = product.category_id;
     create.salesman_id = product.salesman_id;
     create.quantity = product.quantity;
@@ -1030,17 +1123,21 @@ watch(
     store.step = product.image?.length;
     for (let i = 1; i <= product.image?.length; i++) {
       store[`file${i}`] = baseUrlImage.value + product.image[i - 1]?.image;
-      // store[`upload${i}`] = baseUrlImage.value + product.upload[i-1]?.image;
+      store[`size${i}`] = product.image[i - 1]?.size;
+      store[`name${i}`] = product.image[i - 1]?.name;
     }
   }
 );
 
 onBeforeMount(() => {
+  store.lang = localStorage?.getItem("language");
+  isMount.value = true;
   getCategory();
 });
 
 onMounted(() => {
   create.salesman_id = localStorage.getItem("salesman_id");
+  store.lang = "";
 });
 </script>
 

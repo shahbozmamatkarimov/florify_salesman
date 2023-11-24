@@ -1,6 +1,6 @@
 <template>
   <main>
-    <Navbar>Sharhlar</Navbar>
+    <Navbar>{{$t("comments")}}</Navbar>
     <div
       class="lg:flex lg:gap-10 gap-5 lg:px-10 sm:px-5 pt-5 overflow-hidden overflow-y-auto mb-2 max-h-[calc(100vh_-_150px)]"
     >
@@ -16,28 +16,28 @@
               <button
                 class="inline-block pt-4 mr-4 pb-2 border-b-2 border-[#5C0099] text-[#5C0099] rounded-t-lg"
               >
-                Hammasi
+                {{$t("all")}}
               </button>
             </li>
             <li class="mr-2">
               <button
                 class="inline-block pt-4 mr-4 pb-2 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300"
               >
-                Yangi sharhlar
+              {{$t("new_comments")}}
               </button>
             </li>
             <li class="mr-2">
               <button
                 class="inline-block pt-4 mr-4 pb-2 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300"
               >
-                Javob yozilmagan
+              {{$t("not_answer")}}
               </button>
             </li>
             <li>
               <button
                 class="inline-block pt-4 mr-4 pb-2 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300"
               >
-                Javob yozilgan
+              {{$t("get_answer")}}
               </button>
             </li>
           </ul>
@@ -174,7 +174,7 @@
             />
             <span
               class="sm:text-[16px] sm:font-normal font-medium sn:leading-normal leading-7 text-lg"
-              >Haridorga javob yozish</span
+              >{{$t("answer_client")}}</span
             >
           </li>
           <hr class="sm:block hidden" />
@@ -198,18 +198,18 @@
           </li>
           <li class="flex justify-between">
             <h1 class="text-[#454545] sm:text-sm text-[16px]">
-              Buyurtma qilgan vaqt
+              {{$t("order_time")}}
             </h1>
             <p class="text-[#242424]">29 Dek, 2022</p>
           </li>
           <li class="flex justify-between">
             <h1 class="text-[#454545] sm:text-sm text-[16px]">
-              Sharh qoldirgan
+              {{$t("comment_time")}}
             </h1>
             <p class="text-[#242424]">2 Iyul, 2023</p>
           </li>
           <li class="flex justify-between">
-            <h1 class="text-[#454545] sm:text-sm text-[16px]">ID sharh</h1>
+            <h1 class="text-[#454545] sm:text-sm text-[16px]">{{$t("comment_id")}}</h1>
             <p class="text-[#242424]">268153</p>
           </li>
           <hr />
@@ -236,7 +236,7 @@
                 class="placeholder-[#454545]"
                 :autoSize="{ minRows: 3, maxRows: 6 }"
                 showCount
-                placeholder="Javob yozish..."
+                :placeholder="`${$t('write_answer')}`"
                 :maxlength="250"
                 required
                 oninvalid="setCustomValidity('Iltimos, javobingizni kiriting!')"
@@ -246,7 +246,7 @@
                 <button
                   class="bg-[#EEEEEE] rounded-md h-8 pb-1 w-20 text-[#000000]"
                 >
-                  Yuborish
+                {{$t("send")}}
                 </button>
               </div>
             </form>

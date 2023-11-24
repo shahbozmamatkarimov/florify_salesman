@@ -11,14 +11,25 @@
             <img class="w-24 h-7" src="../assets/svg/logo.svg" alt="logo" />
           </div>
           <div class="flex gap-2 mb-16 cursor-pointer">
+            <div
+              class="flex items-center justify-center md:min-w-[44px] min-w-[64px] md:h-11 md:w-11 h-16 w-16 object-cover shadowPhoto bg-[#7112AF] rounded-full"
+              v-if="!useProfile.store.userImage"
+            >
+              <img
+                class="w-6 h-6"
+                src="@/assets/nodata/userplaceholder.svg"
+                alt="Photo"
+              />
+            </div>
             <img
-              class="w-11 h-11 rounded-full"
-              src="../assets/images/stripes.jpg"
-              alt="img"
+              v-else
+              class="md:min-w-[6rem] md:h-24 md:w-24 h-16 w-16 object-cover shadowPhoto bg-gray-300 rounded-full"
+              :src="useProfile.store.userImage"
+              alt="Photo"
             />
             <div>
-              <h1 class="font-medium">Fillo Team</h1>
-              <a class="text-sm text-[#999999]" href="#">hello@fillo.com</a>
+              <h1 class="font-medium truncate max-w-[100px]">{{ useProfile.profile.username }}</h1>
+              <a class="text-sm text-[#999999]" href="#"> +998{{ useProfile.profile.phone}}</a>
             </div>
             <p class="ml-5 my-auto">
               <svg
@@ -46,14 +57,14 @@
               >
                 <img id="icon" :src="i.icon" alt="icon" />
                 <img class="hidden" id="icon1" :src="i.icon1" alt="icon" />
-                <span class="ml-3">{{ i.title }}</span>
+                <span class="ml-3">{{ i[$t("uz")] }}</span>
               </router-link>
             </li>
           </ul>
         </div>
         <button class="flex gap-2 p-10 text-[#FF6161]">
           <img src="../assets/svg/logout.svg" alt="img" />
-          Chiqish
+          {{ $t("logout") }}
         </button>
       </aside>
     </section>
@@ -80,6 +91,8 @@
 
 <script setup>
 import { sidebar } from "../constants/sidebar";
+import { useProfileStore } from "@/store";
+const useProfile = useProfileStore();
 </script>
 
 <style lang="scss" scoped>

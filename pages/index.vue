@@ -1,6 +1,6 @@
 <template>
   <main>
-    <Navbar>Dashboard</Navbar>
+    <Navbar>{{ $t("dashboard") }}</Navbar>
     <!-- <section class="p-10">
         <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg">
           <div class="grid grid-cols-3 gap-4 mb-4">
@@ -292,7 +292,7 @@
       </section>
       <section class="bg-white py-5 sm:rounded-xl whitespace-nowrap">
         <div class="flex items-center justify-between px-5">
-          <h1 class="text-2xl font-medium">Buyurtmalar</h1>
+          <h1 class="text-2xl font-medium">{{ $t("order") }}</h1>
           <img class="cursor-pointer reload" src="@/assets/svg/reload.svg" />
         </div>
 
@@ -322,13 +322,16 @@
                 id="table-search-users"
                 type="search"
                 class="block p-2 pl-10 h-[46px] text-sm border-0 focus:ring-0 border-gray-300 rounded-lg w-80 bg-[#F4F4F6]"
-                placeholder="Qidirish..."
+                :placeholder="`${$t('search')}...`"
               />
             </div>
             <div class="flex gap-14">
               <div class="flex gap-5">
                 <a-space class="h-[46px]" direction="vertical" :size="12">
-                  <a-date-picker v-model:value="value1" />
+                  <a-date-picker
+                    :placeholder="`${$t('select_date')}...`"
+                    v-model:value="value1"
+                  />
                 </a-space>
                 <img
                   class="-ml-14 z-10"
@@ -339,8 +342,8 @@
               <div class="flex status mr-4">
                 <a-select
                   v-if="is_mount"
-                  v-model:value="store.status"
-                  :options="options"
+                  v-model:value="store.status[$t('uz')]"
+                  :options="options[$t('uz')]"
                   class="placeholder-black"
                 ></a-select>
                 <img
@@ -353,9 +356,7 @@
           </div>
           <hr class="py-3" />
           <table class="w-full md:mx-0 -mx-5 text-sm text-left">
-            <thead
-              class="overflow-hidden font-semibold"
-            >
+            <thead class="overflow-hidden font-semibold">
               <tr class="bg-[#F4F4F6] rounded-xl overflow-hidden">
                 <th scope="col" class="p-4">
                   <div class="flex items-center">
@@ -366,11 +367,17 @@
                     />
                   </div>
                 </th>
-                <th scope="col" class="sm:px-6 px-2 py-3">Buyurtma ID</th>
-                <th scope="col" class="sm:px-6 px-2 py-3">Sana</th>
-                <th scope="col" class="sm:px-6 px-2 py-3">Summa</th>
-                <th scope="col" class="sm:px-6 px-2 py-3">To‘lov holati</th>
-                <th scope="col" class="sm:px-6 px-2 py-3">Tafsilotlarni ko'rish</th>
+                <th scope="col" class="sm:px-6 px-2 py-3">
+                  {{ $t("order_id") }}
+                </th>
+                <th scope="col" class="sm:px-6 px-2 py-3">{{ $t("date") }}</th>
+                <th scope="col" class="sm:px-6 px-2 py-3">{{ $t("summa") }}</th>
+                <th scope="col" class="sm:px-6 px-2 py-3">
+                  {{ $t("payment_status") }}
+                </th>
+                <th scope="col" class="sm:px-6 px-2 py-3">
+                  {{ $t("view_details") }}
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -416,7 +423,7 @@
                   <button
                     class="text-white bg-[#088178] font-medium px-3 py-1 rounded-md"
                   >
-                    Batafsil
+                    {{$t("in_detail")}}
                   </button>
                 </td>
               </tr>
@@ -680,18 +687,30 @@ definePageMeta({
 const is_mount = ref(false);
 
 const store = reactive({
-  status: "Status",
+  status: { Uz: "Status", Уз: "Статус" },
 });
-const options = ref([
-  {
-    value: "To'langan",
-    label: "To'langan",
-  },
-  {
-    value: "Kutilmoqda",
-    label: "Kutilmoqda",
-  },
-]);
+const options = ref({
+  Uz: [
+    {
+      value: "To'langan",
+      label: "To'langan",
+    },
+    {
+      value: "Kutilmoqda",
+      label: "Kutilmoqda",
+    },
+  ],
+  Уз: [
+    {
+      value: "Оплаченный",
+      label: "Оплаченный",
+    },
+    {
+      value: "Ожидающий",
+      label: "Ожидающий",
+    },
+  ],
+});
 
 const orders = ref([
   {

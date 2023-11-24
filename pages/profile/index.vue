@@ -4,9 +4,13 @@
 
     <section class="grid lg:grid-cols-2 gap-5 lg:px-10 sm:px-5 px-0 pt-5">
       <div class="space-y-5 pb-20 overflow-hidden overflow-y-auto max-h-[82vh]">
-        <ul class="bg-[#FFFFFF] sm:rounded-xl font-medium p-5 space-y-6">
+        <div
+          v-if="useProfile.store.isLoading"
+          class="h-[317px] animate-pulse bg-gray-300 sm:rounded-xl"
+        ></div>
+        <ul v-else class="bg-[#FFFFFF] sm:rounded-xl font-medium p-5 space-y-6">
           <li class="flex items-center justify-between">
-            <h1 class="text-2xl font-semibold">Shaxsiy ma'lumotlar</h1>
+            <h1 class="text-2xl font-semibold">{{ $t("private_info") }}</h1>
             <img
               class="cursor-pointer"
               @click="useProfile.store.editInfoModal = true"
@@ -19,12 +23,14 @@
             <div
               class="flex items-center justify-center min-w-[6rem] h-24 w-24 object-cover shadowPhoto overflow-hidden bg-[#7112AF] rounded-full"
             >
-              <img v-if="useProfile.store.profile?.image?.length"
+              <img
+                v-if="useProfile.store.profile?.image?.length"
                 class="h-full w-full object-cover"
                 :src="baseUrlImage + '/' + useProfile.store.profile?.image"
                 alt="Photo"
               />
-              <img v-else
+              <img
+                v-else
                 class="h-12 w-12"
                 src="@/assets/nodata/userplaceholder.svg"
                 alt="Photo"
@@ -32,27 +38,39 @@
             </div>
             <div>
               <h1 class="text-lg font-semibold">
-                <span v-if="useProfile.store.profile?.username?.length">{{ useProfile.store.profile?.username }}</span>
-                <EmptyProfile v-else @click="useProfile.store.editInfoModal = true"
-                  >Ismingizni kiriting</EmptyProfile
+                <span v-if="useProfile.store.profile?.username?.length">{{
+                  useProfile.store.profile?.username
+                }}</span>
+                <EmptyProfile
+                  v-else
+                  @click="useProfile.store.editInfoModal = true"
+                  >{{ $t("enter_name") }}</EmptyProfile
                 >
               </h1>
               <p class="font-medium">
-                <span v-if="useProfile.store.profile?.address?.length">{{ useProfile.store.profile?.address }}</span>
-                <EmptyProfile v-else @click="useProfile.store.editInfoModal = true"
-                  >Manzilingizni kiriting</EmptyProfile
+                <span v-if="useProfile.store.profile?.address?.length">{{
+                  useProfile.store.profile?.address
+                }}</span>
+                <EmptyProfile
+                  v-else
+                  @click="useProfile.store.editInfoModal = true"
+                  >{{ $t("enter_address") }}</EmptyProfile
                 >
               </p>
             </div>
           </li>
           <hr class="-mx-5" />
           <li>
-            <p class="text-[#6188FF] pb-1">Telefon raqam</p>
+            <p class="text-[#6188FF] pb-1">{{ $t("phone") }}</p>
             <p class="font-medium">
-              <span v-if="useProfile.store.profile?.phone?.length">{{ useProfile.store.profile?.phone }}</span>
-              <EmptyProfile v-else @click="useProfile.store.editInfoModal = true"
-                  >Telefon raqamingizni kiriting</EmptyProfile
-                >
+              <span v-if="useProfile.store.profile?.phone?.length">{{
+                useProfile.store.profile?.phone
+              }}</span>
+              <EmptyProfile
+                v-else
+                @click="useProfile.store.editInfoModal = true"
+                >{{ $t("enter_phone") }}</EmptyProfile
+              >
             </p>
           </li>
           <!-- <hr class="-mx-5" /> -->
@@ -72,11 +90,16 @@
             </div>
           </li> -->
         </ul>
+        <div
+          v-if="useProfile.store.isLoading"
+          class="h-[338px] animate-pulse bg-gray-300 sm:rounded-xl"
+        ></div>
         <ul
+          v-else
           class="bg-[#FFFFFF] text-[#242424] sm:rounded-xl font-medium p-5 space-y-6"
         >
           <li class="flex items-center justify-between">
-            <h1 class="text-2xl font-semibold">Do'kon ma'lumotlari</h1>
+            <h1 class="text-2xl font-semibold">{{ $t("shop_info") }}</h1>
             <img
               @click="store.editLocation = true"
               class="cursor-pointer"
@@ -86,20 +109,20 @@
           </li>
           <hr class="-mx-5" />
           <li>
-            <p class="text-[#6188FF] pb-1">Manzil</p>
+            <p class="text-[#6188FF] pb-1">{{ $t("address") }}</p>
             <p class="font-medium">
-              <EmptyProfile @click="store.editLocation = true"
-                  >Do'kon manzilini kiriting</EmptyProfile
-                >
+              <EmptyProfile @click="store.editLocation = true">{{
+                $t("shop_address")
+              }}</EmptyProfile>
             </p>
           </li>
           <hr class="-mx-5" />
           <li>
-            <p class="text-[#6188FF] pb-1">Do'kon telefon raqami</p>
+            <p class="text-[#6188FF] pb-1">{{ $t("shop_phone") }}i</p>
             <p class="font-medium">
-              <EmptyProfile @click="store.editLocation = true"
-                  >Do'kon telefon raqamini kiriting</EmptyProfile
-                >
+              <EmptyProfile @click="store.editLocation = true">{{
+                $t("shop_of_phone")
+              }}</EmptyProfile>
             </p>
           </li>
           <hr class="-mx-5 pb-10" />
@@ -116,7 +139,7 @@
           class="bg-[#FFFFFF] rounded-xl font-medium md:p-5 space-y-6 max-w-[30rem] w-full"
         >
           <li class="flex items-center justify-between">
-            <h1 class="text-2xl font-semibold">Shaxsiy ma'lumotlar</h1>
+            <h1 class="text-2xl font-semibold">{{ $t("private_info") }}</h1>
             <i
               @click="closeModal"
               class="bx bx-x text-2xl font-bold cursor-pointer"
@@ -125,7 +148,7 @@
           <hr class="-mx-5" />
           <li class="flex items-center gap-5">
             <div
-              class="flex items-center justify-center min-w-[6rem] h-24 w-24 object-cover shadowPhoto bg-[#7112AF] rounded-full"
+              class="flex items-center justify-center md:min-w-[6rem] min-w-[64px] md:h-24 md:w-24 h-16 w-16 object-cover shadowPhoto bg-[#7112AF] rounded-full"
               v-if="!useProfile.store.userImage"
             >
               <img
@@ -147,11 +170,11 @@
               <template #overlay>
                 <a-menu>
                   <a-menu-item>
-                    <label for="userPhoto">O'zgartirish</label>
+                    <label for="userPhoto">{{$t("change")}}</label>
                   </a-menu-item>
                   <a-menu-divider />
-                  <a-menu-item @click="() => deleteProduct(i.id)"
-                    >O'chirish</a-menu-item
+                  <a-menu-item @click="() => deleteImage()"
+                    >{{$t("delete")}}</a-menu-item
                   >
                 </a-menu>
               </template>
@@ -169,7 +192,7 @@
                   type="text"
                   class="rounded-md h-9"
                   v-model:value="useProfile.profile.username"
-                  placeholder="To'liq ismingizni kiriting..."
+                  :placeholder="`${$t('enter_fullname')}`"
                   minlength="3"
                   required
                 />
@@ -179,14 +202,14 @@
                   type="text"
                   class="rounded-md mt-2 h-9"
                   v-model:value="useProfile.profile.address"
-                  placeholder="Manzilingizni kiriting..."
+                  :placeholder="`${$t('enter_address')}`"
                 />
               </p>
             </div>
           </li>
           <hr class="-mx-5" />
           <li>
-            <p class="text-[#6188FF] pb-1">Telefon raqam</p>
+            <p class="text-[#6188FF] pb-1">{{ $t("phone") }}</p>
             <p class="font-medium">
               <a-input
                 type="tel"
@@ -206,14 +229,14 @@
               type="button"
               class="text-gray-500 bg-white hover:bg-red-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
             >
-              Bekor qilish
+              {{ $t("cancel") }}
             </button>
             <button
               data-modal-hide="defaultModal"
               type="submit"
               class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             >
-              Saqlash
+              {{ $t("save") }}
             </button>
           </li>
         </ul>
@@ -228,7 +251,7 @@
           class="bg-[#FFFFFF] rounded-xl max-w-[25rem] w-full font-medium mx-auto sm:px-5 sm:py-5 space-y-6"
         >
           <li class="flex items-center justify-between">
-            <h1 class="text-2xl font-semibold">Do'kon ma'lumotlari</h1>
+            <h1 class="text-2xl font-semibold">{{ $t("shop_info") }}</h1>
             <i
               @click="closeModal"
               class="bx bx-x text-2xl font-bold cursor-pointer"
@@ -236,20 +259,20 @@
           </li>
           <hr class="-mx-5" />
           <li>
-            <p class="text-[#6188FF] pb-1">Manzil</p>
+            <p class="text-[#6188FF] pb-1">{{ $t("address") }}</p>
             <p class="font-medium">
               <a-input
                 type="text"
                 class="rounded-md mt-2 h-9"
                 v-model:value="form.address"
-                placeholder="Manzilingizni kiriting..."
+                :placeholder="`${$t('enter_address')}`"
                 required
               />
             </p>
           </li>
           <hr class="-mx-5" />
           <li>
-            <p class="text-[#6188FF] pb-1">Do'kon telefon raqami</p>
+            <p class="text-[#6188FF] pb-1">{{ $t("shop_phone") }}</p>
             <p class="font-medium">
               <a-input
                 type="tel"
@@ -270,14 +293,14 @@
               type="button"
               class="text-gray-500 bg-white hover:bg-red-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
             >
-              Bekor qilish
+              {{ $t("cancel") }}
             </button>
             <button
               data-modal-hide="defaultModal"
               type="submit"
               class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             >
-              Saqlash
+            {{ $t("save") }}
             </button>
           </li>
         </ul>
@@ -299,6 +322,7 @@ definePageMeta({
 const useProfile = useProfileStore();
 const card = useCardStore();
 const { showLoading, showSuccess, showWarning, showError } = useNotification();
+useProfile.store.isLoading = true;
 
 const runtimeconfig = useRuntimeConfig();
 const baseUrlImage = ref(runtimeconfig.public.apiBaseUrl?.slice(0, -4));
@@ -340,80 +364,9 @@ function uploadFile(e) {
   useProfile.profile.image = file;
 }
 
-function handleSubmit() {
-  form.phone = "+998" + store.phone;
-  fetch(baseUrl + `/salesman/profile/${store.salesman_id}`, {
-    method: "PATCH",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${store.token}`,
-    },
-    body: JSON.stringify(form),
-  })
-    .then((res) => res.json())
-    .then((res) => {
-      if (
-        res.message === "Token vaqti tugagan!" ||
-        res.message === "Token topilmadi!"
-      ) {
-        router.push("/login");
-      }
-      console.log(res);
-      // store.showProduct = [res];
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-}
-
-// function getProfile() {
-//   const id = localStorage.getItem("salesman_id");
-//   axios.get(baseUrl + `/salesman/${id}`)
-//     .then((res) => {
-//       if (
-//         res.message === "Token vaqti tugagan!" ||
-//         res.message === "Token topilmadi!"
-//       ) {
-//         router.push("/login");
-//       }
-//       console.log(res);
-//       useProfile.store.profile = res.data;
-//       useProfile.profile.username = res.data?.username;
-//       useProfile.profile.address = res.data?.address;
-//       useProfile.profile.phone = res.data?.phone?.slice(4);
-//       useProfile.store.userImage = baseUrlImage.value + "/" + res.data?.image;
-//       console.log(useProfile.store.userImage);
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//     });
-// }
-
-function deleteProduct(id) {
-  showLoading("So'rov yuborilmoqda...");
-  fetch(baseUrl + `/product/${store.salesman_id}`, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${store.token}`,
-    },
-  })
-    .then((res) => res.json())
-    .then((res) => {
-      if (
-        res.message === "Token vaqti tugagan!" ||
-        res.message === "Token topilmadi!"
-      ) {
-        router.push("/login");
-      }
-      console.log(res);
-      showSuccess(res.message);
-      productStore.getProducts();
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+function deleteImage() {
+  useProfile.store.userImage = "";
+  useProfile.profile.image = "delete";
 }
 
 onMounted(() => {

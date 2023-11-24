@@ -21,7 +21,8 @@ export const sidebar = [
     _icon: _dashboard,
     icon: dashboard,
     icon1: dashboard1,
-    title: "Dashboard",
+    Uz: "Dashboard",
+    Уз: "Дашбоардь",
     path: "/",
   },
   {
@@ -29,7 +30,8 @@ export const sidebar = [
     _icon: _products,
     icon: products,
     icon1: products1,
-    title: "Mahsulotlar",
+    Uz: "Mahsulotlar",
+    Уз: "Продукты",
     path: "/products",
   },
   {
@@ -37,7 +39,8 @@ export const sidebar = [
     _icon: _profile,
     icon: profile,
     icon1: profile1,
-    title: "Profil",
+    Uz: "Profil",
+    Уз: "Профиль",
     path: "/profile",
   },
   {
@@ -45,7 +48,8 @@ export const sidebar = [
     _icon: _comments,
     icon: comments,
     icon1: comments1,
-    title: "Sharhlar",
+    Uz: "Sharhlar",
+    Уз: "Комментарии",
     path: "/comments",
   },
   {
@@ -53,7 +57,8 @@ export const sidebar = [
     _icon: _settings,
     icon: settings,
     icon1: settings1,
-    title: "Sozlamalar",
+    Uz: "Sozlamalar",
+    Уз: "Настройки",
     path: "/settings",
   },
 ];

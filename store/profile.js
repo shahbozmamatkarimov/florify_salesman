@@ -10,6 +10,7 @@ export const useProfileStore = defineStore("profile", () => {
     userImage: "",
     profile: "",
     editInfoModal: false,
+    isLoading: false,
   });
 
   const profile = reactive({
@@ -21,6 +22,8 @@ export const useProfileStore = defineStore("profile", () => {
   });
 
   function editProfile() {
+    store.isLoading = true;
+    store.editInfoModal = false;
     const token = localStorage.getItem("token");
     const id = localStorage.getItem("salesman_id");
     const formData = new FormData();
@@ -37,36 +40,46 @@ export const useProfileStore = defineStore("profile", () => {
       })
       .then((res) => {
         console.log(res);
-        store.editInfoModal = false;
-        getProfile();
+        setProfile(res?.data?.salesman);
       })
       .catch((err) => {
-        store.editInfoModal = false;
+        store.isLoading = false;
         console.log(err);
       });
   }
 
   function getProfile() {
-    const id = localStorage.getItem("salesman_id");
-    axios
-      .get(baseUrl + `/salesman/${id}`)
-      .then((res) => {
-        if (
-          res.message === "Token vaqti tugagan!" ||
-          res.message === "Token topilmadi!"
-        ) {
-          router.push("/login");
-        }
-        console.log(res);
-        store.profile = res.data;
-        profile.username = res.data?.username;
-        profile.address = res.data?.address;
-        profile.phone = res.data?.phone?.slice(4);
-        store.userImage = baseUrlImage.value + "/" + res.data?.image;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    store.isLoading = true;
+    if (process.client) {
+      const id = localStorage.getItem("salesman_id");
+      axios
+        .get(baseUrl + `/salesman/${id}`)
+        .then((res) => {
+          if (
+            res.message === "Token vaqti tugagan!" ||
+            res.message === "Token topilmadi!"
+          ) {
+            router.push("/login");
+          }
+          console.log(res);
+          setProfile(res?.data);
+        })
+        .catch((err) => {
+          if (err.response.data.message == "Sotuvchi topilmadi!") {
+            navigateTo("/login");
+          }
+          store.isLoading = false;
+        });
+    }
+  }
+
+  function setProfile(res) {
+    store.profile = res;
+    profile.username = res?.username;
+    profile.address = res?.address;
+    profile.phone = res?.phone?.slice(4);
+    store.userImage = baseUrlImage.value + "/" + res?.image;
+    store.isLoading = false;
   }
 
   return { store, profile, editProfile, getProfile };

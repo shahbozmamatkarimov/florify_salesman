@@ -14,15 +14,20 @@ export const useProductsStore = defineStore("products", () => {
     page: 1,
     showProduct: "",
     openEditModal: false,
+    editProduct: false,
+    editProductId: "",
+    quantity: "All",
   });
 
   const allProducts = computed(() => state.products);
   const showProductById = computed(() => state.showProduct);
 
   function getProducts() {
+    const salesmanId = localStorage.getItem("salesman_id")
     state.isLoading = true;
+    console.log(state.quantity);
     axios
-      .get(baseUrl + "/product/" + state.page + ":10")
+      .get(baseUrl + `/product/salesmanId/${salesmanId}:${state.page}:10/${state.quantity}`)
       .then((res) => {
         if (
           res.message === "Token vaqti tugagan!" ||
@@ -40,13 +45,20 @@ export const useProductsStore = defineStore("products", () => {
       })
       .catch((err) => {
         console.log(err);
+        state.isLoading = false;
       });
   }
 
-  function getOneProduct(id) {
-    state.openEditModal = true;
+  function getOneProduct(id, isType) {
+    if (isType == 'product') {
+      state.openEditModal = false;
+    } else {
+      state.editProductId = id;
+      state.openEditModal = true;
+      state.editProduct = true;
+    }
     state.isLoading = true;
-    fetch(baseUrl + `/product/${id}`)
+    fetch(baseUrl + `/product/getById/${id}`)
       .then((res) => res.json())
       .then((res) => {
         if (
@@ -55,8 +67,11 @@ export const useProductsStore = defineStore("products", () => {
         ) {
           router.push("/login");
         }
-        console.log(res);
-        state.showProduct = res;
+        if (isType == 'product') {
+          state.showProduct = [res];
+        }else {
+          state.showProduct = res;
+        }
         state.isLoading = false;
       })
       .catch((err) => {
