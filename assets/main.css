@@ -101,6 +101,10 @@ body {
   display: none !important;
 }
 
+.ant-modal-close, .ant-modal-footer {
+  display: none !important;
+}
+
 .border-dashed {
     border: dashed 2px #a7a1a1d8;
 }

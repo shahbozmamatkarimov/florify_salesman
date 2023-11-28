@@ -49,6 +49,7 @@ export const useProfileStore = defineStore("profile", () => {
       .then((res) => {
         showSuccess("Successfully");
         console.log(res);
+        store.salesmanInfo = res.data?.salesman;
         setProfile(res?.data?.salesman);
         store.editInfoModal = false;
         store.isUsername = false;
