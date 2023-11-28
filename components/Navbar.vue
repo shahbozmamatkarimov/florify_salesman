@@ -671,7 +671,7 @@
 
 <script setup>
 import axios from "axios";
-import { useNotification } from "../composables/notification";
+import { useNotification } from "@/composables/notification";
 import { useProductsStore } from "@/store/products";
 
 const { showLoading, showSuccess, showWarning, showError } = useNotification();

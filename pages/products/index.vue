@@ -29,6 +29,7 @@
           aria-label="Pagination"
         >
           <button
+            v-if="productStore.state.total_pages > 0"
             @click="returnPage"
             :class="productStore.state.page == 1 ? 'bg-gray-300' : ''"
             class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 focus:z-20 focus:outline-offset-0"
@@ -75,6 +76,7 @@
             }}
           </button>
           <button
+            v-if="productStore.state.total_pages > 0"
             @click="addPage"
             :class="
               productStore.state.total_pages <= productStore.state.page
@@ -279,7 +281,7 @@
                       <button
                         class="inline-block sticky top-40 p-4 pb-2 border-b-2 text-[#5C0099] rounded-t-lg border-[#5C0099]"
                       >
-                      {{$t("info")}}
+                        {{ $t("info") }}
                       </button>
                     </li>
                   </ul>
@@ -305,20 +307,20 @@
                   </li>
                   <li class="flex gap-6 items-center">
                     <button
-                    v-if="i.quantity !== 0"
-                    class="h-[30px] px-[10px] border text-sm border-[#45D469] text-[#45D469] font-medium rounded-lg"
-                  >
-                    {{ $t("on_saling") }}
-                  </button>
-                  <button
-                    v-else
-                    class="h-[30px] px-[10px] text-sm border border-[#FF6161] text-[#FF6161] font-medium rounded-lg"
-                  >
-                    {{ $t("not_saling") }}
-                  </button>
+                      v-if="i.quantity !== 0"
+                      class="h-[30px] px-[10px] border text-sm border-[#45D469] text-[#45D469] font-medium rounded-lg"
+                    >
+                      {{ $t("on_saling") }}
+                    </button>
+                    <button
+                      v-else
+                      class="h-[30px] px-[10px] text-sm border border-[#FF6161] text-[#FF6161] font-medium rounded-lg"
+                    >
+                      {{ $t("not_saling") }}
+                    </button>
                     <p>#{{ i.id }}</p>
                   </li>
-                  <li>{{$t("product_image")}}</li>
+                  <li>{{ $t("product_image") }}</li>
                   <li
                     v-if="i.image?.length"
                     class="xl:flex hidden items-center relative gap-5 overflow-hidden overflow-x-auto"
@@ -359,7 +361,7 @@
                       />
                     </div>
                   </li>
-                  <li>{{$t("color")}}</li>
+                  <li>{{ $t("color") }}</li>
                   <li class="flex flex-wrap max-w-fit gap-2">
                     <p
                       v-for="(i, index) in i.color?.split(',')"
@@ -370,13 +372,15 @@
                     ></p>
                   </li>
                   <hr />
-                  <li>{{$t("price")}}</li>
-                  <li class="font-medium text-lg">{{ i.price }} {{$t("summ")}}</li>
+                  <li>{{ $t("price") }}</li>
+                  <li class="font-medium text-lg">
+                    {{ i.price }} {{ $t("summ") }}
+                  </li>
                   <hr />
-                  <li>{{$t("interest_rate")}}</li>
+                  <li>{{ $t("interest_rate") }}</li>
                   <li class="font-medium text-lg">10 %</li>
                   <hr />
-                  <li>{{$t("link_for_product")}}</li>
+                  <li>{{ $t("link_for_product") }}</li>
                   <li>
                     <a
                       class="text-[#6188FF] font-medium text-lg border-b border-[#6188FF]"
@@ -385,10 +389,10 @@
                     >
                   </li>
                   <hr />
-                  <li>{{$t("reyting_of")}}</li>
+                  <li>{{ $t("reyting_of") }}</li>
                   <li class="flex gap-5 font-medium text-lg">
                     <img src="../../assets/svg/rating.svg" alt="rate" />
-                    <p>0./5 (0 {{$t("comment_of")}})</p>
+                    <p>0./5 (0 {{ $t("comment_of") }})</p>
                   </li>
                 </ul>
               </div>
@@ -396,14 +400,14 @@
           </div>
         </div>
       </section>
-      <section>
+      <section v-if="productStore.state.total_pages > 0">
         <div
           class="flex items-center center mt-20 justify-between border-t rounded-lg border-gray-200 bg-white px-4 py-3 sm:px-5"
         >
           <div
             class="flex items-center w-full sm:flex-1 sm:items-center lg:justify-between justify-center"
           >
-            <div>
+            <div v-if="productStore.state.total_pages > 0">
               <p
                 v-if="$t('uz') == 'Uz'"
                 class="lg:block hidden text-sm text-gray-700"
@@ -442,6 +446,7 @@
                 aria-label="Pagination"
               >
                 <button
+                  v-if="productStore.state.total_pages > 0"
                   @click="returnPage"
                   :class="productStore.state.page == 1 ? 'bg-gray-300' : ''"
                   class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 focus:z-20 focus:outline-offset-0"
@@ -490,6 +495,7 @@
                   }}
                 </button>
                 <button
+                  v-if="productStore.state.total_pages > 0"
                   @click="addPage"
                   :class="
                     productStore.state.total_pages <= productStore.state.page
@@ -512,7 +518,7 @@
                   </svg>
                 </button>
               </nav>
-              <div>
+              <div v-if="productStore.state.total_pages > 0">
                 <p
                   v-if="$t('uz') == 'Uz'"
                   class="lg:hidden block pt-2 text-center text-sm text-gray-700"

@@ -23,20 +23,36 @@
             autocomplete="tel"
             placeholder="Telefon raqamingizni kiriting"
             required
-          /> 
+          />
           <hr />
         </a-space>
         <a-space direction="vertical">
-          <a-input
-            v-model:value="form.password"
-            type="password"
-            bordered="false"
-            autofocus
-            class="font-medium input w-full focus:border-0 border-0 focus:outline-0 outline-0 focus:ring-0 ring-0 placeholder-[#555555] -ml-3"
-            autocomplete="password"
-            placeholder="Parolingizni kiriting"
-            required
-          />
+          <div class="flex">
+            <a-input
+              v-model:value="form.password"
+              :type="store.is_show ? 'text' : 'password'"
+              bordered="false"
+              autofocus
+              class="font-medium input w-full focus:border-0 border-0 focus:outline-0 outline-0 focus:ring-0 ring-0 placeholder-[#555555] -ml-3"
+              autocomplete="password"
+              placeholder="Parolingizni kiriting"
+              required
+            />
+            <img
+              v-if="store.is_show"
+              @click="store.is_show = !store.is_show"
+              class="w-6 cursor-pointer"
+              src="@/assets/svg/show.svg"
+              alt=""
+            />
+            <img
+              v-else
+              @click="store.is_show = !store.is_show"
+              class="w-6 cursor-pointer"
+              src="@/assets/svg/hidden.svg"
+              alt=""
+            />
+          </div>
           <hr />
         </a-space>
         <button
@@ -58,9 +74,7 @@
 </template>
 <script setup>
 definePageMeta({
-  middleware: [
-    "auth",
-  ],
+  middleware: ["auth"],
 });
 
 import { useNotification } from "../../composables/notification";
@@ -72,6 +86,10 @@ const baseUrl = runtimeconfig.public.apiBaseUrl;
 
 definePageMeta({
   layout: "none",
+});
+
+const store = reactive({
+  is_show: false,
 });
 
 const form = reactive({
@@ -98,8 +116,8 @@ const handleSubmit = () => {
       console.log(res);
       localStorage.setItem("token", res.access_token);
       localStorage.setItem("salesman_id", res.salesman?.id);
-      if (res.message === "Parol mos kelmadi!") {
-        showError("Telefon raqami topilmadi!");
+      if (res.statusCode == 400) {
+        showError(res.message);
         return;
       }
 

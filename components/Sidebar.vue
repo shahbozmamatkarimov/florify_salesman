@@ -10,26 +10,63 @@
           <div class="flex items-center h-32">
             <img class="w-24 h-7" src="../assets/svg/logo.svg" alt="logo" />
           </div>
-          <div class="flex gap-2 mb-16 cursor-pointer">
+          <div
+            v-if="!useProfile.store.salesmanInfo?.phone?.length"
+            class="flex animate-pulse gap-2 mb-16 cursor-pointer"
+          >
             <div
-              class="flex items-center justify-center md:min-w-[44px] min-w-[64px] md:h-11 md:w-11 h-16 w-16 object-cover shadowPhoto bg-[#7112AF] rounded-full"
-              v-if="!useProfile.store.userImage"
+              class="flex items-center justify-center min-w-[44px] h-11 w-11 object-cover shadowPhoto overflow-hidden bg-[#7012af74] rounded-full"
+            ></div>
+            <div class="flex flex-col gap-1 justify-center">
+              <h1
+                class="font-medium truncate min-w-full w-full rounded-full h-4 bg-gray-100"
+              ></h1>
+              <p
+                class="font-medium truncate min-w-[105px] w-full rounded-full h-4 bg-gray-100"
+              ></p>
+            </div>
+            <p class="ml-5 my-auto">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M18 9L12 15L6 9"
+                  stroke="#454545"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </p>
+          </div>
+          <div v-else class="flex gap-2 mb-16 cursor-pointer">
+            <div
+              class="flex items-center justify-center min-w-[44px] h-11 w-11 object-cover shadowPhoto overflow-hidden bg-[#7112AF] rounded-full"
             >
               <img
-                class="w-6 h-6"
+                v-if="useProfile.store.salesmanInfo?.image?.length"
+                class="h-full w-full object-cover"
+                :src="baseUrlImage + '/' + useProfile.store.salesmanInfo?.image"
+                alt="Photo"
+              />
+              <img
+                v-else
+                class="h-6 w-6"
                 src="@/assets/nodata/userplaceholder.svg"
                 alt="Photo"
               />
             </div>
-            <img
-              v-else
-              class="md:min-w-[6rem] md:h-24 md:w-24 h-16 w-16 object-cover shadowPhoto bg-gray-300 rounded-full"
-              :src="useProfile.store.userImage"
-              alt="Photo"
-            />
-            <div>
-              <h1 class="font-medium truncate max-w-[100px]">{{ useProfile.profile.username }}</h1>
-              <a class="text-sm text-[#999999]" href="#"> +998{{ useProfile.profile.phone}}</a>
+            <div class="flex flex-col justify-center">
+              <h1 class="font-medium truncate max-w-[100px]">
+                {{ useProfile.store.salesmanInfo?.username }}
+              </h1>
+              <p class="text-sm text-[#999999]">
+                +998{{ useProfile.store.salesmanInfo?.phone?.slice(4) }}
+              </p>
             </div>
             <p class="ml-5 my-auto">
               <svg
@@ -62,7 +99,7 @@
             </li>
           </ul>
         </div>
-        <button class="flex gap-2 p-10 text-[#FF6161]">
+        <button @click="logOut" class="flex gap-2 p-10 text-[#FF6161]">
           <img src="../assets/svg/logout.svg" alt="img" />
           {{ $t("logout") }}
         </button>
@@ -93,6 +130,14 @@
 import { sidebar } from "../constants/sidebar";
 import { useProfileStore } from "@/store";
 const useProfile = useProfileStore();
+
+const runtimeconfig = useRuntimeConfig();
+const baseUrlImage = ref(runtimeconfig.public.apiBaseUrl?.slice(0, -4));
+
+function logOut() {
+  localStorage.removeItem("token");
+  navigateTo("/login");
+}
 </script>
 
 <style lang="scss" scoped>

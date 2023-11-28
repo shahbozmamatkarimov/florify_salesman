@@ -1,7 +1,10 @@
 import { defineStore } from "pinia";
 import axios from "axios";
+import { useNotification } from "@/composables/notification";
 
 export const useProfileStore = defineStore("profile", () => {
+  const { showLoading, showSuccess, showWarning, showError } =
+    useNotification();
   const runtimeconfig = useRuntimeConfig();
   const baseUrl = runtimeconfig.public.apiBaseUrl;
   const baseUrlImage = ref(runtimeconfig.public.apiBaseUrl?.slice(0, -4));
@@ -11,6 +14,10 @@ export const useProfileStore = defineStore("profile", () => {
     profile: "",
     editInfoModal: false,
     isLoading: false,
+    salesmanInfo: "",
+    isUsername: false,
+    editStoreInfo: false,
+    isEditLoading: false,
   });
 
   const profile = reactive({
@@ -19,11 +26,12 @@ export const useProfileStore = defineStore("profile", () => {
     phone: "",
     address: "",
     email: "",
+    store_address: "",
+    store_phone: "",
   });
 
   function editProfile() {
-    store.isLoading = true;
-    store.editInfoModal = false;
+    showLoading("Loading...");
     const token = localStorage.getItem("token");
     const id = localStorage.getItem("salesman_id");
     const formData = new FormData();
@@ -39,10 +47,54 @@ export const useProfileStore = defineStore("profile", () => {
         },
       })
       .then((res) => {
+        showSuccess("Successfully");
         console.log(res);
+        setProfile(res?.data?.salesman);
+        store.editInfoModal = false;
+        store.isUsername = false;
+      })
+      .catch((err) => {
+        showSuccess("Successfully");
+        if (err.response?.data?.message == "Bunday username band!") {
+          showError("Error");
+          store.isUsername = "Bunday username band!";
+          return;
+        } else {
+          store.isUsername = false;
+        }
+        store.isLoading = false;
+        store.editInfoModal = false;
+        console.log(err);
+      });
+  }
+
+  function editProfileStore() {
+    showLoading("Loading...");
+    store.isLoading = true;
+    store.editStoreInfo = false;
+    const token = localStorage.getItem("token");
+    const id = localStorage.getItem("salesman_id");
+    axios
+      .patch(
+        baseUrl + "/salesman/profile_store/" + id,
+        {
+          store_address: profile.store_address,
+          store_phone: profile.store_phone,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((res) => {
+        showSuccess("Successfully");
+        store.salesmanInfo = res?.data?.salesman;
         setProfile(res?.data?.salesman);
       })
       .catch((err) => {
+        showSuccess("Successfully");
+        showError("Error");
         store.isLoading = false;
         console.log(err);
       });
@@ -62,6 +114,7 @@ export const useProfileStore = defineStore("profile", () => {
             router.push("/login");
           }
           console.log(res);
+          store.salesmanInfo = res.data;
           setProfile(res?.data);
         })
         .catch((err) => {
@@ -77,10 +130,13 @@ export const useProfileStore = defineStore("profile", () => {
     store.profile = res;
     profile.username = res?.username;
     profile.address = res?.address;
+    profile.store_phone = res?.store_phone;
+    profile.store_address = res?.store_address;
     profile.phone = res?.phone?.slice(4);
+    profile.image = res.image;
     store.userImage = baseUrlImage.value + "/" + res?.image;
     store.isLoading = false;
   }
 
-  return { store, profile, editProfile, getProfile };
+  return { store, profile, editProfile, getProfile, editProfileStore };
 });

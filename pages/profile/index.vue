@@ -38,8 +38,8 @@
             </div>
             <div>
               <h1 class="text-lg font-semibold">
-                <span v-if="useProfile.store.profile?.username?.length">{{
-                  useProfile.store.profile?.username
+                <span v-if="useProfile.store.salesmanInfo?.username?.length">{{
+                  useProfile.store.salesmanInfo?.username
                 }}</span>
                 <EmptyProfile
                   v-else
@@ -48,8 +48,8 @@
                 >
               </h1>
               <p class="font-medium">
-                <span v-if="useProfile.store.profile?.address?.length">{{
-                  useProfile.store.profile?.address
+                <span v-if="useProfile.store.salesmanInfo?.address?.length">{{
+                  useProfile.store.salesmanInfo?.address
                 }}</span>
                 <EmptyProfile
                   v-else
@@ -63,8 +63,8 @@
           <li>
             <p class="text-[#6188FF] pb-1">{{ $t("phone") }}</p>
             <p class="font-medium">
-              <span v-if="useProfile.store.profile?.phone?.length">{{
-                useProfile.store.profile?.phone
+              <span v-if="useProfile.store.salesmanInfo?.phone?.length">{{
+                useProfile.store.salesmanInfo?.phone
               }}</span>
               <EmptyProfile
                 v-else
@@ -101,7 +101,7 @@
           <li class="flex items-center justify-between">
             <h1 class="text-2xl font-semibold">{{ $t("shop_info") }}</h1>
             <img
-              @click="store.editLocation = true"
+              @click="useProfile.store.editStoreInfo = true"
               class="cursor-pointer"
               src="../../assets/svg/editBtn.svg"
               alt="edit"
@@ -110,20 +110,28 @@
           <hr class="-mx-5" />
           <li>
             <p class="text-[#6188FF] pb-1">{{ $t("address") }}</p>
-            <p class="font-medium">
-              <EmptyProfile @click="store.editLocation = true">{{
+            <p
+              v-if="!useProfile.store.salesmanInfo?.store_address?.length"
+              class="font-medium"
+            >
+              <EmptyProfile @click="useProfile.store.editStoreInfo = true">{{
                 $t("shop_address")
               }}</EmptyProfile>
             </p>
+            <p v-else>{{ useProfile.store.salesmanInfo?.store_address }}</p>
           </li>
           <hr class="-mx-5" />
           <li>
             <p class="text-[#6188FF] pb-1">{{ $t("shop_phone") }}i</p>
-            <p class="font-medium">
-              <EmptyProfile @click="store.editLocation = true">{{
+            <p
+              v-if="!useProfile.store.salesmanInfo?.store_phone?.length"
+              class="font-medium"
+            >
+              <EmptyProfile @click="useProfile.store.editStoreInfo = true">{{
                 $t("shop_of_phone")
               }}</EmptyProfile>
             </p>
+            <p v-else>{{ useProfile.store.salesmanInfo?.store_phone }}</p>
           </li>
           <hr class="-mx-5 pb-10" />
         </ul>
@@ -134,7 +142,10 @@
 
     <!-- edit info -->
     <a-modal v-model:open="useProfile.store.editInfoModal" centered>
-      <form @submit.prevent="useProfile.editProfile">
+      <form
+        v-loading="useProfile.store.isEditLoading"
+        @submit.prevent="useProfile.editProfile"
+      >
         <ul
           class="bg-[#FFFFFF] rounded-xl font-medium md:p-5 space-y-6 max-w-[30rem] w-full"
         >
@@ -149,7 +160,10 @@
           <li class="flex items-center gap-5">
             <div
               class="flex items-center justify-center md:min-w-[6rem] min-w-[64px] md:h-24 md:w-24 h-16 w-16 object-cover shadowPhoto bg-[#7112AF] rounded-full"
-              v-if="!useProfile.store.userImage"
+              v-if="
+                !useProfile.profile.image ||
+                useProfile.profile.image == 'delete'
+              "
             >
               <img
                 class="h-12 w-12"
@@ -170,12 +184,12 @@
               <template #overlay>
                 <a-menu>
                   <a-menu-item>
-                    <label for="userPhoto">{{$t("change")}}</label>
+                    <label for="userPhoto">{{ $t("change") }}</label>
                   </a-menu-item>
                   <a-menu-divider />
-                  <a-menu-item @click="() => deleteImage()"
-                    >{{$t("delete")}}</a-menu-item
-                  >
+                  <a-menu-item @click="() => deleteImage()">{{
+                    $t("delete")
+                  }}</a-menu-item>
                 </a-menu>
               </template>
             </a-dropdown>
@@ -197,6 +211,9 @@
                   required
                 />
               </h1>
+              <p class="text-red-600" v-if="useProfile.store.isUsername">
+                {{ useProfile.store.isUsername }}
+              </p>
               <p class="font-medium">
                 <a-input
                   type="text"
@@ -232,6 +249,7 @@
               {{ $t("cancel") }}
             </button>
             <button
+              loading="useProfile.store.isEditLoading"
               data-modal-hide="defaultModal"
               type="submit"
               class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -244,9 +262,9 @@
     </a-modal>
 
     <!-- edit info -->
-    <a-modal v-model:open="store.editLocation" centered>
+    <a-modal v-model:open="useProfile.store.editStoreInfo" centered>
       <!-- edit location -->
-      <form @submit.prevent="handleSubmit">
+      <form @submit.prevent="useProfile.editProfileStore">
         <ul
           class="bg-[#FFFFFF] rounded-xl max-w-[25rem] w-full font-medium mx-auto sm:px-5 sm:py-5 space-y-6"
         >
@@ -264,9 +282,8 @@
               <a-input
                 type="text"
                 class="rounded-md mt-2 h-9"
-                v-model:value="form.address"
+                v-model:value="useProfile.profile.store_address"
                 :placeholder="`${$t('enter_address')}`"
-                required
               />
             </p>
           </li>
@@ -278,9 +295,8 @@
                 type="tel"
                 prefix="+998"
                 class="rounded-md"
-                v-model:value="store.phone"
+                v-model:value="useProfile.profile.store_phone"
                 placeholder=""
-                required
               />
             </p>
           </li>
@@ -300,7 +316,7 @@
               type="submit"
               class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             >
-            {{ $t("save") }}
+              {{ $t("save") }}
             </button>
           </li>
         </ul>
@@ -351,7 +367,7 @@ const form = reactive({
 
 function closeModal() {
   useProfile.store.editInfoModal = false;
-  store.editLocation = false;
+  useProfile.store.editStoreInfo = false;
 }
 
 function uploadFile(e) {
