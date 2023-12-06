@@ -11,7 +11,7 @@
             <img class="w-24 h-7" src="../assets/svg/logo.svg" alt="logo" />
           </div>
           <div
-            v-if="!useProfile.store.salesmanInfo?.phone?.length"
+            v-if="!useProfile.store.salesmanInfo?.phone"
             class="flex animate-pulse gap-2 mb-16 cursor-pointer"
           >
             <div

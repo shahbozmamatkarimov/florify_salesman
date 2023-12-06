@@ -5,6 +5,12 @@ export const useAuthStore = defineStore("isLogged", () => {
   const runtimeconfig = useRuntimeConfig();
   const baseUrl = runtimeconfig.public.apiBaseUrl;
 
+  const form = reactive({
+    phone: "",
+    password: "",
+  });
+  
+
   function checkAuth() {
     if (process.client) {
       const id = localStorage.getItem("salesman_id");
@@ -34,5 +40,5 @@ export const useAuthStore = defineStore("isLogged", () => {
     }
   }
 
-  return { checkAuth };
+  return { checkAuth, form };
 });

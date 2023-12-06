@@ -769,30 +769,30 @@ const create = reactive({
 });
 
 function closeModal() {
-  store.upload1 = "";
-  store.file1 = "";
-  store.name1 = "";
-  store.size1 = "";
-  store.upload2 = "";
-  store.file2 = "";
-  store.name2 = "";
-  store.size2 = "";
-  store.upload3 = "";
-  store.file3 = "";
-  store.name3 = "";
-  store.size3 = "";
-  store.upload4 = "";
-  store.file4 = "";
-  store.name4 = "";
-  store.size4 = "";
-  store.upload5 = "";
-  store.file5 = "";
-  store.name5 = "";
-  store.size5 = "";
-  store.step = "";
-  create.name = "";
-  create.description = "";
-  create.price = "";
+  // store.upload1 = "";
+  // store.file1 = "";
+  // store.name1 = "";
+  // store.size1 = "";
+  // store.upload2 = "";
+  // store.file2 = "";
+  // store.name2 = "";
+  // store.size2 = "";
+  // store.upload3 = "";
+  // store.file3 = "";
+  // store.name3 = "";
+  // store.size3 = "";
+  // store.upload4 = "";
+  // store.file4 = "";
+  // store.name4 = "";
+  // store.size4 = "";
+  // store.upload5 = "";
+  // store.file5 = "";
+  // store.name5 = "";
+  // store.size5 = "";
+  // store.step = "";
+  // create.name = "";
+  // create.description = "";
+  // create.price = "";
   create.color = [];
   create.category_id = { Uz: "Kategoriyani tanlang", Уз: "Выберите категорию" };
   create.quantity = "";
@@ -853,7 +853,10 @@ function getCategory() {
         router.push("/login");
       }
       console.log(res, "category");
-      for (let i of res) {
+      if(!res.data.categories?.length){
+        return
+      }
+      for (let i of res.data.categories) {
         options.value.push({
           value: i.id,
           label: i.uz,
@@ -874,10 +877,11 @@ const handleSubmit = () => {
     showWarning("Iltimos, mahsulot rangini tanlang!");
     return;
   }
-
+  console.log(create.category_id["Uz"]);
+  console.log(create.category_id["Уз"]);
   if (
-    create.category_id[$t("uz")] === "Kategoriyani tanlang" ||
-    create.category_id[$t("uz")] === "Выберите категорию"
+    create.category_id["Uz"] == "Kategoriyani tanlang" &&
+    create.category_id["Уз"] == "Выберите категорию"
   ) {
     showWarning("Iltimos, Mahsulot kategoriyasini tanlang!");
     return;
@@ -900,6 +904,12 @@ const handleSubmit = () => {
   const token = localStorage.getItem("token");
 
   showLoading("Ma'lumotlar yuborilmoqda...");
+  let category_id = "";
+  if (create.category_id["Uz"] == "Kategoriyani tanlang") {
+    category_id = create.category_id["Уз"];
+  } else {
+    category_id = create.category_id["Uz"];
+  }
   store.is_submit = true;
   create.color = create.color.join(",");
   fetch("https://api.florify.uz/api/product", {
@@ -909,7 +919,7 @@ const handleSubmit = () => {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify(create),
+    body: JSON.stringify({ ...create, category_id }),
   })
     .then((res) => res.json())
     .then((res) => {
@@ -1002,6 +1012,14 @@ const updateProduct = () => {
 
   showLoading("Ma'lumotlar yuborilmoqda...");
   store.is_submit = true;
+  let category_id;
+  if (create.category_id["Uz"] == "Kategoriyani tanlang") {
+    category_id = create.category_id["Уз"];
+  } else {
+    category_id = create.category_id["Uz"];
+  }
+  create.color = create.color.join(",");
+
   fetch(
     "https://api.florify.uz/api/product/" + productStore.state.editProductId,
     {
@@ -1011,7 +1029,7 @@ const updateProduct = () => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(create),
+      body: JSON.stringify({ ...create, category_id }),
     }
   )
     .then((res) => res.json())
@@ -1116,7 +1134,8 @@ watch(
     create.description = product.description;
     create.price = product.price;
     create.color = product.color?.split(",");
-    create.category_id = product.category_id;
+    create.category_id["Уз"] = product.category_id;
+    create.category_id["Uz"] = product.category_id;
     create.salesman_id = product.salesman_id;
     create.quantity = product.quantity;
 

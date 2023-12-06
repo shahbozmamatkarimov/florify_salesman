@@ -1,5 +1,4 @@
 import { useProfileStore } from "./profile";
+import { useAuthStore } from "./auth";
 
-export {
-    useProfileStore,
-}
+export { useProfileStore, useAuthStore };

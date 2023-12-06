@@ -19,15 +19,17 @@
               >Telefon raqam</label
             >
             <div>
-              <input
+              <a-input
                 id="tel"
-                v-model="phone"
+                @input="phoneMask"
+                v-model:value="phone"
                 autofocus
                 type="text"
+                prefix="+998"
                 bordered="false"
                 class="font-medium input w-full focus:border-0 border-0 -pl-3 focus:outline-0 outline-0 focus:ring-0 ring-0 placeholder-[#555555]"
                 autocomplete="tel"
-                placeholder="+998 (__) ___-__-__"
+                placeholder="__-___-__-__"
                 required
               />
               <hr />
@@ -47,9 +49,7 @@
 <script setup>
 definePageMeta({
   layout: "false",
-  middleware: [
-    "auth",
-  ],
+  middleware: ["auth"],
 });
 
 const phone = ref("");
@@ -82,56 +82,26 @@ const sendPhone = () => {
   }
 };
 
-onMounted(() => {
-  // phone--------- --------------------------------
-  [].forEach.call(document.querySelectorAll("input"), function (input) {
-    let keyCode;
-    function mask(event) {
-      event.keyCode && (keyCode = event.keyCode);
-      const pos = this.selectionStart;
-      if (pos < 3) event.preventDefault();
-      const matrix = "+998 (__) ___-__-__";
-      let i = 0;
-      const def = matrix.replace(/\D/g, "");
-      const val = this.value.replace(/\D/g, "");
-      newValue = matrix.replace(/[_\d]/g, function (a) {
-        return i < val.length ? val.charAt(i++) || def.charAt(i) : a;
-      });
-      i = newValue.indexOf("_");
-      if (i !== -1) {
-        i < 5 && (i = 3);
-        newValue = newValue?.slice(0, i);
-      }
-      let reg = matrix
-        .substr(0, this.value.length)
-        .replace(/_+/g, function (a) {
-          return "\\d{1," + a.length + "}";
-        })
-        .replace(/[+()]/g, "\\$&");
-      reg = new RegExp("^" + reg + "$");
-      if (
-        !reg.test(this.value) ||
-        this.value.length < 5 ||
-        (keyCode > 47 && keyCode < 58)
-      )
-        this.value = newValue;
-      if (event.type === "blur" && this.value.length < 5) this.value = "";
-    }
+function phoneMask() {
+  console.log(phone.value);
+  let phoneNumber = phone.value.replace(/\D/g, "");
 
-    input.addEventListener("input", mask, false);
-    input.addEventListener("focus", mask, false);
-    input.addEventListener("blur", mask, false);
-    input.addEventListener("keydown", mask, false);
-    input.addEventListener("mouseup", (event) => {
-      event.preventDefault();
-      if (input.value.length < 4) {
-        input.setSelectionRange(4, 4);
-      } else {
-        input.setSelectionRange(input.value.length, input.value.length);
-      }
-    });
-  });
-});
+  // Define the positions for spaces
+  const spacePositions = [2, 6, 9, 12];
+
+  // Insert spaces at specified positions
+  for (var i = 0; i < spacePositions.length; i++) {
+    if (phoneNumber.length > spacePositions[i]) {
+      phoneNumber =
+        phoneNumber.slice(0, spacePositions[i]) +
+        "-" +
+        phoneNumber.slice(spacePositions[i]);
+    }
+  }
+
+  // Update the input value
+  phone.value = phoneNumber.slice(0, 12);
+}
 </script>
 <style lang="scss" scoped>
 // phone

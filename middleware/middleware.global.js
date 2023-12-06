@@ -8,14 +8,22 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
       const isRoute = [
         "login",
         "forgot_password",
-        "verify_otp",
+        "otp_verification",
+        "checking_phone",
         "new_password",
       ].includes(to.name);
-      if (token) {
+      console.log(to.name);
+      console.log(isRoute);
+      if (token || token != undefined || token != null) {
         const useProfile = useProfileStore();
         const parts = token.split(".");
         const exp = parts[1];
-        const decodedPayload = JSON.parse(atob(exp));
+        let decodedPayload;
+        if (exp) {
+          decodedPayload = JSON.parse(atob(exp));
+        } else {
+          return;
+        }
         console.log(decodedPayload);
         const experition = decodedPayload.exp;
         const now = +Date.now().toString().slice(0, 10);
@@ -28,7 +36,6 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
         }
         useProfile.getProfile();
       } else if (!isRoute) {
-        console.log("object");
         return navigateTo("/login");
       }
     }

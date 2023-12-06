@@ -237,7 +237,7 @@
                   {{ i.name }}
                 </li>
                 <li class="text-[#000000]">
-                  <span v-if="$t('uz') != 'Uz'">{{ $t("from") }}</span>
+                  <span class="mr-1" v-if="$t('uz') != 'Uz'">{{ $t("from") }}</span>
                   <span>{{ i.price }}</span> {{ $t("summ") }}
                   <span v-if="$t('uz') == 'Uz'">{{ $t("from") }}</span>
                 </li>

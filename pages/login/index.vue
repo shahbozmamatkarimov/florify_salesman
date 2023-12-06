@@ -15,7 +15,7 @@
         <h1 class="font-bold text-3xl">Hisobga kirish</h1>
         <a-space direction="vertical">
           <a-input
-            v-model:value="form.phone"
+            v-model:value="useAuth.form.phone"
             bordered="false"
             class="font-medium input w-full focus:border-0 border-0 focus:outline-0 outline-0 focus:ring-0 ring-0 placeholder-[#555555] -ml-3"
             minlength="13"
@@ -29,7 +29,7 @@
         <a-space direction="vertical">
           <div class="flex">
             <a-input
-              v-model:value="form.password"
+              v-model:value="useAuth.form.password"
               :type="store.is_show ? 'text' : 'password'"
               bordered="false"
               autofocus
@@ -76,10 +76,11 @@
 definePageMeta({
   middleware: ["auth"],
 });
-
+import { useAuthStore } from "@/store";
 import { useNotification } from "../../composables/notification";
 const { showLoading, showSuccess, showError } = useNotification();
 const router = useRouter();
+const useAuth = useAuthStore();
 
 const runtimeconfig = useRuntimeConfig();
 const baseUrl = runtimeconfig.public.apiBaseUrl;
@@ -92,16 +93,11 @@ const store = reactive({
   is_show: false,
 });
 
-const form = reactive({
-  phone: "",
-  password: "",
-});
-
 const handleSubmit = () => {
   showLoading("So'rov tekshirilmoqda...");
   const data = {
-    phone: form.phone,
-    password: form.password,
+    phone: useAuth.form.phone,
+    password: useAuth.form.password,
   };
   fetch(baseUrl + "/salesman/login", {
     method: "POST",
@@ -114,15 +110,20 @@ const handleSubmit = () => {
     .then((res) => res.json())
     .then((res) => {
       console.log(res);
-      localStorage.setItem("token", res.access_token);
-      localStorage.setItem("salesman_id", res.salesman?.id);
+      if (res.message == "Tasdiqlash kodi yuborildi") {
+        router.push("/otp_verification?login_phone=" + useAuth.form.phone);
+        showSuccess("Telefoningizga tasdiqlash kodi yuborildi");
+        return;
+      } else if (res.status == 200) {
+        localStorage.setItem("token", res.access_token);
+        localStorage.setItem("salesman_id", res.salesman?.id);
+        router.push("/");
+        showSuccess("Tizimga muvaffaqiyatli kirildi!");
+      }
       if (res.statusCode == 400) {
         showError(res.message);
         return;
       }
-
-      router.push("/");
-      showSuccess("Tizimga muvaffaqiyatli kirildi!");
     })
     .catch((err) => {
       console.log(err);

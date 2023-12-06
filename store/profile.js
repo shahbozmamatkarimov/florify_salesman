@@ -35,6 +35,7 @@ export const useProfileStore = defineStore("profile", () => {
     const token = localStorage.getItem("token");
     const id = localStorage.getItem("salesman_id");
     const formData = new FormData();
+    console.log(profile.username);
     formData.append("image", profile.image);
     formData.append("username", profile.username);
     formData.append("phone", "+998" + profile.phone);
@@ -49,8 +50,8 @@ export const useProfileStore = defineStore("profile", () => {
       .then((res) => {
         showSuccess("Successfully");
         console.log(res);
-        store.salesmanInfo = res.data?.salesman;
-        setProfile(res?.data?.salesman);
+        store.salesmanInfo = res.data?.data?.salesman;
+        setProfile(res?.data?.data?.salesman);
         store.editInfoModal = false;
         store.isUsername = false;
       })
@@ -90,8 +91,9 @@ export const useProfileStore = defineStore("profile", () => {
       )
       .then((res) => {
         showSuccess("Successfully");
-        store.salesmanInfo = res?.data?.salesman;
-        setProfile(res?.data?.salesman);
+        console.log(res);
+        store.salesmanInfo = res.data?.data?.salesman;
+        setProfile(res?.data?.data?.salesman);
       })
       .catch((err) => {
         showSuccess("Successfully");
@@ -115,8 +117,8 @@ export const useProfileStore = defineStore("profile", () => {
             router.push("/login");
           }
           console.log(res);
-          store.salesmanInfo = res.data;
-          setProfile(res?.data);
+          store.salesmanInfo = res.data?.data?.salesman;
+          setProfile(res?.data?.data?.salesman);
         })
         .catch((err) => {
           if (err.response.data.message == "Sotuvchi topilmadi!") {
