@@ -27,7 +27,7 @@ export const useProductsStore = defineStore("products", () => {
     state.isLoading = true;
     console.log(state.quantity);
     axios
-      .get(baseUrl + `/product/salesmanId/${salesmanId}:${state.page}:10/${state.quantity}`)
+      .get(baseUrl + `/product/salesmanId/${salesmanId}/${state.page}/10/${state.quantity}`)
       .then((res) => {
         if (
           res.message === "Token vaqti tugagan!" ||
@@ -58,7 +58,7 @@ export const useProductsStore = defineStore("products", () => {
       state.editProduct = true;
     }
     state.isLoading = true;
-    fetch(baseUrl + `/product/getById/${id}`)
+    fetch(baseUrl + `/product/id/${id}`)
       .then((res) => res.json())
       .then((res) => {
         if (
@@ -68,9 +68,9 @@ export const useProductsStore = defineStore("products", () => {
           router.push("/login");
         }
         if (isType == 'product') {
-          state.showProduct = [res];
+          state.showProduct = [res.data.product];
         }else {
-          state.showProduct = res;
+          state.showProduct = res.data.product;
         }
         state.isLoading = false;
       })

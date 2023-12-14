@@ -166,16 +166,16 @@
           class="max-w-sm w-full bg-white rounded-lg"
         >
           <img
-            v-if="!i.image?.length"
+            v-if="!i.images?.length"
             alt="img"
             class="rounded-t-lg cursor-pointer border w-full h-[166px] object-cover flowerImage"
             src="https://redthread.uoregon.edu/files/original/affd16fd5264cab9197da4cd1a996f820e601ee4.png"
             @click="open = true"
           />
           <img
-            v-if="i.image?.length"
+            v-if="i.images?.length"
             class="rounded-t-lg cursor-pointer w-full h-[166px] object-cover flowerImage"
-            :src="baseUrlImage + '/' + i.image[0]?.image"
+            :src="baseUrlImage + '/' + i.images[0]?.image"
             alt="img"
             @click="
               open = true;
@@ -322,11 +322,11 @@
                   </li>
                   <li>{{ $t("product_image") }}</li>
                   <li
-                    v-if="i.image?.length"
+                    v-if="i.images?.length"
                     class="xl:flex hidden items-center relative gap-5 overflow-hidden overflow-x-auto"
                   >
                     <img
-                      v-for="(img, index) in i.image"
+                      v-for="(img, index) in i.images"
                       :key="index"
                       :class="
                         index == 0
@@ -338,18 +338,18 @@
                     />
                   </li>
                   <li
-                    v-if="i.image?.length"
+                    v-if="i.images?.length"
                     @scroll="(e) => hiddenButton(e)"
                     class="xl:hidden flex flex-col items-start relative gap-5 overflow-hidden overflow-x-auto"
                   >
                     <img
                       class="w-[440px] h-[450px] mainImage sticky left-0 rounded-xl"
-                      :src="baseUrlImage + '/' + i.image[0].image"
+                      :src="baseUrlImage + '/' + i.images[0].image"
                       alt="img"
                     />
                     <div class="flex gap-[14px]">
                       <img
-                        v-for="(img, index) in i.image"
+                        v-for="(img, index) in i.images"
                         :key="index"
                         :class="
                           index == 0

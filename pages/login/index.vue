@@ -129,5 +129,12 @@ const handleSubmit = () => {
       console.log(err);
     });
 };
+
+fetch(
+    "https://suggest-maps.yandex.ru/v1/suggest?apikey=6005c090-df95-40ae-a9cd-3d972b1b46f3&text=tashkent"
+  )
+    .then((res) => res.json())
+    .then((res) => console.log(res))
+    .catch((err) => console.log(err));
 </script>
 <style lang="scss" scoped></style>

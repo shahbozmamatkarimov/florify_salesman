@@ -853,8 +853,8 @@ function getCategory() {
         router.push("/login");
       }
       console.log(res, "category");
-      if(!res.data.categories?.length){
-        return
+      if (!res.data?.categories?.length) {
+        return;
       }
       for (let i of res.data.categories) {
         options.value.push({
@@ -911,7 +911,7 @@ const handleSubmit = () => {
     category_id = create.category_id["Uz"];
   }
   store.is_submit = true;
-  create.color = create.color.join(",");
+  const color = create.color.join(",");
   fetch("https://api.florify.uz/api/product", {
     method: "POST",
     headers: {
@@ -919,7 +919,7 @@ const handleSubmit = () => {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({ ...create, category_id }),
+    body: JSON.stringify({ ...create, category_id, color }),
   })
     .then((res) => res.json())
     .then((res) => {
@@ -950,11 +950,12 @@ const handleSubmit = () => {
           if (files[i]) {
             if (uploadFiles[i]) {
               images += 1;
+              console.log(res.data.product.id);
               const formData = new FormData();
               formData.append("image", uploadFiles[i]);
               console.log(fileName[i]);
               console.log(fileSize[i]);
-              formData.append("product_id", res.product.id);
+              formData.append("product_id", res.data.product.id);
               formData.append("name", fileName[i]);
               formData.append("size", fileSize[i]);
               uploadImage(formData);
@@ -1018,7 +1019,7 @@ const updateProduct = () => {
   } else {
     category_id = create.category_id["Uz"];
   }
-  create.color = create.color.join(",");
+  const color = create.color.join(",");
 
   fetch(
     "https://api.florify.uz/api/product/" + productStore.state.editProductId,
@@ -1029,11 +1030,12 @@ const updateProduct = () => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ ...create, category_id }),
+      body: JSON.stringify({ ...create, category_id, color }),
     }
   )
     .then((res) => res.json())
     .then((res) => {
+      console.log(res);
       if (
         res.message == "Token vaqti tugagan!" ||
         res.message == "Token topilmadi!"

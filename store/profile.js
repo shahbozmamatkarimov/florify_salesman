@@ -35,39 +35,60 @@ export const useProfileStore = defineStore("profile", () => {
     const token = localStorage.getItem("token");
     const id = localStorage.getItem("salesman_id");
     const formData = new FormData();
-    console.log(profile.username);
-    formData.append("image", profile.image);
+    formData.append("file", profile.image);
     formData.append("username", profile.username);
     formData.append("phone", "+998" + profile.phone);
     formData.append("address", profile.address);
     formData.append("email", profile.email);
-    axios
-      .patch(baseUrl + "/salesman/profile/" + id, formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((res) => {
-        showSuccess("Successfully");
-        console.log(res);
-        store.salesmanInfo = res.data?.data?.salesman;
-        setProfile(res?.data?.data?.salesman);
-        store.editInfoModal = false;
-        store.isUsername = false;
-      })
-      .catch((err) => {
-        showSuccess("Successfully");
-        if (err.response?.data?.message == "Bunday username band!") {
-          showError("Error");
-          store.isUsername = "Bunday username band!";
-          return;
-        } else {
+    if (profile.image == "delete") {
+      axios
+        .delete(baseUrl + "/salesman/image/" + id, null, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((res) => {
+          showSuccess("Successfully");
+          console.log(res);
+          editUserProfile()
+        })
+        .catch((err) => {
+          showSuccess("Error");
+          editUserProfile()
+          console.log(err);
+        });
+    }else {
+      editUserProfile()
+    }
+    function editUserProfile() {
+      axios
+        .patch(baseUrl + "/salesman/profile/" + id, formData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((res) => {
+          showSuccess("Successfully");
+          console.log(res);
+          store.salesmanInfo = res.data?.data?.salesman;
+          setProfile(res?.data?.data?.salesman);
+          store.editInfoModal = false;
           store.isUsername = false;
-        }
-        store.isLoading = false;
-        store.editInfoModal = false;
-        console.log(err);
-      });
+        })
+        .catch((err) => {
+          showSuccess("Successfully");
+          if (err.response?.data?.message == "Bunday username band!") {
+            showError("Error");
+            store.isUsername = "Bunday username band!";
+            return;
+          } else {
+            store.isUsername = false;
+          }
+          store.isLoading = false;
+          store.editInfoModal = false;
+          console.log(err);
+        });
+    }
   }
 
   function editProfileStore() {
@@ -78,7 +99,7 @@ export const useProfileStore = defineStore("profile", () => {
     const id = localStorage.getItem("salesman_id");
     axios
       .patch(
-        baseUrl + "/salesman/profile_store/" + id,
+        baseUrl + "/salesman/store/" + id,
         {
           store_address: profile.store_address,
           store_phone: profile.store_phone,
