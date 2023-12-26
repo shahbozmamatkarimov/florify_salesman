@@ -237,7 +237,9 @@
                   {{ i.name }}
                 </li>
                 <li class="text-[#000000]">
-                  <span class="mr-1" v-if="$t('uz') != 'Uz'">{{ $t("from") }}</span>
+                  <span class="mr-1" v-if="$t('uz') != 'Uz'">{{
+                    $t("from")
+                  }}</span>
                   <span>{{ i.price }}</span> {{ $t("summ") }}
                   <span v-if="$t('uz') == 'Uz'">{{ $t("from") }}</span>
                 </li>
@@ -297,7 +299,9 @@
               </div>
               <!-- Modal body -->
               <div class="sm:px-10 px-5 py-5">
+                {{ productStore.state.showProduct }}
                 <ul
+                  v-if="!productStore.state.openEditModal && productStore.state.showProduct?.length"
                   class="space-y-6 imageContainer"
                   v-for="i in productStore.state.showProduct"
                   :key="i?.id"

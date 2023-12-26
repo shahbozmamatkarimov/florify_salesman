@@ -806,7 +806,7 @@ const filterOption = (input, option) => {
 };
 
 function deleteFile(id) {
-  const staticFile = productStore.state.showProduct.image[id - 1];
+  const staticFile = productStore.state.showProduct.images[id - 1];
   if (staticFile !== undefined) {
     store.deletedFiles.push(id - 1);
   }
@@ -911,7 +911,7 @@ const handleSubmit = () => {
     category_id = create.category_id["Uz"];
   }
   store.is_submit = true;
-  const color = create.color.join(",");
+  const color = create.color?.join(",");
   fetch("https://api.florify.uz/api/product", {
     method: "POST",
     headers: {
@@ -1000,7 +1000,7 @@ const handleSubmit = () => {
 
 function deleteStaticFile(id, file_name) {
   axios
-    .delete(baseUrl + "/image/delete/" + id + "/" + file_name)
+    .delete(baseUrl + "/image/id/" + id)
     .then((res) => {})
     .catch((err) => {
       console.log(err);
@@ -1019,7 +1019,7 @@ const updateProduct = () => {
   } else {
     category_id = create.category_id["Uz"];
   }
-  const color = create.color.join(",");
+  const color = create.color?.join(",");
 
   fetch(
     "https://api.florify.uz/api/product/" + productStore.state.editProductId,
@@ -1042,7 +1042,7 @@ const updateProduct = () => {
       ) {
         router.push("/login");
       }
-      if (res.message === "Mahsulot tafsilotlari tahrirlandi") {
+      if (res.statusCode == 200) {
         let files = [];
         let uploadFiles = [];
         let fileName = [];
@@ -1059,7 +1059,7 @@ const updateProduct = () => {
         console.log(fileName);
         console.log(fileSize);
 
-        console.log(productStore.state.showProduct.image);
+        console.log(productStore.state.showProduct.images);
 
         let images = 0;
         let t = 0;
@@ -1069,10 +1069,10 @@ const updateProduct = () => {
             images += 1;
             const formData = new FormData();
             formData.append("image", uploadFiles[i]);
-            formData.append("product_id", res.product.id);
+            formData.append("product_id", res.data.product.id);
             formData.append("name", fileName[i]);
             formData.append("size", fileSize[i]);
-            const staticFile = productStore.state.showProduct.image[i];
+            const staticFile = productStore.state.showProduct.images[i];
             if (staticFile !== undefined) {
               deleteStaticFile(staticFile.id, staticFile.image);
             }
@@ -1128,10 +1128,10 @@ const updateProduct = () => {
 };
 
 watch(
-  () => productStore.showProductById,
+  () => productStore.state.showProduct,
   () => {
-    const product = productStore.showProductById;
-    console.log(product);
+    const product = productStore.state.showProduct;
+    console.log(product, '----------------------------------------------------------------');
     create.name = product.name;
     create.description = product.description;
     create.price = product.price;
@@ -1141,11 +1141,11 @@ watch(
     create.salesman_id = product.salesman_id;
     create.quantity = product.quantity;
 
-    store.step = product.image?.length;
-    for (let i = 1; i <= product.image?.length; i++) {
-      store[`file${i}`] = baseUrlImage.value + product.image[i - 1]?.image;
-      store[`size${i}`] = product.image[i - 1]?.size;
-      store[`name${i}`] = product.image[i - 1]?.name;
+    store.step = product.images?.length;
+    for (let i = 1; i <= product.images?.length; i++) {
+      store[`file${i}`] = baseUrlImage.value + product.images[i - 1]?.image;
+      store[`size${i}`] = product.images[i - 1]?.size;
+      store[`name${i}`] = product.images[i - 1]?.name;
     }
   }
 );

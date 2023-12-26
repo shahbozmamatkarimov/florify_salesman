@@ -20,14 +20,16 @@ export const useProductsStore = defineStore("products", () => {
   });
 
   const allProducts = computed(() => state.products);
-  const showProductById = computed(() => state.showProduct);
 
   function getProducts() {
-    const salesmanId = localStorage.getItem("salesman_id")
+    const salesmanId = localStorage.getItem("salesman_id");
     state.isLoading = true;
     console.log(state.quantity);
     axios
-      .get(baseUrl + `/product/salesmanId/${salesmanId}/${state.page}/10/${state.quantity}`)
+      .get(
+        baseUrl +
+          `/product/salesmanId/${salesmanId}/${state.page}/10/${state.quantity}`
+      )
       .then((res) => {
         if (
           res.message === "Token vaqti tugagan!" ||
@@ -50,7 +52,7 @@ export const useProductsStore = defineStore("products", () => {
   }
 
   function getOneProduct(id, isType) {
-    if (isType == 'product') {
+    if (isType == "product") {
       state.openEditModal = false;
     } else {
       state.editProductId = id;
@@ -61,15 +63,16 @@ export const useProductsStore = defineStore("products", () => {
     fetch(baseUrl + `/product/id/${id}`)
       .then((res) => res.json())
       .then((res) => {
+        console.log(res);
         if (
           res.message === "Token vaqti tugagan!" ||
           res.message === "Token topilmadi!"
         ) {
           router.push("/login");
         }
-        if (isType == 'product') {
+        if (isType == "product") {
           state.showProduct = [res.data.product];
-        }else {
+        } else {
           state.showProduct = res.data.product;
         }
         state.isLoading = false;
@@ -79,5 +82,5 @@ export const useProductsStore = defineStore("products", () => {
       });
   }
 
-  return { state, getProducts, getOneProduct, allProducts, showProductById };
+  return { state, getProducts, getOneProduct, allProducts };
 });
