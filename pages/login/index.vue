@@ -109,7 +109,7 @@ const handleSubmit = () => {
   })
     .then((res) => res.json())
     .then((res) => {
-      console.log(res);
+      console.log("this is otp :) =>", res.data.otp.code);
       if (res.message == "Tasdiqlash kodi yuborildi") {
         router.push("/otp_verification?login_phone=" + useAuth.form.phone);
         showSuccess("Telefoningizga tasdiqlash kodi yuborildi");
